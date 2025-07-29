@@ -1,0 +1,236 @@
+package quest.gui;
+
+import quest.core.QuestEventLogger;
+import quest.core.QuestDatabase;
+import quest.core.QuestExecutor;
+
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.*;
+import java.util.List;
+
+/**
+ * Beautiful Enhanced Quest Selection GUI with discovery and automation modes
+ */
+public class QuestSelectionGUI extends JFrame {
+    
+    private static QuestSelectionGUI instance;
+    private QuestStartListener questStartListener;
+    private JComboBox<String> questDropdown;
+    private JCheckBox recordingCheckbox;
+    private JLabel statusLabel;
+    private boolean questRunning = false;
+    
+    // Available quests
+    private static final List<String> AVAILABLE_QUESTS = new ArrayList<>();
+    static {
+        AVAILABLE_QUESTS.add("FREE DISCOVERY MODE");
+        AVAILABLE_QUESTS.add("------- SPECIFIC QUESTS -------");
+        AVAILABLE_QUESTS.add("Demon Slayer");
+        AVAILABLE_QUESTS.add("Cook's Assistant");
+        AVAILABLE_QUESTS.add("Doric's Quest");
+        AVAILABLE_QUESTS.add("Ernest the Chicken");
+        AVAILABLE_QUESTS.add("Goblin Diplomacy");
+        AVAILABLE_QUESTS.add("Imp Catcher");
+        AVAILABLE_QUESTS.add("The Knight's Sword");
+        AVAILABLE_QUESTS.add("Pirate's Treasure");
+        AVAILABLE_QUESTS.add("Prince Ali Rescue");
+        AVAILABLE_QUESTS.add("The Restless Ghost");
+        AVAILABLE_QUESTS.add("Romeo & Juliet");
+        AVAILABLE_QUESTS.add("Sheep Shearer");
+        AVAILABLE_QUESTS.add("Shield of Arrav");
+        AVAILABLE_QUESTS.add("Vampire Slayer");
+        AVAILABLE_QUESTS.add("Witch's Potion");
+        AVAILABLE_QUESTS.add("Dragon Slayer");
+        AVAILABLE_QUESTS.add("Rune Mysteries");
+        AVAILABLE_QUESTS.add("Black Knights' Fortress");
+    }
+    
+    public interface QuestStartListener {
+        void onQuestStart(String questName);
+        void onQuestStop();
+    }
+    
+    public static QuestSelectionGUI getInstance() {
+        if (instance == null) {
+            instance = new QuestSelectionGUI();
+        }
+        return instance;
+    }
+    
+    private QuestSelectionGUI() {
+        initializeGUI();
+    }
+    
+    private void initializeGUI() {
+        setTitle("Action Recorder");
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setResizable(false);
+        setAlwaysOnTop(true);
+        
+        // Main layout - much more compact
+        JPanel mainPanel = new JPanel(new BorderLayout(5, 5));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.setBackground(new Color(45, 45, 45));
+        
+        // Header panel with version and identifier
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setBackground(new Color(45, 45, 45));
+        
+        // Main title
+        JLabel headerLabel = new JLabel("Action Recorder", JLabel.CENTER);
+        headerLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+        headerLabel.setForeground(Color.WHITE);
+        
+        // Version and identifier
+        JLabel versionLabel = new JLabel("v4.1 - There is a chair", JLabel.CENTER);
+        versionLabel.setFont(new Font(Font.SANS_SERIF, Font.ITALIC, 10));
+        versionLabel.setForeground(Color.CYAN);
+        
+        headerPanel.add(headerLabel, BorderLayout.NORTH);
+        headerPanel.add(versionLabel, BorderLayout.SOUTH);
+        
+        mainPanel.add(headerPanel, BorderLayout.NORTH);
+        
+        // Control panel - horizontal layout
+        JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
+        controlPanel.setBackground(new Color(45, 45, 45));
+        
+        // Quest dropdown - smaller
+        questDropdown = new JComboBox<>(AVAILABLE_QUESTS.toArray(new String[0]));
+        questDropdown.setPreferredSize(new Dimension(150, 22));
+        questDropdown.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 10));
+        questDropdown.setSelectedIndex(0); // Default to FREE DISCOVERY MODE
+        
+        // Recording checkbox - main control
+        recordingCheckbox = new JCheckBox("RECORD", false);
+        recordingCheckbox.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+        recordingCheckbox.setForeground(Color.GREEN);
+        recordingCheckbox.setBackground(new Color(45, 45, 45));
+        recordingCheckbox.setFocusPainted(false);
+        
+        controlPanel.add(questDropdown);
+        controlPanel.add(recordingCheckbox);
+        
+        mainPanel.add(controlPanel, BorderLayout.CENTER);
+        
+        // Status - compact
+        statusLabel = new JLabel("Ready", JLabel.CENTER);
+        statusLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 10));
+        statusLabel.setForeground(Color.LIGHT_GRAY);
+        statusLabel.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
+        mainPanel.add(statusLabel, BorderLayout.SOUTH);
+        
+        // Checkbox listener - main recording control
+        recordingCheckbox.addActionListener(e -> {
+            if (recordingCheckbox.isSelected()) {
+                startQuest();
+            } else {
+                stopQuest();
+            }
+        });
+        
+        add(mainPanel);
+        pack();
+        setLocationRelativeTo(null); // Center the window normally
+        
+        // Add initial log message
+        addLogMessage("Action Recorder Ready");
+        addLogMessage("Select FREE DISCOVERY MODE to record any actions");
+    }
+    
+    private void startQuest() {
+        if (questStartListener != null && !questRunning) {
+            String selectedQuest = (String) questDropdown.getSelectedItem();
+            questStartListener.onQuestStart(selectedQuest);
+        }
+    }
+    
+    private void stopQuest() {
+        if (questStartListener != null) {
+            questStartListener.onQuestStop();
+        }
+    }
+    
+    public void showGUI() {
+        SwingUtilities.invokeLater(() -> {
+            setVisible(true);
+            toFront();
+            requestFocus();
+        });
+    }
+    
+    public void setQuestStartListener(QuestStartListener listener) {
+        this.questStartListener = listener;
+    }
+    
+    public void setQuestRunning(boolean running) {
+        SwingUtilities.invokeLater(() -> {
+            questRunning = running;
+            recordingCheckbox.setSelected(running);
+            questDropdown.setEnabled(!running);
+            
+            if (running) {
+                String questName = (String) questDropdown.getSelectedItem();
+                if ("FREE DISCOVERY MODE".equals(questName)) {
+                    statusLabel.setText("🔴 RECORDING");
+                } else {
+                    statusLabel.setText("🔴 REC: " + questName.substring(0, Math.min(questName.length(), 10)));
+                }
+                statusLabel.setForeground(Color.RED);
+                recordingCheckbox.setForeground(Color.RED);
+                recordingCheckbox.setText("STOP");
+            } else {
+                statusLabel.setText("Ready");
+                statusLabel.setForeground(Color.LIGHT_GRAY);
+                recordingCheckbox.setForeground(Color.GREEN);
+                recordingCheckbox.setText("RECORD");
+            }
+        });
+    }
+    
+    public void setQuestCompleted(String questName) {
+        SwingUtilities.invokeLater(() -> {
+            questRunning = false;
+            recordingCheckbox.setSelected(false);
+            questDropdown.setEnabled(true);
+            statusLabel.setText(questName + " completed!");
+            statusLabel.setBackground(new Color(200, 255, 200));
+            addLogMessage(questName + " completed!");
+        });
+    }
+    
+    public void setQuestFailed(String questName, String reason) {
+        SwingUtilities.invokeLater(() -> {
+            questRunning = false;
+            recordingCheckbox.setSelected(false);
+            questDropdown.setEnabled(true);
+            statusLabel.setText(questName + " failed: " + reason);
+            statusLabel.setBackground(new Color(255, 200, 200));
+            addLogMessage(questName + " failed: " + reason);
+        });
+    }
+    
+    public void addLogMessage(String message) {
+        // Log to console instead of GUI for compact design
+        System.out.println("[RECORDER] " + message);
+    }
+    
+    public void updateStatus(String status) {
+        SwingUtilities.invokeLater(() -> {
+            statusLabel.setText(status);
+            statusLabel.setBackground(new Color(200, 255, 200));
+        });
+    }
+    
+    public void logMessage(String message) {
+        addLogMessage(message);
+    }
+    
+    public boolean isRecordingModeEnabled() {
+        return recordingCheckbox.isSelected();
+    }
+}

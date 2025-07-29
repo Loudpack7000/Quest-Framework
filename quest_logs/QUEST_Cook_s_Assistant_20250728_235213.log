@@ -1,0 +1,401 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Cook's Assistant
+Started: 2025-07-28 23:52:13
+Player: LordFareigth
+Starting Location: (3162, 3484, 0)
+Starting Inventory: Bronze pickaxe, Tinderbox, Coins x206394, Bronze axe
+=====================================
+
+[23:52:13] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[23:52:13] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[23:52:13] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[23:52:13] ACTION: Quest recording started
+    SCRIPT: // Quest: Cook's Assistant
+
+[23:52:13] ACTIVE_QUEST_DETECTED: COOKS_ASSISTANT is currently in progress
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Script initialized successfully
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest logger initialized - logs will be saved to quest_logs/
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: hasRequiredItems() called - returning true (auto-gathering enabled)
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started callback
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Cook's Assistant
+Started: 2025-07-28 23:52:13
+Player: LordFareigth
+Starting Location: (3162, 3484, 0)
+Starting Inventory: Bronze pickaxe, Tinderbox, Coins x206394, Bronze axe
+=====================================
+
+[23:52:13] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[23:52:13] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[23:52:13] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[23:52:13] ACTION: Quest recording started
+    SCRIPT: // Quest: Cook's Assistant
+
+[23:52:13] ACTIVE_QUEST_DETECTED: COOKS_ASSISTANT is currently in progress
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 0, Config 29: 1, Varbit 29: 0, Config 174: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 1
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: false, Milk: false, Flour: false
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 0, Config 29: 1, Varbit 29: 0, Config 174: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 0, Config 29: 1, Varbit 29: 0, Config 174: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 1
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: false, Milk: false, Flour: false
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Executing current step...
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current config value: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 0, Config 29: 1, Varbit 29: 0, Config 174: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 1
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started, proceeding with quest progression
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === PROGRESS QUEST START ===
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current location: (3162, 3484, 0)
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Progressing quest...
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking if we have all quest items...
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: false, Milk: false, Flour: false
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Missing quest items, gathering them
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === STARTING ITEM GATHERING ===
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === GATHER QUEST ITEMS START ===
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Gathering quest items with Grand Exchange purchasing
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current inventory space: 24
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current inventory contents:
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === QUEST ITEM REQUIREMENTS ===
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Required item: Egg x1
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current in inventory: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Required item: Bucket of milk x1
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current in inventory: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Required item: Pot of flour x1
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current in inventory: 0
+[23:52:13] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === CALLING ItemGatheringUtil.gatherItems() ===
+[23:52:16] ACTION: Selected 'Bank' on Grand Exchange booth
+    SCRIPT: // Bank on Grand Exchange booth
+
+[23:52:16] USER_ACTION: Bank | Target: Grand Exchange booth
+[23:52:19] ACTION: Selected 'Exchange' on Grand Exchange booth
+    SCRIPT: // Exchange on Grand Exchange booth
+
+[23:52:19] USER_ACTION: Exchange | Target: Grand Exchange booth
+[23:52:23] ACTION: Selected 'Select' on Egg
+    SCRIPT: // Select on Egg
+
+[23:52:23] USER_ACTION: Select | Target: Egg
+[23:52:34] ACTION: Selected 'Bank' on Banker
+    SCRIPT: // Bank on Banker
+
+[23:52:34] USER_ACTION: Bank | Target: Banker
+[23:52:34] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Bronze pickaxe, Egg, Tinderbox, Coins x206362, Bronze axe
+
+[23:52:36] ACTION: Selected 'Exchange' on Grand Exchange booth
+    SCRIPT: // Exchange on Grand Exchange booth
+
+[23:52:36] USER_ACTION: Exchange | Target: Grand Exchange booth
+[23:52:51] ACTION: Selected 'Bank' on Banker
+    SCRIPT: // Bank on Banker
+
+[23:52:51] USER_ACTION: Bank | Target: Banker
+[23:52:54] ACTION: Selected 'Exchange' on Grand Exchange booth
+    SCRIPT: // Exchange on Grand Exchange booth
+
+[23:52:54] USER_ACTION: Exchange | Target: Grand Exchange booth
+[23:53:09] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === ItemGatheringUtil.gatherItems() RETURNED ===
+[23:53:09] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Item gathering result: SUCCESS
+[23:53:09] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Successfully obtained: {Pot of flour=1, Egg=1, Bucket of milk=1}
+[23:53:09] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === ITEM GATHERING COMPLETE ===
+[23:53:09] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Gathering success: true
+[23:53:09] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Last action: Bought 1x Pot of flour from Grand Exchange
+[23:53:09] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Obtained items: {Pot of flour=1, Egg=1, Bucket of milk=1}
+[23:53:09] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Missing items: {}
+[23:53:09] DREAMBOT_CONSOLE: CooksAssistant DEBUG: All items gathered, completing quest
+[23:53:09] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Attempting to complete quest
+[23:53:09] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: true, Milk: true, Flour: true
+[23:53:09] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Walking to kitchen for quest completion
+[23:53:09] ACTION: Selected 'Cast' on Lumbridge Home Teleport
+    SCRIPT: // Cast on Lumbridge Home Teleport
+
+[23:53:09] USER_ACTION: Cast | Target: Lumbridge Home Teleport
+[23:53:09] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[23:53:09] SPELLBOOK_OPENED: Player opened the magic spellbook
+[23:53:38] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 0, Config 29: 1, Varbit 29: 0, Config 174: 0
+[23:53:38] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:38] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 0
+[23:53:38] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 1
+[23:53:38] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[23:53:38] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[23:53:38] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[23:53:38] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: true, Milk: true, Flour: true
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 0, Config 29: 1, Varbit 29: 0, Config 174: 0
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 0
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 1
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: true, Milk: true, Flour: true
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 0, Config 29: 1, Varbit 29: 0, Config 174: 0
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 0, Config 29: 1, Varbit 29: 0, Config 174: 0
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 0
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 1
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: true, Milk: true, Flour: true
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Executing current step...
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current config value: 0
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 0, Config 29: 1, Varbit 29: 0, Config 174: 0
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 0
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 1
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started, proceeding with quest progression
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === PROGRESS QUEST START ===
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current location: (3221, 3219, 0)
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Progressing quest...
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking if we have all quest items...
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: true, Milk: true, Flour: true
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: All quest items already in inventory!
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: All items gathered, completing quest
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Attempting to complete quest
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: true, Milk: true, Flour: true
+[23:53:40] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Walking to kitchen for quest completion
+[23:53:47] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Talking to Cook to complete quest
+[23:53:48] ACTION: Selected 'Talk-to' on Cook
+    SCRIPT: NPCs.closest("Cook").interact("Talk-to");
+
+[23:53:48] USER_ACTION: Talk-to | NPC_Tile: (3208, 3215, 0)
+[23:53:49] DREAMBOT_CONSOLE: CooksAssistant DEBUG: In completion dialogue
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Completion dialogue handled successfully
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:57] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:58] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:53:59] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:01] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:02] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Dialogue completed but quest not marked as complete
+[23:54:05] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking completion - Config 101: 1, Config 29: 2, Varbit 29: 0, Config 174: 0
+[23:54:05] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest complete = false
+[23:54:05] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 1
+[23:54:05] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 2
+[23:54:05] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[23:54:05] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[23:54:05] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[23:54:05] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: false, Milk: false, Flour: false
+[23:54:06] QUEST_END: === QUEST RECORDING ENDED ===

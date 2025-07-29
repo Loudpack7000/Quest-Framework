@@ -1,0 +1,173 @@
+{
+    "questName": "Vampire Slayer",
+    "configId": 178,
+    "startConfig": 0,
+    "completionConfig": 2,
+    "startNPC": "Morgan",
+    "startLocation": {
+        "x": 3097,
+        "y": 3267,
+        "z": 0,
+        "area": "Draynor Village"
+    },
+    "requiredItems": {
+        "hammer": {
+            "name": "Hammer",
+            "quantity": 1,
+            "obtainFrom": "General store or crafting"
+        },
+        "garlic": {
+            "name": "Garlic",
+            "quantity": 1,
+            "obtainFrom": "Morgan's house upstairs"
+        },
+        "stake": {
+            "name": "Stake",
+            "quantity": 1,
+            "obtainFrom": "Crafted from logs with knife"
+        },
+        "beer": {
+            "name": "Beer",
+            "quantity": 1,
+            "obtainFrom": "Blue Moon Inn Varrock"
+        }
+    },
+    "keyNPCs": {
+        "morgan": {
+            "name": "Morgan",
+            "location": {
+                "x": 3097,
+                "y": 3267,
+                "z": 0
+            },
+            "purpose": "Quest starter"
+        },
+        "drHarlow": {
+            "name": "Dr. Harlow",
+            "location": {
+                "x": 3204,
+                "y": 3392,
+                "z": 0,
+                "area": "Blue Moon Inn, Varrock"
+            },
+            "purpose": "Provides stake information"
+        },
+        "countDraynor": {
+            "name": "Count Draynor",
+            "location": {
+                "x": 3078,
+                "y": 3348,
+                "z": 1,
+                "area": "Draynor Manor 1st floor"
+            },
+            "purpose": "Final boss"
+        }
+    },
+    "questSteps": [
+        {
+            "step": 1,
+            "configValue": 0,
+            "description": "Talk to Morgan in Draynor Village",
+            "action": "Talk-to Morgan",
+            "location": {
+                "x": 3097,
+                "y": 3267,
+                "z": 0
+            }
+        },
+        {
+            "step": 2,
+            "configValue": 1,
+            "description": "Collect garlic from Morgan's house upstairs",
+            "action": "Take garlic from house",
+            "location": {
+                "x": 3096,
+                "y": 3270,
+                "z": 1
+            }
+        },
+        {
+            "step": 3,
+            "configValue": 1,
+            "description": "Get hammer (if not already owned)",
+            "action": "Obtain hammer",
+            "location": "Various locations"
+        },
+        {
+            "step": 4,
+            "configValue": 1,
+            "description": "Go to Blue Moon Inn in Varrock and talk to Dr. Harlow",
+            "action": "Talk-to Dr. Harlow",
+            "location": {
+                "x": 3204,
+                "y": 3392,
+                "z": 0
+            }
+        },
+        {
+            "step": 5,
+            "configValue": 1,
+            "description": "Buy beer for Dr. Harlow",
+            "action": "Buy beer from bartender",
+            "location": {
+                "x": 3204,
+                "y": 3392,
+                "z": 0
+            }
+        },
+        {
+            "step": 6,
+            "configValue": 1,
+            "description": "Give beer to Dr. Harlow to get stake information",
+            "action": "Use beer on Dr. Harlow",
+            "location": {
+                "x": 3204,
+                "y": 3392,
+                "z": 0
+            }
+        },
+        {
+            "step": 7,
+            "configValue": 1,
+            "description": "Make stake from logs using knife",
+            "action": "Craft stake",
+            "location": "Anywhere with logs and knife"
+        },
+        {
+            "step": 8,
+            "configValue": 1,
+            "description": "Go to Draynor Manor and fight Count Draynor",
+            "action": "Attack Count Draynor",
+            "location": {
+                "x": 3078,
+                "y": 3348,
+                "z": 1
+            }
+        },
+        {
+            "step": 9,
+            "configValue": 2,
+            "description": "Quest completed",
+            "action": "Quest complete",
+            "location": "Draynor Manor"
+        }
+    ],
+    "dialogue": {
+        "morgan": [
+            "I think a vampyre lives in the manor to the north",
+            "Will you help me to slay the vampyre?"
+        ],
+        "drHarlow": [
+            "You need a stake to kill vampyres properly",
+            "You can make a stake with a knife and a log"
+        ]
+    },
+    "combatInfo": {
+        "countDraynor": {
+            "level": 34,
+            "hitpoints": 35,
+            "weakness": "Stake",
+            "location": "Draynor Manor 1st floor"
+        }
+    }
+}
