@@ -1,0 +1,255 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-07-29 00:43:28
+Player: LordFareigth
+Starting Location: (3093, 3243, 0)
+Starting Inventory: Energy potion(4) x5, Bronze pickaxe, Tinderbox, Coins x206184, Bronze axe
+=====================================
+
+[00:43:28] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:43:28] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:43:28] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:43:28] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[00:43:28] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 69 varbits (including 0-values)
+
+[00:43:28] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[00:43:31] ACTION: Selected 'Bank' on Bank booth
+    SCRIPT: // Bank on Bank booth
+
+[00:43:31] USER_ACTION: Bank | Target: Bank booth
+[00:43:31] Player State: Started moving
+[00:43:32] Player State: Stopped moving
+[00:43:32] Position Update: Stopped at (3092, 3243, 0)
+[00:43:32] ACTION: Bank accessed
+    SCRIPT: // Bank.open() - banking interaction
+
+[00:43:32] BANK_INTERACTION: Bank interface opened
+[00:43:35] ACTION: Selected 'Withdraw-5' on Pot
+    SCRIPT: // Withdraw-5 on Pot
+
+[00:43:35] USER_ACTION: Withdraw-5 | Target: Pot
+[00:43:37] ACTION: Bank accessed
+    SCRIPT: // Bank.open() - banking interaction
+
+[00:43:37] BANK_INTERACTION: Bank interface opened
+[00:43:37] ACTION: Selected 'Withdraw-5' on Energy potion(4)
+    SCRIPT: // Withdraw-5 on Energy potion(4)
+
+[00:43:37] USER_ACTION: Withdraw-5 | Target: Energy potion(4)
+[00:43:40] ACTION: Selected 'Drink' on Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink");
+
+[00:43:40] USER_ACTION: Drink | Target: Energy potion(4)
+[00:43:40] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(4) x10, Bronze pickaxe, Pot, Tinderbox, Coins x206184, Bronze axe
+
+[00:43:40] Animation: Consuming item (ID: 829)
+[00:43:41] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:43:41] USER_ACTION: Drink | Target: Energy potion(3)
+[00:43:42] Animation: Consuming item (ID: 829)
+[00:43:47] ACTION: Selected 'Bank' on Bank booth
+    SCRIPT: // Bank on Bank booth
+
+[00:43:47] USER_ACTION: Bank | Target: Bank booth
+[00:43:47] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Energy potion(4) x9, Bronze pickaxe, Pot, Tinderbox, Coins x206184, Energy potion(2), Bronze axe
+
+[00:43:48] Player State: Started moving
+[00:43:48] ACTION: Bank accessed
+    SCRIPT: // Bank.open() - banking interaction
+
+[00:43:48] BANK_INTERACTION: Bank interface opened
+[00:43:48] Player State: Stopped moving
+[00:43:48] Position Update: Stopped at (3092, 3245, 0)
+[00:43:49] ACTION: Selected 'Deposit-5' on Energy potion(2)
+    SCRIPT: // Deposit-5 on Energy potion(2)
+
+[00:43:49] USER_ACTION: Deposit-5 | Target: Energy potion(2)
+[00:43:50] ACTION: Selected 'Deposit-5' on Energy potion(4)
+    SCRIPT: // Deposit-5 on Energy potion(4)
+
+[00:43:50] USER_ACTION: Deposit-5 | Target: Energy potion(4)
+[00:43:51] ACTION: Selected 'Deposit-5' on Pot
+    SCRIPT: // Deposit-5 on Pot
+
+[00:43:51] USER_ACTION: Deposit-5 | Target: Pot
+[00:43:51] ACTION: Selected 'Deposit-5' on Energy potion(4)
+    SCRIPT: // Deposit-5 on Energy potion(4)
+
+[00:43:51] USER_ACTION: Deposit-5 | Target: Energy potion(4)
+[00:43:53] ACTION: Selected 'Withdraw-5' on Energy potion(4)
+    SCRIPT: // Withdraw-5 on Energy potion(4)
+
+[00:43:53] USER_ACTION: Withdraw-5 | Target: Energy potion(4)
+[00:43:53] ACTION: Bank accessed
+    SCRIPT: // Bank.open() - banking interaction
+
+[00:43:53] BANK_INTERACTION: Bank interface opened
+[00:43:56] ACTION: Selected 'Withdraw-5' on Energy potion(4)
+    SCRIPT: // Withdraw-5 on Energy potion(4)
+
+[00:43:56] USER_ACTION: Withdraw-5 | Target: Energy potion(4)
+[00:43:57] ACTION: Selected 'Withdraw-5' on Energy potion(4)
+    SCRIPT: // Withdraw-5 on Energy potion(4)
+
+[00:43:57] USER_ACTION: Withdraw-5 | Target: Energy potion(4)
+[00:44:10] Player State: Started moving
+[00:44:25] Player State: Stopped moving
+[00:44:25] ACTION: Journey completed
+    SCRIPT: Walking.walk(new Tile(3119, 3220, 0))
+
+[00:44:25] Journey: Walked 36.8 tiles from (3092, 3245, 0) to (3119, 3220, 0) (took 15s)
+[00:44:25] Position Update: Stopped at (3119, 3220, 0)
+[00:44:28] Player State: Started moving
+[00:44:58] Player State: Stopped moving
+[00:44:58] ACTION: Journey completed
+    SCRIPT: Walking.walk(new Tile(3209, 3213, 0))
+
+[00:44:58] Journey: Walked 90.3 tiles from (3119, 3220, 0) to (3209, 3213, 0) (took 30s)
+[00:44:58] Position Update: Stopped at (3209, 3213, 0)
+[00:45:00] ACTION: Selected 'Top-floor' on Staircase
+    SCRIPT: // Top-floor on Staircase
+
+[00:45:00] USER_ACTION: Top-floor | Target: Staircase
+[00:45:01] Player State: Started moving
+[00:45:03] Player State: Stopped moving
+[00:45:03] Position Update: Stopped at (3205, 3209, 0)
+[00:45:07] ACTION: Selected 'Drink' on Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink");
+
+[00:45:07] USER_ACTION: Drink | Target: Energy potion(4)
+[00:45:07] ACTION: Energy potion consumed (filtering subsequent uses)
+    SCRIPT: Inventory.getItem("Energy potion").interact("Drink")
+
+[00:45:07] Inventory Change: Items lost/used - New state: Energy potion(4) x15, Bronze pickaxe, Tinderbox, Coins x206184, Bronze axe
+[00:45:07] Animation: Consuming item (ID: 829)
+[00:45:08] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:45:08] USER_ACTION: Drink | Target: Energy potion(3)
+[00:45:08] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3), Energy potion(4) x14, Bronze pickaxe, Tinderbox, Coins x206184, Bronze axe
+
+[00:45:09] Player State: Started moving
+[00:45:09] ACTION: Selected 'Search' on Sacks
+    SCRIPT: GameObjects.closest("Sacks").interact("Search");
+
+[00:45:09] USER_ACTION: Search | Object_Tile: (3205, 3218, 2)
+[00:45:10] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:45:10] USER_ACTION: Drink | Target: Energy potion(3)
+[00:45:11] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:45:11] USER_ACTION: Drink | Target: Energy potion(3)
+[00:45:11] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Energy potion(4) x14, Bronze pickaxe, Tinderbox, Coins x206184, Energy potion(2), Bronze axe
+
+[00:45:11] Animation: Consuming item (ID: 829)
+[00:45:11] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:45:11] USER_ACTION: Drink | Target: Energy potion(2)
+[00:45:11] Player State: Stopped moving
+[00:45:11] Position Update: Stopped at (3205, 3217, 2)
+[00:45:11] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:45:11] USER_ACTION: Drink | Target: Energy potion(2)
+[00:45:12] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:45:12] USER_ACTION: Drink | Target: Energy potion(2)
+[00:45:12] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:45:12] USER_ACTION: Drink | Target: Energy potion(2)
+[00:45:12] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:45:12] USER_ACTION: Drink | Target: Energy potion(2)
+[00:45:13] Animation: Consuming item (ID: 829)
+[00:45:13] Player State: Started moving
+[00:45:15] ACTION: Selected 'Drink' on Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink");
+
+[00:45:15] USER_ACTION: Drink | Target: Energy potion(1)
+[00:45:15] Animation: Consuming item (ID: 829)
+[00:45:16] Player State: Stopped moving
+[00:45:16] Position Update: Stopped at (3206, 3224, 2)
+[00:45:16] Player State: Started moving
+[00:45:17] ACTION: Selected 'Bottom-floor' on Staircase
+    SCRIPT: // Bottom-floor on Staircase
+
+[00:45:17] USER_ACTION: Bottom-floor | Target: Staircase
+[00:45:18] Player State: Stopped moving
+[00:45:18] Position Update: Stopped at (3205, 3228, 2)
+[00:45:18] Player State: Started moving
+[00:45:19] Player State: Stopped moving
+[00:45:19] Position Update: Stopped at (3206, 3229, 2)
+[00:45:23] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[00:45:23] USER_ACTION: Climb-up | Object_Tile: (3204, 3229, 0)
+[00:45:24] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:45:24] USER_ACTION: Drop | Target: Vial
+[00:45:24] ACTION: Energy potion consumed (filtering subsequent uses)
+    SCRIPT: Inventory.getItem("Energy potion").interact("Drink")
+
+[00:45:24] Inventory Change: Items lost/used - New state: Energy potion(4) x14, Bronze pickaxe, Tinderbox, Coins x206184, Vial, Bronze axe
+[00:45:25] ACTION: Selected 'Drink' on Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink");
+
+[00:45:25] USER_ACTION: Drink | Target: Energy potion(4)
+[00:45:25] ACTION: Inventory changed: Items lost/used
+    SCRIPT: // Current inventory: Energy potion(4) x14, Bronze pickaxe, Tinderbox, Coins x206184, Bronze axe
+
+[00:45:26] Animation: Consuming item (ID: 829)
+[00:45:27] Player State: Started moving
+[00:45:27] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:45:27] USER_ACTION: Drink | Target: Energy potion(3)
+[00:45:27] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3), Energy potion(4) x13, Bronze pickaxe, Tinderbox, Coins x206184, Bronze axe
+
+[00:45:27] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:45:27] USER_ACTION: Drink | Target: Energy potion(3)
+[00:45:28] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:45:28] USER_ACTION: Drink | Target: Energy potion(3)
+[00:45:28] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Energy potion(4) x13, Bronze pickaxe, Tinderbox, Coins x206184, Energy potion(2), Bronze axe
+
+[00:45:28] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:45:28] USER_ACTION: Drink | Target: Energy potion(2)
+[00:45:28] Animation: Consuming item (ID: 829)
+[00:45:28] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:45:28] USER_ACTION: Drink | Target: Energy potion(2)
+[00:45:29] Player State: Stopped moving
+[00:45:29] Position Update: Stopped at (3207, 3221, 1)
+[00:45:30] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:45:30] USER_ACTION: Drink | Target: Energy potion(2)
+[00:45:30] Animation: Consuming item (ID: 829)
+[00:45:32] QUEST_END: === QUEST RECORDING ENDED ===

@@ -102,6 +102,11 @@ if not exist "src\main\java\quest\quests\VampireSlayerScript.java" (
     pause
     exit /b 1
 )
+if not exist "src\main\java\quest\quests\RuneMysteriesScript.java" (
+    echo [ERROR] RuneMysteriesScript.java not found!
+    pause
+    exit /b 1
+)
 if not exist "src\main\java\quest\SimpleQuestBot.java" (
     echo [ERROR] SimpleQuestBot.java not found!
     pause
@@ -158,6 +163,9 @@ javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests
 if %errorlevel% neq 0 goto :compile_error
 
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\VampireSlayerScript.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\RuneMysteriesScript.java"
 if %errorlevel% neq 0 goto :compile_error
 
 echo - Compiling quest executor...

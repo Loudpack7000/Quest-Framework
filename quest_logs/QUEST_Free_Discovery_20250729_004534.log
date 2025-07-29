@@ -1,0 +1,503 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-07-29 00:45:34
+Player: LordFareigth
+Starting Location: (3207, 3221, 1)
+Starting Inventory: Energy potion(4) x13, Bronze pickaxe, Tinderbox, Coins x206184, Energy potion(1), Bronze axe
+=====================================
+
+[00:45:34] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:45:34] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:45:34] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:45:34] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[00:45:34] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 69 varbits (including 0-values)
+
+[00:45:34] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[00:45:36] ACTION: Selected 'Talk-to' on Duke Horacio
+    SCRIPT: NPCs.closest("Duke Horacio").interact("Talk-to");
+
+[00:45:36] USER_ACTION: Talk-to | NPC_Tile: (3210, 3224, 1)
+[00:45:37] Player State: Started moving
+[00:45:37] ACTION: Started dialogue with Duke Horacio
+    SCRIPT: NPCs.closest("Duke Horacio").interact("Talk-to")
+
+[00:45:37] NPC Dialogue: Greetings. Welcome to my castle.
+[00:45:38] Player State: Stopped moving
+[00:45:38] Position Update: Stopped at (3210, 3224, 1)
+[00:45:40] Dialogue Options Available: [Have you any quests for me?, Where can I find money?]
+[00:45:41] ACTION: Player selected dialogue option
+    SCRIPT: Dialogues.selectOption(1) // Player chose from: [Have you any quests for me?, Where can I find money?]
+
+[00:45:46] Dialogue Options Available: [Yes., No.]
+[00:45:47] ACTION: Player selected dialogue option
+    SCRIPT: Dialogues.selectOption(1) // Player chose from: [Yes., No.]
+
+[00:46:24] ACTION: Selected 'Read journal:' on Rune Mysteries
+    SCRIPT: // Read journal: on Rune Mysteries
+
+[00:46:24] USER_ACTION: Read journal: | Target: Rune Mysteries
+[00:46:32] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[00:46:32] USER_ACTION: Climb-down | Object_Tile: (3204, 3229, 1)
+[00:46:33] Player State: Started moving
+[00:46:33] Player State: Stopped moving
+[00:46:33] Position Update: Stopped at (3209, 3225, 1)
+[00:46:37] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:46:37] USER_ACTION: Open | Object_Tile: (3207, 3227, 1)
+[00:46:37] Player State: Started moving
+[00:46:39] Player State: Stopped moving
+[00:46:39] Position Update: Stopped at (3208, 3222, 1)
+[00:46:40] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[00:46:40] USER_ACTION: Climb-down | Object_Tile: (3204, 3229, 1)
+[00:46:41] Player State: Started moving
+[00:46:44] Player State: Stopped moving
+[00:46:44] Position Update: Stopped at (3205, 3228, 1)
+[00:46:46] Player State: Started moving
+[00:47:06] ACTION: Selected 'Drink' on Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink");
+
+[00:47:06] USER_ACTION: Drink | Target: Energy potion(1)
+[00:47:06] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(4) x13, Bronze pickaxe, Tinderbox, Coins x206184, Energy potion(1), Bronze axe, Air talisman
+
+[00:47:07] Animation: Consuming item (ID: 829)
+[00:47:21] ACTION: Selected 'Drink' on Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink");
+
+[00:47:21] USER_ACTION: Drink | Target: Energy potion(4)
+[00:47:21] ACTION: Energy potion consumed (filtering subsequent uses)
+    SCRIPT: Inventory.getItem("Energy potion").interact("Drink")
+
+[00:47:21] Inventory Change: Items lost/used - New state: Energy potion(4) x13, Bronze pickaxe, Tinderbox, Coins x206184, Vial, Bronze axe, Air talisman
+[00:47:22] Animation: Consuming item (ID: 829)
+[00:47:23] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:47:23] USER_ACTION: Drink | Target: Energy potion(3)
+[00:47:24] Animation: Consuming item (ID: 829)
+[00:47:30] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:47:30] USER_ACTION: Drink | Target: Energy potion(2)
+[00:47:30] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Energy potion(4) x12, Bronze pickaxe, Tinderbox, Coins x206184, Vial, Energy potion(2), Bronze axe, Air talisman
+
+[00:47:31] Animation: Consuming item (ID: 829)
+[00:47:32] ACTION: Selected 'Drink' on Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink");
+
+[00:47:32] USER_ACTION: Drink | Target: Energy potion(1)
+[00:47:32] Animation: Consuming item (ID: 829)
+[00:47:37] ACTION: Selected 'Drink' on Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink");
+
+[00:47:37] USER_ACTION: Drink | Target: Energy potion(4)
+[00:47:37] ACTION: Energy potion consumed (filtering subsequent uses)
+    SCRIPT: Inventory.getItem("Energy potion").interact("Drink")
+
+[00:47:37] Inventory Change: Items lost/used - New state: Energy potion(4) x12, Bronze pickaxe, Tinderbox, Coins x206184, Vial x2, Bronze axe, Air talisman
+[00:47:37] Animation: Consuming item (ID: 829)
+[00:47:40] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:47:40] USER_ACTION: Drink | Target: Energy potion(3)
+[00:47:40] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3), Energy potion(4) x11, Bronze pickaxe, Tinderbox, Coins x206184, Vial x2, Bronze axe, Air talisman
+
+[00:47:41] Animation: Consuming item (ID: 829)
+[00:47:41] Player State: Stopped moving
+[00:47:41] ACTION: Journey completed
+    SCRIPT: Walking.walk(new Tile(3108, 3163, 0))
+
+[00:47:41] Journey: Walked 116.8 tiles from (3205, 3228, 0) to (3108, 3163, 0) (took 55s)
+[00:47:41] Position Update: Stopped at (3108, 3163, 0)
+[00:47:42] Player State: Started moving
+[00:47:43] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[00:47:43] USER_ACTION: Climb-down | Object_Tile: (3104, 3162, 0)
+[00:47:44] Player State: Stopped moving
+[00:47:44] Position Update: Stopped at (3105, 3162, 0)
+[00:47:44] Animation: Walking (ID: 827)
+[00:47:46] Player State: Started moving
+[00:47:46] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:47:46] USER_ACTION: Open | Object_Tile: (3108, 9570, 0)
+[00:47:49] Player State: Stopped moving
+[00:47:49] Position Update: Stopped at (3108, 9571, 0)
+[00:47:49] ACTION: Selected 'Talk-to' on Archmage Sedridor
+    SCRIPT: NPCs.closest("Archmage Sedridor").interact("Talk-to");
+
+[00:47:49] USER_ACTION: Talk-to | NPC_Tile: (3101, 9571, 0)
+[00:47:50] Player State: Started moving
+[00:47:52] ACTION: Started dialogue with Archmage Sedridor
+    SCRIPT: NPCs.closest("Archmage Sedridor").interact("Talk-to")
+
+[00:47:52] NPC Dialogue: Welcome adventurer, to the world renowned Wizards'<br>Tower, home to the Order of Wizards. We are the<br>oldest and most prestigious group of wizards around.<br>Now, how may I help you?
+[00:47:53] Player State: Stopped moving
+[00:47:53] Position Update: Stopped at (3102, 9570, 0)
+[00:47:55] Dialogue Options Available: [Okay, here you are., No, I'll only give it to Sedridor.]
+[00:47:56] ACTION: Player selected dialogue option
+    SCRIPT: Dialogues.selectOption(1) // Player chose from: [Okay, here you are., No, I'll only give it to Sedridor.]
+
+[00:47:56] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Energy potion(4) x11, Bronze pickaxe, Tinderbox, Coins x206184, Vial x2, Energy potion(2), Bronze axe, Air talisman
+
+[00:48:02] Dialogue Options Available: [Go ahead., Actually, I'm not interested.]
+[00:48:04] ACTION: Player selected dialogue option
+    SCRIPT: Dialogues.selectOption(1) // Player chose from: [Go ahead., Actually, I'm not interested.]
+
+[00:48:04] ACTION: Inventory changed: Items lost/used
+    SCRIPT: // Current inventory: Energy potion(4) x11, Bronze pickaxe, Tinderbox, Coins x206184, Vial x2, Energy potion(2), Bronze axe
+
+[00:48:14] Dialogue Options Available: [Yes, certainly., No, I'm busy.]
+[00:48:16] ACTION: Player selected dialogue option
+    SCRIPT: Dialogues.selectOption(1) // Player chose from: [Yes, certainly., No, I'm busy.]
+
+[00:48:22] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[00:48:22] USER_ACTION: Climb-up | Object_Tile: (3103, 9576, 0)
+[00:48:22] Player State: Started moving
+[00:48:28] Animation: Action (ID: 828)
+[00:48:28] Player State: Stopped moving
+[00:48:28] Teleport/Cutscene: Moved 6408.0 tiles from (3102, 9570, 0) to (3105, 3162, 0) (likely teleport/cutscene)
+[00:48:28] Position Update: Stopped at (3105, 3162, 0)
+[00:48:30] Player State: Started moving
+[00:48:37] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:48:37] USER_ACTION: Drink | Target: Energy potion(2)
+[00:48:37] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(4) x11, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x2, Energy potion(2), Bronze axe
+
+[00:48:38] Animation: Consuming item (ID: 829)
+[00:48:43] ACTION: Selected 'Drink' on Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink");
+
+[00:48:43] USER_ACTION: Drink | Target: Energy potion(1)
+[00:48:43] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Energy potion(4) x11, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x2, Energy potion(1), Bronze axe
+
+[00:48:44] Animation: Consuming item (ID: 829)
+[00:48:46] ACTION: Selected 'Drink' on Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink");
+
+[00:48:46] USER_ACTION: Drink | Target: Energy potion(4)
+[00:48:46] ACTION: Energy potion consumed (filtering subsequent uses)
+    SCRIPT: Inventory.getItem("Energy potion").interact("Drink")
+
+[00:48:46] Inventory Change: Items lost/used - New state: Energy potion(4) x11, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x3, Bronze axe
+[00:48:46] Animation: Consuming item (ID: 829)
+[00:48:54] Animation: Action (ID: 1156)
+[00:49:06] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:49:06] USER_ACTION: Drink | Target: Energy potion(3)
+[00:49:06] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3), Energy potion(4) x10, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x3, Bronze axe
+
+[00:49:07] Animation: Consuming item (ID: 829)
+[00:49:25] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:49:25] USER_ACTION: Drink | Target: Energy potion(2)
+[00:49:25] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Energy potion(4) x10, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x3, Energy potion(2), Bronze axe
+
+[00:49:25] Animation: Consuming item (ID: 829)
+[00:49:27] ACTION: Selected 'Drink' on Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink");
+
+[00:49:27] USER_ACTION: Drink | Target: Energy potion(1)
+[00:49:28] Animation: Consuming item (ID: 829)
+[00:49:29] ACTION: Selected 'Drink' on Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink");
+
+[00:49:29] USER_ACTION: Drink | Target: Energy potion(4)
+[00:49:29] ACTION: Energy potion consumed (filtering subsequent uses)
+    SCRIPT: Inventory.getItem("Energy potion").interact("Drink")
+
+[00:49:29] Inventory Change: Items lost/used - New state: Energy potion(4) x10, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x4, Bronze axe
+[00:49:30] Animation: Consuming item (ID: 829)
+[00:49:32] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:49:32] USER_ACTION: Drink | Target: Energy potion(3)
+[00:49:32] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3), Energy potion(4) x9, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x4, Bronze axe
+
+[00:49:32] Animation: Consuming item (ID: 829)
+[00:49:34] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:49:34] USER_ACTION: Drink | Target: Energy potion(2)
+[00:49:34] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Energy potion(4) x9, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x4, Energy potion(2), Bronze axe
+
+[00:49:34] Animation: Action (ID: 1156)
+[00:49:35] Player State: Stopped moving
+[00:49:35] ACTION: Journey completed
+    SCRIPT: Walking.walk(new Tile(3143, 3356, 0))
+
+[00:49:35] Journey: Walked 197.7 tiles from (3105, 3162, 0) to (3143, 3356, 0) (took 65s)
+[00:49:35] Position Update: Stopped at (3143, 3356, 0)
+[00:49:37] Animation: Action (ID: 1156)
+[00:49:39] Animation: Action (ID: 1156)
+[00:49:41] Animation: Action (ID: 1156)
+[00:49:44] Animation: Action (ID: 1156)
+[00:49:46] Animation: Action (ID: 1156)
+[00:49:49] Animation: Action (ID: 1156)
+[00:49:51] Animation: Action (ID: 1156)
+[00:49:54] Animation: Action (ID: 1156)
+[00:49:56] Player State: Started moving
+[00:49:56] Animation: Action (ID: 1156)
+[00:49:59] ACTION: Selected 'Drink' on Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink");
+
+[00:49:59] USER_ACTION: Drink | Target: Energy potion(1)
+[00:50:00] Animation: Consuming item (ID: 829)
+[00:50:02] ACTION: Selected 'Drink' on Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink");
+
+[00:50:02] USER_ACTION: Drink | Target: Energy potion(4)
+[00:50:02] ACTION: Energy potion consumed (filtering subsequent uses)
+    SCRIPT: Inventory.getItem("Energy potion").interact("Drink")
+
+[00:50:02] Inventory Change: Items lost/used - New state: Energy potion(4) x9, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x5, Bronze axe
+[00:50:03] Animation: Consuming item (ID: 829)
+[00:50:06] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:50:06] USER_ACTION: Drink | Target: Energy potion(3)
+[00:50:06] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3), Energy potion(4) x8, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x5, Bronze axe
+
+[00:50:07] Animation: Consuming item (ID: 829)
+[00:50:08] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:50:08] USER_ACTION: Drink | Target: Energy potion(2)
+[00:50:08] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Energy potion(4) x8, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x5, Energy potion(2), Bronze axe
+
+[00:50:09] Animation: Consuming item (ID: 829)
+[00:50:12] ACTION: Selected 'Drink' on Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink");
+
+[00:50:12] USER_ACTION: Drink | Target: Energy potion(1)
+[00:50:13] Animation: Consuming item (ID: 829)
+[00:50:18] ACTION: Selected 'Drink' on Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink");
+
+[00:50:18] USER_ACTION: Drink | Target: Energy potion(4)
+[00:50:18] ACTION: Energy potion consumed (filtering subsequent uses)
+    SCRIPT: Inventory.getItem("Energy potion").interact("Drink")
+
+[00:50:18] Inventory Change: Items lost/used - New state: Energy potion(4) x8, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x6, Bronze axe
+[00:50:18] Animation: Consuming item (ID: 829)
+[00:50:21] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:50:21] USER_ACTION: Drink | Target: Energy potion(3)
+[00:50:21] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3), Energy potion(4) x7, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x6, Bronze axe
+
+[00:50:21] Animation: Consuming item (ID: 829)
+[00:50:42] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:50:42] USER_ACTION: Drink | Target: Energy potion(2)
+[00:50:42] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Energy potion(4) x7, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x6, Energy potion(2), Bronze axe
+
+[00:50:43] Animation: Consuming item (ID: 829)
+[00:50:51] ACTION: Selected 'Drink' on Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink");
+
+[00:50:51] USER_ACTION: Drink | Target: Energy potion(1)
+[00:50:52] Animation: Consuming item (ID: 829)
+[00:51:15] ACTION: Selected 'Talk-to' on Aubury
+    SCRIPT: NPCs.closest("Aubury").interact("Talk-to");
+
+[00:51:15] USER_ACTION: Talk-to | NPC_Tile: (3253, 3404, 0)
+[00:51:16] ACTION: Started dialogue with Aubury
+    SCRIPT: NPCs.closest("Aubury").interact("Talk-to")
+
+[00:51:16] NPC Dialogue: Do you want to buy some runes?
+[00:51:16] Dialogue Options Available: [Yes please!, I've been sent here with a package for you., Oh, it's a rune shop. No thank you, then.]
+[00:51:16] Player State: Stopped moving
+[00:51:16] ACTION: Journey completed
+    SCRIPT: Walking.walk(new Tile(3253, 3403, 0))
+
+[00:51:16] Journey: Walked 119.6 tiles from (3143, 3356, 0) to (3253, 3403, 0) (took 80s)
+[00:51:16] Position Update: Stopped at (3253, 3403, 0)
+[00:51:19] ACTION: Player selected dialogue option
+    SCRIPT: Dialogues.selectOption(1) // Player chose from: [Yes please!, I've been sent here with a package for you., Oh, it's a rune shop. No thank you, then.]
+
+[00:51:19] ACTION: Energy potion consumed (filtering subsequent uses)
+    SCRIPT: Inventory.getItem("Energy potion").interact("Drink")
+
+[00:51:19] Inventory Change: Items lost/used - New state: Energy potion(4) x7, Research package, Bronze pickaxe, Tinderbox, Coins x206184, Vial x7, Bronze axe
+[00:51:32] ACTION: Selected 'Cast' on Lumbridge Home Teleport
+    SCRIPT: // Cast on Lumbridge Home Teleport
+
+[00:51:32] USER_ACTION: Cast | Target: Lumbridge Home Teleport
+[00:51:32] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[00:51:32] SPELLBOOK_OPENED: Player opened the magic spellbook
+[00:51:32] Animation: Action (ID: 4847)
+[00:51:36] Animation: Action (ID: 4850)
+[00:51:40] Animation: Action (ID: 4853)
+[00:51:42] Animation: Action (ID: 4855)
+[00:51:44] Animation: Action (ID: 4857)
+[00:51:50] Player State: Started moving
+[00:51:51] ACTION: Selected 'Drink' on Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink");
+
+[00:51:51] USER_ACTION: Drink | Target: Energy potion(4)
+[00:51:51] ACTION: Inventory changed: Items lost/used
+    SCRIPT: // Current inventory: Energy potion(4) x7, Bronze pickaxe, Tinderbox, Coins x206184, Vial x7, Research notes, Bronze axe
+
+[00:51:52] Animation: Consuming item (ID: 829)
+[00:51:54] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:51:54] USER_ACTION: Drink | Target: Energy potion(3)
+[00:51:54] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3), Energy potion(4) x6, Bronze pickaxe, Tinderbox, Coins x206184, Vial x7, Research notes, Bronze axe
+
+[00:51:55] Animation: Consuming item (ID: 829)
+[00:51:59] ACTION: Selected 'Drink' on Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink");
+
+[00:51:59] USER_ACTION: Drink | Target: Energy potion(2)
+[00:51:59] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Energy potion(4) x6, Bronze pickaxe, Tinderbox, Coins x206184, Vial x7, Research notes, Energy potion(2), Bronze axe
+
+[00:52:00] Animation: Consuming item (ID: 829)
+[00:52:03] ACTION: Selected 'Drink' on Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink");
+
+[00:52:03] USER_ACTION: Drink | Target: Energy potion(1)
+[00:52:03] Animation: Consuming item (ID: 829)
+[00:52:05] ACTION: Selected 'Drink' on Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink");
+
+[00:52:05] USER_ACTION: Drink | Target: Energy potion(4)
+[00:52:05] ACTION: Energy potion consumed (filtering subsequent uses)
+    SCRIPT: Inventory.getItem("Energy potion").interact("Drink")
+
+[00:52:05] Inventory Change: Items lost/used - New state: Energy potion(4) x6, Bronze pickaxe, Tinderbox, Coins x206184, Vial x8, Research notes, Bronze axe
+[00:52:06] Animation: Consuming item (ID: 829)
+[00:52:20] ACTION: Selected 'Drink' on Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink");
+
+[00:52:20] USER_ACTION: Drink | Target: Energy potion(3)
+[00:52:20] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3), Energy potion(4) x5, Bronze pickaxe, Tinderbox, Coins x206184, Vial x8, Research notes, Bronze axe
+
+[00:52:21] Animation: Consuming item (ID: 829)
+[00:52:42] Player State: Stopped moving
+[00:52:42] ACTION: Journey completed
+    SCRIPT: Walking.walk(new Tile(3111, 3163, 0))
+
+[00:52:42] Journey: Walked 123.9 tiles from (3222, 3218, 0) to (3111, 3163, 0) (took 52s)
+[00:52:42] Position Update: Stopped at (3111, 3163, 0)
+[00:52:43] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[00:52:43] USER_ACTION: Climb-down | Object_Tile: (3104, 3162, 0)
+[00:52:43] Player State: Started moving
+[00:52:46] Player State: Stopped moving
+[00:52:46] Position Update: Stopped at (3105, 3162, 0)
+[00:52:46] Animation: Walking (ID: 827)
+[00:52:48] ACTION: Selected 'Talk-to' on Archmage Sedridor
+    SCRIPT: NPCs.closest("Archmage Sedridor").interact("Talk-to");
+
+[00:52:48] USER_ACTION: Talk-to | NPC_Tile: (3102, 9573, 0)
+[00:52:49] Player State: Started moving
+[00:52:49] Player State: Stopped moving
+[00:52:49] Position Update: Stopped at (3103, 9575, 0)
+[00:52:51] ACTION: Selected 'Attack' on Chicken
+    SCRIPT: NPCs.closest("Chicken").interact("Attack");
+
+[00:52:51] USER_ACTION: Attack | NPC_Tile: (3109, 9572, 0)
+[00:52:52] Player State: Started moving
+[00:52:52] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:52:52] USER_ACTION: Open | Object_Tile: (3108, 9570, 0)
+[00:52:55] Player State: Stopped moving
+[00:52:55] Position Update: Stopped at (3108, 9571, 0)
+[00:52:58] Player State: Started moving
+[00:52:58] ACTION: Selected 'Talk-to' on Archmage Sedridor
+    SCRIPT: NPCs.closest("Archmage Sedridor").interact("Talk-to");
+
+[00:52:58] USER_ACTION: Talk-to | NPC_Tile: (3103, 9572, 0)
+[00:52:59] ACTION: Started dialogue with Archmage Sedridor
+    SCRIPT: NPCs.closest("Archmage Sedridor").interact("Talk-to")
+
+[00:52:59] NPC Dialogue: Ah, LordFareigth. How goes your quest? Have you<br>delivered my research to Aubury yet?
+[00:53:00] Player State: Stopped moving
+[00:53:00] Position Update: Stopped at (3104, 9571, 0)
+[00:53:09] QUEST STEP 3: CONFIG DISCOVERED: Unknown Quest config 101 changed from 1 to 2
+    SCRIPT: // DISCOVERED: Quest uses config 101 (value 1 → 2)
+
+[00:58:38] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:58:38] USER_ACTION: Drop | Target: Vial
+[00:58:38] ACTION: Energy potion consumed (filtering subsequent uses)
+    SCRIPT: Inventory.getItem("Energy potion").interact("Drink")
+
+[00:58:38] Inventory Change: Items lost/used - New state: Energy potion(4) x5, Bronze pickaxe, Tinderbox, Coins x206184, Vial x8, Energy potion(2), Bronze axe, Air talisman
+[00:58:40] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:58:40] USER_ACTION: Drop | Target: Vial
+[00:58:40] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Energy potion(4) x5, Bronze pickaxe, Tinderbox, Coins x206184, Vial x7, Energy potion(2), Bronze axe, Air talisman
+
+[00:58:41] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:58:41] USER_ACTION: Drop | Target: Vial
+[00:58:43] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:58:43] USER_ACTION: Drop | Target: Vial
+[00:58:44] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:58:44] USER_ACTION: Drop | Target: Vial
+[00:58:45] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:58:45] USER_ACTION: Drop | Target: Vial
+[00:58:47] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:58:47] USER_ACTION: Drop | Target: Vial
+[00:58:48] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:58:48] USER_ACTION: Drop | Target: Vial
+[00:58:48] ACTION: Inventory changed: Items lost/used
+    SCRIPT: // Current inventory: Energy potion(4) x5, Bronze pickaxe, Tinderbox, Coins x206184, Vial, Energy potion(2), Bronze axe, Air talisman
+
+[01:00:02] QUEST_END: === QUEST RECORDING ENDED ===

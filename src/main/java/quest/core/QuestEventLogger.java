@@ -70,8 +70,6 @@ public class QuestEventLogger implements ActionListener {
     private int lastAnimation = -1;
     
     // Spam reduction tracking
-    private long lastEnergyPotionLog = 0;
-    private static final long ENERGY_POTION_LOG_COOLDOWN = 10000; // 10 seconds
     private String lastInventoryChangeType = "";
     private boolean lastMovingState = false;
     
@@ -169,6 +167,12 @@ public class QuestEventLogger implements ActionListener {
     private boolean lastRunState = false;
     private long lastRunToggleTime = 0;
     private static final long RUN_TOGGLE_COOLDOWN = 2000; // 2 seconds between run logs
+    
+    private long lastDialogueChange = 0;
+    private long lastAnimationLog = 0;
+    private long lastPositionLog = 0;
+    private long lastHealthLog = 0;
+    private long lastSkillLog = 0;
     
     public QuestEventLogger(AbstractScript script, String questName) {
         this.script = script;
@@ -979,21 +983,10 @@ public class QuestEventLogger implements ActionListener {
                 // Check if it's item consumption (potion drinking, food eating, etc.)
                 String consumedItem = detectItemConsumption(lastInventoryState, currentInventoryState);
                 if (consumedItem != null) {
-                    // Filter energy potion spam - only log once every 10 seconds
-                    if (consumedItem.contains("Energy potion")) {
-                        long currentTime = System.currentTimeMillis();
-                        if (currentTime - lastEnergyPotionLog > ENERGY_POTION_LOG_COOLDOWN) {
-                            logAction("Energy potion consumed (filtering subsequent uses)", 
-                                "Inventory.getItem(\"Energy potion\").interact(\"Drink\")");
-                            lastEnergyPotionLog = currentTime;
-                        }
-                        // Skip detailed logging for energy potions
-                    } else {
-                        // Log other item consumption normally
-                        logAction("Item consumed: " + consumedItem, 
-                            "Inventory.getItem(\"" + consumedItem + "\").interact(\"Drink\") // or click");
-                        logDetail("ITEM_CONSUMPTION", "Player consumed: " + consumedItem);
-                    }
+                    // Skip detailed logging for energy potions
+                    logAction("Item consumed: " + consumedItem, 
+                        "Inventory.getItem(\"" + consumedItem + "\").interact(\"Drink\") // or click");
+                    logDetail("ITEM_CONSUMPTION", "Player consumed: " + consumedItem);
                 } else {
                     // Only log non-repetitive inventory changes
                     if (!changeType.equals(lastInventoryChangeType)) {
@@ -1147,19 +1140,8 @@ public class QuestEventLogger implements ActionListener {
     private String detectItemConsumption(String oldInventory, String newInventory) {
         // Only detect actual consumables - potions and food that leave behind items when used
         
-        // Look for items that had quantity reduced (potions, food, etc.)
-        if (oldInventory.contains("Energy potion(4)") && !newInventory.contains("Energy potion(4)") && newInventory.contains("Energy potion(3)")) {
-            return "Energy potion(4)";
-        }
-        if (oldInventory.contains("Energy potion(3)") && !newInventory.contains("Energy potion(3)") && newInventory.contains("Energy potion(2)")) {
-            return "Energy potion(3)";
-        }
-        if (oldInventory.contains("Energy potion(2)") && !newInventory.contains("Energy potion(2)") && newInventory.contains("Energy potion(1)")) {
-            return "Energy potion(2)";
-        }
-        if (oldInventory.contains("Energy potion(1)") && !newInventory.contains("Energy potion(1)") && newInventory.contains("Vial")) {
-            return "Energy potion(1)";
-        }
+        // Look for items that had quantity reduced (food, consumables, etc.)
+        // Removed: Energy potion detection - no longer needed
         
         // Add other consumables that leave behind evidence
         if (oldInventory.contains("Bread") && !newInventory.contains("Bread")) {
