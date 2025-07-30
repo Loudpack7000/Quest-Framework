@@ -69,14 +69,36 @@ public class QuestEventLogger implements ActionListener {
     private boolean lastBankState = false;
     private int lastAnimation = -1;
     
+    // Dialogue option tracking for proper logging
+    private String lastClickedDialogueOption = "";
+    private long lastDialogueOptionClickTime = 0;
+    private static final long DIALOGUE_OPTION_COOLDOWN = 1000; // 1 second between dialogue option logs
+    
     // Spam reduction tracking
     private String lastInventoryChangeType = "";
     private boolean lastMovingState = false;
+    
+    // NEW: Action spam prevention for consumables
+    private String lastActionLogged = "";
+    private long lastActionLogTime = 0;
+    private static final long ACTION_LOG_COOLDOWN = 3000; // 3 seconds between similar action logs
+    
+    // Movement logging cooldowns to reduce spam
+    private long lastMovementStateLogTime = 0;
+    private static final long MOVEMENT_STATE_LOG_COOLDOWN = 10000; // 10 seconds between movement state logs
+    private static final double MIN_SIGNIFICANT_JOURNEY_DISTANCE = 25.0; // Increased from 15.0 tiles
     
     // Journey tracking for better movement logging
     private Tile journeyStartTile = null;
     private long journeyStartTime = 0;
     private Tile lastPosition = null; // Used by movement tracking
+    
+    // NEW: Movement spam reduction
+    private long lastMovementStartLog = 0;
+    private long lastMovementStopLog = 0;
+    private static final long MOVEMENT_LOG_COOLDOWN = 10000; // 10 seconds between movement start logs
+    private static final double MIN_JOURNEY_DISTANCE = 25.0; // Increased from 15 to 25 tiles
+    private static final double TELEPORT_DISTANCE_THRESHOLD = 500.0; // Reduced from 1000 to 500 for better detection
     
     // Quest varbit tracking for real-time progress monitoring
     private Map<Integer, Integer> questVarbitStates = new HashMap<>();
@@ -162,6 +184,14 @@ public class QuestEventLogger implements ActionListener {
     private boolean lastGEState = false;
     private long lastGEActionTime = 0;
     private static final long GE_ACTION_COOLDOWN = 3000; // 3 seconds between GE logs
+    
+    // Banking specific cooldowns to prevent spam
+    private long lastBankCheckTime = 0;
+    private long lastBankActionLogTime = 0;
+    private long lastBankInterfaceLogTime = 0;
+    private static final long BANK_CHECK_COOLDOWN = 1000; // 1 second cooldown for checkBanking() execution
+    private static final long BANK_ACTION_LOG_COOLDOWN = 5000; // Log bank open/close every 5 seconds
+    private static final long BANK_INTERFACE_LOG_COOLDOWN = 5000; // 5 seconds between bank interface logs
     
     // Run/Energy tracking
     private boolean lastRunState = false;
@@ -276,53 +306,116 @@ public class QuestEventLogger implements ActionListener {
                 return;
             }
             
-            // Get tile coordinates for NPCs and GameObjects
-            String coordinateInfo = getTargetCoordinates(action, targetName, mouseX, mouseY);
+            // NEW: Consolidate consumable actions (Drink, Eat) to prevent spam
+            if (action.equals("Drink") || action.equals("Eat")) {
+                String actionKey = action + ":" + targetName;
+                long currentTime = System.currentTimeMillis();
+                
+                // Only log if this exact action hasn't been logged recently
+                if (!actionKey.equals(lastActionLogged) || (currentTime - lastActionLogTime > ACTION_LOG_COOLDOWN)) {
+                    // SINGLE CONSOLIDATED LOG: Only one log entry for consumable usage
+                    String actionDescription = "Consumed " + targetName;
+                    String scriptCode = "Inventory.interact(\"" + targetName + "\", \"" + action + "\")";
+                    
+                    logAction(actionDescription, scriptCode);
+                    
+                    // Silent console log (no logDetail to avoid duplicate entries)
+                    script.log("CONSUMABLE: " + actionDescription);
+                    
+                    // Mark this action as recently logged to prevent ALL duplicate logging
+                    lastActionLogged = actionKey;
+                    lastActionLogTime = currentTime;
+                }
+                
+                            // IMPORTANT: Skip ALL additional checks for consumables to prevent spam
+            // No config checks, no inventory checks, no other smart checks
+            return;
+        }
+        
+        // NEW: Dialogue option detection - capture ACTUAL dialogue clicks
+        if (isDialogueOption(action, targetName)) {
+            long currentTime = System.currentTimeMillis();
+            String dialogueKey = targetName.trim();
             
-            // Log the ACTUAL action that was performed
-            String actionDescription = "Selected '" + action + "' on " + targetName;
-            String scriptCode = generateScriptCode(action, targetName, menuRow);
-            
-            logAction(actionDescription, scriptCode);
-            logDetail("USER_ACTION", action + " | " + coordinateInfo);
-            
-            script.log("REAL ACTION DETECTED: " + action + " -> " + targetName);
-            
-            // SMART CONFIG CHECK: Check configs after quest-relevant actions
-            if (isQuestRelevantAction(action, targetName)) {
-                triggerConfigCheck("User action: " + action + " on " + targetName);
+            // Only log if this exact dialogue option hasn't been logged recently
+            if (!dialogueKey.equals(lastClickedDialogueOption) || (currentTime - lastDialogueOptionClickTime > DIALOGUE_OPTION_COOLDOWN)) {
+                
+                // Generate proper dialogue option index for script code
+                String[] currentOptions = Dialogues.getOptions();
+                int optionIndex = findDialogueOptionIndex(targetName, currentOptions);
+                String scriptCode;
+                
+                if (optionIndex >= 0) {
+                    scriptCode = "Dialogues.chooseOption(" + (optionIndex + 1) + "); // \"" + targetName + "\"";
+                } else {
+                    // Fallback if we can't find exact index
+                    scriptCode = "Dialogues.chooseOption(\"" + targetName + "\");";
+                }
+                
+                logAction("Selected dialogue option: \"" + targetName + "\"", scriptCode);
+                logDetail("DIALOGUE_SELECTION", "Player clicked: \"" + targetName + "\"");
+                
+                script.log("DIALOGUE OPTION CLICKED: \"" + targetName + "\"");
+                
+                // Mark this dialogue option as recently logged
+                lastClickedDialogueOption = dialogueKey;
+                lastDialogueOptionClickTime = currentTime;
+                
+                // Trigger quest progression checks after dialogue selection
+                triggerConfigCheck("Dialogue option selected: " + targetName);
+                smartInventoryCheck("Dialogue option selected - checking for quest rewards");
             }
             
-            // SMART INVENTORY CHECK: Check inventory after inventory-relevant actions
-            if (isInventoryRelevantAction(action, targetName)) {
-                smartInventoryCheck("User action: " + action + " on " + targetName);
-            }
-            
-            // SMART EQUIPMENT CHECK: Check equipment after equipment-relevant actions
-            if (isEquipmentRelevantAction(action, targetName)) {
-                smartEquipmentCheck("User action: " + action + " on " + targetName);
-            }
-            
-            // SMART BANKING CHECK: Check banking after banking-relevant actions
-            if (isBankingRelevantAction(action, targetName)) {
-                smartBankingCheck("User action: " + action + " on " + targetName);
-            }
-            
-            // SMART COMBAT CHECK: Check combat after combat-relevant actions
-            if (isCombatRelevantAction(action, targetName)) {
-                smartCombatCheck("User action: " + action + " on " + targetName);
-            }
-            
-            // SMART PRAYER CHECK: Check prayers after prayer-relevant actions
-            if (isPrayerRelevantAction(action, targetName)) {
-                smartPrayerCheck("User action: " + action + " on " + targetName);
-            }
-            
-            // SMART MAGIC CHECK: Check magic after magic-relevant actions
-            if (isMagicRelevantAction(action, targetName)) {
-                smartMagicCheck("User action: " + action + " on " + targetName);
-            }
-            
+            // Continue with normal action logging for dialogue options (but with reduced priority)
+        }
+        
+        // Get tile coordinates for NPCs and GameObjects
+        String coordinateInfo = getTargetCoordinates(action, targetName, mouseX, mouseY);
+        
+        // Log the ACTUAL action that was performed (for non-consumables and non-dialogue-options)
+        String actionDescription = "Selected '" + action + "' on " + targetName;
+        String scriptCode = generateScriptCode(action, targetName, menuRow);
+        
+        logAction(actionDescription, scriptCode);
+        logDetail("USER_ACTION", action + " | " + coordinateInfo);
+        
+        script.log("REAL ACTION DETECTED: " + action + " -> " + targetName);
+        
+        // SMART CONFIG CHECK: Check configs after quest-relevant actions
+        if (isQuestRelevantAction(action, targetName)) {
+            triggerConfigCheck("User action: " + action + " on " + targetName);
+        }
+        
+        // SMART INVENTORY CHECK: Check inventory after inventory-relevant actions (but not for consumables - already handled above)
+        if (isInventoryRelevantAction(action, targetName) && !action.equals("Drink") && !action.equals("Eat")) {
+            smartInventoryCheck("User action: " + action + " on " + targetName);
+        }
+        
+        // SMART EQUIPMENT CHECK: Check equipment after equipment-relevant actions
+        if (isEquipmentRelevantAction(action, targetName)) {
+            smartEquipmentCheck("User action: " + action + " on " + targetName);
+        }
+        
+        // SMART BANKING CHECK: Check banking after banking-relevant actions
+        if (isBankingRelevantAction(action, targetName)) {
+            smartBankingCheck("User action: " + action + " on " + targetName);
+        }
+        
+        // SMART COMBAT CHECK: Check combat after combat-relevant actions
+        if (isCombatRelevantAction(action, targetName)) {
+            smartCombatCheck("User action: " + action + " on " + targetName);
+        }
+        
+        // SMART PRAYER CHECK: Check prayers after prayer-relevant actions
+        if (isPrayerRelevantAction(action, targetName)) {
+            smartPrayerCheck("User action: " + action + " on " + targetName);
+        }
+        
+        // SMART MAGIC CHECK: Check magic after magic-relevant actions
+        if (isMagicRelevantAction(action, targetName)) {
+            smartMagicCheck("User action: " + action + " on " + targetName);
+        }
+        
         } catch (Exception e) {
             // Silent catch to prevent spam
         }
@@ -343,11 +436,13 @@ public class QuestEventLogger implements ActionListener {
             return true;
         }
         
-        // Item usage (quest items, tools, etc.)
-        if (action.equals("Use") || action.equals("Drop") || action.equals("Eat") || 
-            action.equals("Drink") || action.equals("Wield") || action.equals("Wear")) {
+        // Item usage (quest items, tools, etc.) - EXCLUDING routine consumables
+        if (action.equals("Use") || action.equals("Drop") || action.equals("Wield") || action.equals("Wear")) {
             return true;
         }
+        
+        // NOTE: "Eat" and "Drink" are NOT quest-relevant - they're routine consumables
+        // These should not trigger config checks to prevent spam
         
         return false;
     }
@@ -639,15 +734,13 @@ public class QuestEventLogger implements ActionListener {
                 }
             }
             
-            // Bank interface detection (only if truly needed)
+            // Bank interface detection (with dedicated cooldown to prevent spam)
             if (Widgets.isVisible(12)) { // Bank interface
-                if (currentTime - lastTrackedInteractionTime > 5000) {
-                    logAction("Bank accessed", 
-                        "// Bank.open() - banking interaction");
+                if (currentTime - lastBankInterfaceLogTime > BANK_INTERFACE_LOG_COOLDOWN) {
+                    logAction("Opened bank (interface detected)", "// Bank.open() - banking interaction");
                     logDetail("BANK_INTERACTION", "Bank interface opened");
-                    lastTrackedInteractionTime = currentTime;
-                    
-                    script.log("BANK INTERACTION DETECTED");
+                    lastBankInterfaceLogTime = currentTime;
+                    script.log("BANK INTERFACE DETECTED");
                 }
             }
         } catch (Exception e) {
@@ -811,7 +904,7 @@ public class QuestEventLogger implements ActionListener {
                             npc.getName(), action);
     }
     
-    // 1. Movement Detection - Journey-Based Tracking
+    // 1. Movement Detection - Journey-Based Tracking (REDUCED VERBOSITY)
     private void checkMovement() {
         if (Players.getLocal() == null) return;
         
@@ -819,44 +912,59 @@ public class QuestEventLogger implements ActionListener {
         boolean currentlyMoving = Players.getLocal().isMoving();
         long currentTime = System.currentTimeMillis();
         
-        // Movement state changes (starting/stopping movement)
+        // Movement state changes (starting/stopping movement) - WITH COOLDOWNS
         if (lastMovingState != currentlyMoving) {
             if (currentlyMoving) {
-                // Started moving - record journey start
-                journeyStartTile = currentPos;
-                journeyStartTime = currentTime;
-                logDetail("Player State", "Started moving");
+                // Started moving - ONLY log if significant time has passed since last movement start
+                if (currentTime - lastMovementStartLog > MOVEMENT_LOG_COOLDOWN) {
+                    journeyStartTile = currentPos;
+                    journeyStartTime = currentTime;
+                    logDetail("Movement", "Started significant journey from " + formatLocation(currentPos));
+                    lastMovementStartLog = currentTime;
+                }
+                // Always update journey tracking even if not logged
+                if (journeyStartTile == null) {
+                    journeyStartTile = currentPos;
+                    journeyStartTime = currentTime;
+                }
             } else {
-                // Stopped moving - log journey if significant
-                logDetail("Player State", "Stopped moving");
-                
+                // Stopped moving - CONSOLIDATED logging with distance filtering
                 if (journeyStartTile != null && currentPos != null) {
                     double journeyDistance = journeyStartTile.distance(currentPos);
+                    long journeyTime = currentTime - journeyStartTime;
                     
-                    // Only log journeys > 15 tiles to avoid spam from small movements
-                    // Filter out teleports/cutscenes (> 1000 tiles = probably teleport/cutscene)
-                    if (journeyDistance >= 15.0 && journeyDistance <= 1000.0) {
-                        long journeyTime = currentTime - journeyStartTime;
-                        logAction("Journey completed", 
+                    // ONLY log significant journeys to reduce spam
+                    if (journeyDistance >= MIN_JOURNEY_DISTANCE && journeyDistance <= TELEPORT_DISTANCE_THRESHOLD) {
+                        // Significant walking journey
+                        logAction("Completed journey: " + String.format("%.0f", journeyDistance) + " tiles", 
                             "Walking.walk(new Tile(" + currentPos.getX() + ", " + currentPos.getY() + ", " + currentPos.getZ() + "))");
-                        logDetail("Journey", "Walked " + String.format("%.1f", journeyDistance) + " tiles from " + 
-                            formatLocation(journeyStartTile) + " to " + formatLocation(currentPos) + 
-                            " (took " + (journeyTime/1000) + "s)");
+                        logDetail("Journey", "Walked " + String.format("%.0f", journeyDistance) + " tiles in " + (journeyTime/1000) + "s | " + 
+                            formatLocation(journeyStartTile) + " → " + formatLocation(currentPos));
                     }
-                    // Log teleports/cutscenes differently
-                    else if (journeyDistance > 1000.0) {
-                        logDetail("Teleport/Cutscene", "Moved " + String.format("%.1f", journeyDistance) + " tiles from " + 
-                            formatLocation(journeyStartTile) + " to " + formatLocation(currentPos) + " (likely teleport/cutscene)");
+                    // Log teleports/cutscenes differently (less frequent but important)
+                    else if (journeyDistance > TELEPORT_DISTANCE_THRESHOLD) {
+                        logAction("Teleport/Cutscene detected: " + String.format("%.0f", journeyDistance) + " tiles", 
+                            "// Large distance moved - likely teleport or cutscene");
+                        logDetail("Teleport", "Moved " + String.format("%.0f", journeyDistance) + " tiles | " + 
+                            formatLocation(journeyStartTile) + " → " + formatLocation(currentPos));
                     }
+                    // For distances < MIN_JOURNEY_DISTANCE, don't log journey completion to reduce spam
                 }
                 
-                // Update position when stopped (important for quest steps)
-                if (currentPos != null) {
-                    logDetail("Position Update", "Stopped at " + formatLocation(currentPos));
+                // ALWAYS log final position (but only when cooldown allows)
+                if (currentPos != null && currentTime - lastMovementStopLog > 5000) { // 5 second cooldown for position updates
+                    logDetail("Position", "Arrived at " + formatLocation(currentPos));
                     lastPosition = currentPos;
+                    lastMovementStopLog = currentTime;
                 }
                 
-                checkNearbyTargets(); // Check what they stopped near
+                // Reset for next journey
+                journeyStartTile = null;
+                
+                // Check what they stopped near (reduced frequency)
+                if (currentTime - lastMovementStopLog > 5000) {
+                    checkNearbyTargets();
+                }
             }
             lastMovingState = currentlyMoving;
         }
@@ -913,32 +1021,22 @@ public class QuestEventLogger implements ActionListener {
                     script.log("INSTANT DETECTION: New dialogue options appeared");
                 }
                 
-                // Player selected an option (options disappeared or changed)
+                // REMOVED: Broken dialogue option detection that used hardcoded selectOption(1)
+                // Dialogue options are now properly detected in onAction() method with actual clicked text
+                // This legacy detection only tracked state changes, not actual user selections
+                
+                // Keep only the essential quest progression checks for dialogue state changes
                 if (lastDialogueOptions != null && lastDialogueOptions.length > 0) {
-                    if (currentOptions == null || currentOptions.length == 0 || 
-                        (currentOptions.length != lastDialogueOptions.length && currentOptions.length < lastDialogueOptions.length)) {
-                        
-                        logAction("Player selected dialogue option", 
-                            "Dialogues.selectOption(1) // Player chose from: " + Arrays.toString(lastDialogueOptions));
-                        script.log("INSTANT DETECTION: Player selected dialogue option");
-                        
-                        // SMART CONFIG CHECK: Player selected dialogue option (quest step likely completed)
-                        triggerConfigCheck("Player selected dialogue option");
-                        
-                        // SMART INVENTORY CHECK: Dialogue completion might have given items
-                        smartInventoryCheck("Player selected dialogue option - checking for quest rewards");
+                    if (currentOptions == null || currentOptions.length == 0) {
+                        // Dialogue ended after having options - might indicate progression
+                        script.log("DIALOGUE STATE: Options disappeared - dialogue may have progressed");
+                        triggerConfigCheck("Dialogue options disappeared");
                     }
-                    // Options changed to different set (player selected and new options appeared)
                     else if (!Arrays.equals(lastDialogueOptions, currentOptions) && 
                              currentOptions.length > 0) {
-                        
-                        logAction("Player selected dialogue option and new options appeared", 
-                            "Dialogues.selectOption(1) // Previous: " + Arrays.toString(lastDialogueOptions) + 
-                            ", New: " + Arrays.toString(currentOptions));
-                        script.log("INSTANT DETECTION: Dialogue option selected, new options appeared");
-                        
-                        // SMART CONFIG CHECK: Dialogue progression
-                        triggerConfigCheck("Dialogue option selected, new options appeared");
+                        // Options changed to different set - dialogue progressed to new question
+                        script.log("DIALOGUE STATE: Options changed - dialogue progressed");
+                        triggerConfigCheck("Dialogue options changed");
                     }
                 }
                 
@@ -971,7 +1069,7 @@ public class QuestEventLogger implements ActionListener {
                name.contains("anvil") || name.contains("bank");
     }
     
-    // 5. Inventory Changes - Enhanced Item Usage Detection
+    // 5. Inventory Changes - Enhanced Item Usage Detection (REDUCED SPAM)
     private void checkInventory() {
         String currentInventoryState = getCurrentInventoryString();
         
@@ -983,10 +1081,19 @@ public class QuestEventLogger implements ActionListener {
                 // Check if it's item consumption (potion drinking, food eating, etc.)
                 String consumedItem = detectItemConsumption(lastInventoryState, currentInventoryState);
                 if (consumedItem != null) {
-                    // Skip detailed logging for energy potions
-                    logAction("Item consumed: " + consumedItem, 
-                        "Inventory.getItem(\"" + consumedItem + "\").interact(\"Drink\") // or click");
-                    logDetail("ITEM_CONSUMPTION", "Player consumed: " + consumedItem);
+                    // REDUCED LOGGING: Only log if not already logged by onAction
+                    long currentTime = System.currentTimeMillis();
+                    String actionKey = "Drink:" + consumedItem;
+                    boolean alreadyLogged = actionKey.equals(lastActionLogged) && 
+                                          (currentTime - lastActionLogTime < ACTION_LOG_COOLDOWN);
+                    
+                    if (!alreadyLogged) {
+                        // Log consumption (but this should be rare now due to onAction handling)
+                        logAction("Item consumed: " + consumedItem, 
+                            "Inventory.getItem(\"" + consumedItem + "\").interact(\"Drink\") // or click");
+                        logDetail("ITEM_CONSUMPTION", "Player consumed: " + consumedItem);
+                    }
+                    // Skip the detailed inventory change logging for consumables to reduce spam
                 } else {
                     // Only log non-repetitive inventory changes
                     if (!changeType.equals(lastInventoryChangeType)) {
@@ -1005,47 +1112,127 @@ public class QuestEventLogger implements ActionListener {
                 }
             }
             
-            // Reduce detail logging frequency for repetitive changes
-            if (!changeType.equals(lastInventoryChangeType)) {
+            // REDUCED DETAIL LOGGING: Only log if not a recent consumable action
+            long currentTime = System.currentTimeMillis();
+            boolean isRecentConsumableAction = (currentTime - lastActionLogTime < ACTION_LOG_COOLDOWN) && 
+                                              (lastActionLogged.startsWith("Drink:") || lastActionLogged.startsWith("Eat:"));
+            
+            if (!changeType.equals(lastInventoryChangeType) && !isRecentConsumableAction) {
                 logDetail("Inventory Change", changeType + " - New state: " + currentInventoryState);
             }
             lastInventoryState = currentInventoryState;
         }
     }
     
-    // 6. Banking
+    // 6. Banking - ANTI-SPAM with dedicated cooldowns
     private void checkBanking() {
-        boolean currentBankState = Bank.isOpen();
+        long currentTime = System.currentTimeMillis();
         
-        if (currentBankState != lastBankState) {
-            if (currentBankState) {
-                logAction("Opened bank", "Bank.open()");
-                logDetail("Banking", "Bank interface opened - Current inventory: " + getCurrentInventoryString());
-            } else {
-                logAction("Closed bank", "Bank.close()");
-                logDetail("Banking", "Bank interface closed");
-            }
-            lastBankState = currentBankState;
+        // Only proceed if enough time has passed since the last execution of this method's logic
+        if (currentTime - lastBankCheckTime < BANK_CHECK_COOLDOWN) {
+            return; // Too soon, skip this check
         }
+
+        boolean currentBankState = Bank.isOpen();
+
+        if (currentBankState != lastBankState) {
+            // Only log if it's been long enough since the last logged state change
+            if (currentTime - lastBankActionLogTime > BANK_ACTION_LOG_COOLDOWN) {
+                if (currentBankState) {
+                    logAction("Opened bank (state changed)", "Bank.open()");
+                    logDetail("Banking", "Bank interface opened - Current inventory: " + getCurrentInventoryString());
+                } else {
+                    logAction("Closed bank (state changed)", "Bank.close()");
+                    logDetail("Banking", "Bank interface closed");
+                }
+                lastBankActionLogTime = currentTime; // Update the specific action log cooldown
+            }
+            lastBankState = currentBankState; // Always update the last state regardless of logging
+        }
+        lastBankCheckTime = currentTime; // Update method execution cooldown
     }
     
-    // 7. Animations - DISABLED (ActionListener now captures real actions)
+    // 7. Animations - MOSTLY DISABLED (ActionListener now captures real actions)
     private void checkAnimations() {
-        // DISABLED: Animation-based guessing removed since ActionListener captures real clicks
-        // No need to correlate animations with nearby objects anymore
+        // MOSTLY DISABLED: Only log significant animations to reduce spam
+        // ActionListener captures the actual user actions, so animation logging is mostly redundant
         
         if (Players.getLocal() == null) return;
         
         int currentAnimation = Players.getLocal().getAnimation();
         
+        // SPAM REDUCTION: Only log significant animations, not routine ones
         if (currentAnimation != lastAnimation && currentAnimation > 0) {
-            String animationDescription = getAnimationDescription(currentAnimation);
-            logDetail("Animation", animationDescription + " (ID: " + currentAnimation + ")");
-            
-            // REMOVED: No more nearby object correlation since ActionListener handles it
+            // Only log specific quest-relevant animations (teleports, major actions)
+            if (isSignificantAnimation(currentAnimation)) {
+                String animationDescription = getAnimationDescription(currentAnimation);
+                logDetail("Animation", animationDescription + " (ID: " + currentAnimation + ")");
+            }
         }
         
         lastAnimation = currentAnimation;
+    }
+    
+    /**
+     * Check if an animation is significant enough to log (reduces spam)
+     */
+    private boolean isSignificantAnimation(int animationId) {
+        // Only log significant animations - teleports, major quest actions, etc.
+        switch (animationId) {
+            case 708:   // Teleport casting
+            case 1816:  // Death animation
+            case 2108:  // Quest completion animation
+            case 3864:  // Levelup animation
+                return true;
+            default:
+                return false; // Skip routine animations (walking, drinking, eating, etc.)
+        }
+    }
+    
+    /**
+     * Determine if a MenuRow represents a dialogue option click
+     */
+    private boolean isDialogueOption(String action, String targetName) {
+        // Dialogue options typically have "Select" or "Continue" as action
+        // and the target is the dialogue text
+        if (action == null || targetName == null) return false;
+        
+        // In dialogue, we're looking for user clicking on dialogue option text
+        // The action is often "Select" and target is the dialogue option text
+        boolean isSelectAction = action.equals("Select") || action.equals("Continue");
+        boolean isInDialogue = Dialogues.inDialogue() || Dialogues.areOptionsAvailable();
+        
+        // Additional check: if we're in dialogue and the target looks like dialogue text
+        boolean looksLikeDialogueText = targetName.length() > 3 && // Not just short words
+                                       !targetName.toLowerCase().contains("bank") &&
+                                       !targetName.toLowerCase().contains("attack") &&
+                                       !targetName.toLowerCase().contains("trade");
+        
+        return isSelectAction && isInDialogue && looksLikeDialogueText;
+    }
+    
+    /**
+     * Find the index of a dialogue option in the current options array
+     */
+    private int findDialogueOptionIndex(String targetOption, String[] currentOptions) {
+        if (currentOptions == null || targetOption == null) return -1;
+        
+        // Look for exact match first
+        for (int i = 0; i < currentOptions.length; i++) {
+            if (currentOptions[i] != null && currentOptions[i].equals(targetOption)) {
+                return i;
+            }
+        }
+        
+        // Look for partial match (in case of truncation or slight differences)
+        for (int i = 0; i < currentOptions.length; i++) {
+            if (currentOptions[i] != null && 
+                (currentOptions[i].contains(targetOption) || targetOption.contains(currentOptions[i]))) {
+                return i;
+            }
+        }
+        
+        return -1; // Not found
     }
     
     private void checkEquipmentChanges() {
@@ -1138,6 +1325,13 @@ public class QuestEventLogger implements ActionListener {
     
     // Enhanced item consumption detection - Fixed to exclude equipped items AND banking
     private String detectItemConsumption(String oldInventory, String newInventory) {
+        // NEW: Skip consumption detection if we just logged a consumable action
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastActionLogTime < ACTION_LOG_COOLDOWN && 
+            (lastActionLogged.startsWith("Drink:") || lastActionLogged.startsWith("Eat:"))) {
+            return null; // Don't log again - onAction already handled it
+        }
+        
         // Only detect actual consumables - potions and food that leave behind items when used
         
         // Look for items that had quantity reduced (food, consumables, etc.)
@@ -1176,9 +1370,13 @@ public class QuestEventLogger implements ActionListener {
                     // Silent catch - if equipment check fails, assume it wasn't equipped
                 }
                 
-                // Only log as consumed if it wasn't equipped AND it's likely a consumable
+                // Only log as consumed if it wasn't equipped AND it's likely a consumable AND we haven't just logged it
                 if (!itemIsEquipped && isLikelyConsumable(itemName)) {
-                    return itemName;
+                    // Double-check we haven't just logged this exact item
+                    String actionKey = "Drink:" + itemName;
+                    if (!actionKey.equals(lastActionLogged) || (currentTime - lastActionLogTime > ACTION_LOG_COOLDOWN)) {
+                        return itemName;
+                    }
                 }
             }
         }

@@ -97,6 +97,11 @@ if not exist "src\main\java\quest\quests\CooksAssistantScript.java" (
     pause
     exit /b 1
 )
+if not exist "src\main\java\quest\quests\LemonTutQuest.java" (
+    echo [ERROR] LemonTutQuest.java not found!
+    pause
+    exit /b 1
+)
 if not exist "src\main\java\quest\quests\VampireSlayerScript.java" (
     echo [ERROR] VampireSlayerScript.java not found!
     pause
@@ -159,6 +164,9 @@ javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\core\Q
 if %errorlevel% neq 0 goto :compile_error
 
 echo - Compiling quest implementations...
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\LemonTutQuest.java"
+if %errorlevel% neq 0 goto :compile_error
+
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\CooksAssistantScript.java"
 if %errorlevel% neq 0 goto :compile_error
 
@@ -166,6 +174,12 @@ javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests
 if %errorlevel% neq 0 goto :compile_error
 
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\RuneMysteriesScript.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\ImpCatcherScript.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\WitchsPotionScript.java"
 if %errorlevel% neq 0 goto :compile_error
 
 echo - Compiling quest executor...

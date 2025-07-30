@@ -12,6 +12,16 @@ public class QuestDatabase {
     private static final Map<String, QuestInfo> questInfo = new ConcurrentHashMap<>();
     
     static {
+        // Tutorial Island (Special tutorial)
+        questInfo.put("TUTORIAL_ISLAND", new QuestInfo(
+            "TUTORIAL_ISLAND",
+            "Tutorial Island",
+            1, // difficulty
+            30, // estimated duration minutes
+            new ArrayList<>(), // skill requirements
+            new ArrayList<>() // no items required - tutorial provides everything
+        ));
+        
         // Cook's Assistant
         questInfo.put("COOKS_ASSISTANT", new QuestInfo(
             "COOKS_ASSISTANT",
@@ -40,6 +50,26 @@ public class QuestDatabase {
             10, // estimated duration minutes
             new ArrayList<>(), // skill requirements
             Arrays.asList("Red bead", "Yellow bead", "Black bead", "White bead") // required items
+        ));
+        
+        // Rune Mysteries
+        questInfo.put("RUNE_MYSTERIES", new QuestInfo(
+            "RUNE_MYSTERIES",
+            "Rune Mysteries",
+            1, // difficulty
+            8, // estimated duration minutes
+            new ArrayList<>(), // skill requirements
+            new ArrayList<>() // no items required to start (Air talisman given during quest)
+        ));
+        
+        // Witch's Potion
+        questInfo.put("WITCHS_POTION", new QuestInfo(
+            "WITCHS_POTION",
+            "Witch's Potion",
+            1, // difficulty
+            15, // estimated duration minutes
+            new ArrayList<>(), // skill requirements
+            Arrays.asList("Raw beef", "Eye of newt", "Onion") // required items
         ));
     }
     

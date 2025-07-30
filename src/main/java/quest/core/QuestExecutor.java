@@ -2,6 +2,10 @@ package quest.core;
 
 import quest.quests.VampireSlayerScript;
 import quest.quests.CooksAssistantScript;
+import quest.quests.RuneMysteriesScript;
+import quest.quests.ImpCatcherScript;
+import quest.quests.LemonTutQuest;
+import quest.quests.WitchsPotionScript;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.utilities.Timer;
 import org.dreambot.api.script.AbstractScript;
@@ -334,10 +338,18 @@ public class QuestExecutor {
      */
     private QuestScript loadQuestScript(String questId) {
         switch (questId) {
+            case "TUTORIAL_ISLAND":
+                return new LemonTutQuest();
             case "VAMPIRE_SLAYER":
                 return new VampireSlayerScript();
             case "COOKS_ASSISTANT":
                 return new CooksAssistantScript();
+            case "RUNE_MYSTERIES":
+                return new RuneMysteriesScript();
+            case "IMP_CATCHER":
+                return new ImpCatcherScript();
+            case "WITCHS_POTION":
+                return new WitchsPotionScript();
             case "RESTLESS_GHOST": 
                 // TODO: Implement Restless Ghost script
                 log("Restless Ghost script not yet implemented");

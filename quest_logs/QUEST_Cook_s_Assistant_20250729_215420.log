@@ -1,0 +1,179 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Cook's Assistant
+Started: 2025-07-29 21:54:20
+Player: 72diamond329
+Starting Location: (3162, 3488, 0)
+Starting Inventory: Energy potion(4) x15, Iron axe, Bronze pickaxe, Tinderbox, Salmon x5, Coins x242737, Small fishing net
+=====================================
+
+[21:54:20] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[21:54:20] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[21:54:20] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[21:54:20] ACTION: Quest recording started
+    SCRIPT: // Quest: Cook's Assistant
+
+[21:54:20] ACTIVE_QUEST_DETECTED: COOKS_ASSISTANT is currently in progress
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Script initialized successfully
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest logger initialized - logs will be saved to quest_logs/
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: hasRequiredItems() called - returning true (auto-gathering enabled)
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started callback
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Cook's Assistant
+Started: 2025-07-29 21:54:20
+Player: 72diamond329
+Starting Location: (3162, 3488, 0)
+Starting Inventory: Energy potion(4) x15, Iron axe, Bronze pickaxe, Tinderbox, Salmon x5, Coins x242737, Small fishing net
+=====================================
+
+[21:54:20] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[21:54:20] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[21:54:20] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[21:54:20] ACTION: Quest recording started
+    SCRIPT: // Quest: Cook's Assistant
+
+[21:54:20] ACTIVE_QUEST_DETECTED: COOKS_ASSISTANT is currently in progress
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 0
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 1
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: false, Milk: false, Flour: false
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 0
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 1
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: false, Milk: false, Flour: false
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Executing current step...
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current config value: 0
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 0
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 1
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started, proceeding with quest progression
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === PROGRESS QUEST START ===
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current location: (3162, 3488, 0)
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Progressing quest...
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking if we have all quest items...
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: false, Milk: false, Flour: false
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Missing quest items, gathering them
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === STARTING ITEM GATHERING ===
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === GATHER QUEST ITEMS START ===
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Gathering quest items with Grand Exchange purchasing
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current inventory space: 3
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current inventory contents:
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === QUEST ITEM REQUIREMENTS ===
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Required item: Egg x1
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current in inventory: 0
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Required item: Bucket of milk x1
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current in inventory: 0
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Required item: Pot of flour x1
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current in inventory: 0
+[21:54:20] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === CALLING ItemGatheringUtil.gatherItems() ===
+[21:54:21] ACTION: Selected 'Bank' on Banker
+    SCRIPT: // Bank on Banker
+
+[21:54:21] USER_ACTION: Bank | Target: Banker
+[21:54:24] ACTION: Selected 'Exchange' on Grand Exchange booth
+    SCRIPT: // Exchange on Grand Exchange booth
+
+[21:54:24] USER_ACTION: Exchange | Target: Grand Exchange booth
+[21:54:29] ACTION: Selected 'Select' on Egg
+    SCRIPT: // Select on Egg
+
+[21:54:29] USER_ACTION: Select | Target: Egg
+[21:54:41] ACTION: Selected 'Bank' on Banker
+    SCRIPT: // Bank on Banker
+
+[21:54:41] USER_ACTION: Bank | Target: Banker
+[21:54:41] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(4) x15, Iron axe, Bronze pickaxe, Egg, Tinderbox, Salmon x5, Coins x242706, Small fishing net
+
+[21:54:44] ACTION: Selected 'Exchange' on Grand Exchange booth
+    SCRIPT: // Exchange on Grand Exchange booth
+
+[21:54:44] USER_ACTION: Exchange | Target: Grand Exchange booth
+[21:55:02] ACTION: Selected 'Bank' on Banker
+    SCRIPT: // Bank on Banker
+
+[21:55:02] USER_ACTION: Bank | Target: Banker
+[21:55:05] ACTION: Selected 'Exchange' on Grand Exchange booth
+    SCRIPT: // Exchange on Grand Exchange booth
+
+[21:55:05] USER_ACTION: Exchange | Target: Grand Exchange booth
+[21:55:22] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === ItemGatheringUtil.gatherItems() RETURNED ===
+[21:55:22] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Item gathering result: SUCCESS
+[21:55:22] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Successfully obtained: {Pot of flour=1, Egg=1, Bucket of milk=1}
+[21:55:22] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === ITEM GATHERING COMPLETE ===
+[21:55:22] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Gathering success: true
+[21:55:22] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Last action: Bought 1x Pot of flour from Grand Exchange
+[21:55:22] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Obtained items: {Pot of flour=1, Egg=1, Bucket of milk=1}
+[21:55:22] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Missing items: {}
+[21:55:22] DREAMBOT_CONSOLE: CooksAssistant DEBUG: All items gathered, completing quest
+[21:55:22] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Attempting to complete quest
+[21:55:22] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: true, Milk: true, Flour: true
+[21:55:22] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Walking to kitchen for quest completion
+[21:55:22] ACTION: Selected 'Cast' on Lumbridge Home Teleport
+    SCRIPT: // Cast on Lumbridge Home Teleport
+
+[21:55:22] USER_ACTION: Cast | Target: Lumbridge Home Teleport
+[21:55:22] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[21:55:22] SPELLBOOK_OPENED: Player opened the magic spellbook
+[21:55:51] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 0
+[21:55:51] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 1
+[21:55:51] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[21:55:51] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[21:55:51] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[21:55:51] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: true, Milk: true, Flour: true
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 0
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 1
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: true, Milk: true, Flour: true
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 0
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 1
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: true, Milk: true, Flour: true
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Executing current step...
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current config value: 0
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 101 value: 0
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 29 value: 1
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Varbit 29 value: 0
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Config 174 value: 0
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started = true
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest started, proceeding with quest progression
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: === PROGRESS QUEST START ===
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Current location: (3221, 3219, 0)
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Progressing quest...
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Checking if we have all quest items...
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: true, Milk: true, Flour: true
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: All quest items already in inventory!
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: All items gathered, completing quest
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Attempting to complete quest
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Inventory check - Egg: true, Milk: true, Flour: true
+[21:55:52] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Walking to kitchen for quest completion
+[21:56:00] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Talking to Cook to complete quest
+[21:56:02] ACTION: Selected 'Talk-to' on Cook
+    SCRIPT: NPCs.closest("Cook").interact("Talk-to");
+
+[21:56:02] USER_ACTION: Talk-to | NPC_Tile: (3208, 3215, 0)
+[21:56:04] DREAMBOT_CONSOLE: CooksAssistant DEBUG: In completion dialogue
+[21:56:12] DREAMBOT_CONSOLE: CooksAssistant: Completion dialogue handled successfully
+[21:56:15] DREAMBOT_CONSOLE: CooksAssistant: QUEST COMPLETED! Config 101: 1, Config 29: 2
+[21:56:15] DREAMBOT_CONSOLE: CooksAssistant: [SUCCESS] QUEST COMPLETED SUCCESSFULLY!
+[21:56:17] DREAMBOT_CONSOLE: CooksAssistant DEBUG: Quest completed callback
+[21:56:32] ACTION: Started dialogue with Cook
+    SCRIPT: NPCs.closest("Cook").interact("Talk-to")
+
+[21:56:32] Player State: Started moving
+[21:56:36] QUEST_END: === QUEST RECORDING ENDED ===
