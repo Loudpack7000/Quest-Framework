@@ -1,0 +1,253 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-08-02 02:30:24
+Player: 72diamond329
+Starting Location: (3217, 3426, 0)
+Starting Inventory: Energy potion(3) x2, Energy potion(4) x11, Coins x232782
+=====================================
+
+[02:30:24] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[02:30:24] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[02:30:24] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[02:30:24] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[02:30:24] ACTIVE_QUEST_DETECTED: ROMEO_AND_JULIET is currently in progress
+[02:30:24] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 69 varbits (including 0-values)
+
+[02:30:24] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[02:30:35] Movement: Started significant journey from (3217, 3426, 0)
+[02:30:49] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[02:30:49] USER_ACTION: Climb-up | Object_Tile: (3156, 3435, 0)
+[02:30:54] ACTION: Completed journey: 63 tiles
+    SCRIPT: Walking.walk(new Tile(3155, 3435, 1))
+
+[02:30:54] Journey: Walked 63 tiles in 18s | (3217, 3426, 0) → (3155, 3435, 1)
+[02:30:54] Position: Arrived at (3155, 3435, 1)
+[02:30:57] ACTION: Selected 'Talk-to' on Juliet
+    SCRIPT: NPCs.closest("Juliet").interact("Talk-to");
+
+[02:30:57] USER_ACTION: Talk-to | NPC_Tile: (3158, 3425, 1)
+[02:30:58] Movement: Started significant journey from (3155, 3434, 1)
+[02:31:01] Position: Arrived at (3158, 3426, 1)
+[02:31:05] QUEST STEP 3: CONFIG DISCOVERED: Unknown Quest config 144 changed from 10 to 20
+    SCRIPT: // DISCOVERED: Quest uses config 144 (value 10 → 20)
+
+[02:31:10] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[02:31:10] USER_ACTION: Climb-down | Object_Tile: (3156, 3435, 1)
+[02:31:11] Movement: Started significant journey from (3158, 3426, 1)
+[02:31:15] Position: Arrived at (3159, 3435, 0)
+[02:31:26] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[02:31:26] USER_ACTION: Open | Object_Tile: (3160, 3432, 0)
+[02:31:27] Movement: Started significant journey from (3160, 3435, 0)
+[02:31:28] Position: Arrived at (3164, 3433, 0)
+[02:31:45] ACTION: Selected 'Talk-to' on Romeo
+    SCRIPT: NPCs.closest("Romeo").interact("Talk-to");
+
+[02:31:45] USER_ACTION: Talk-to | NPC_Tile: (3212, 3423, 0)
+[02:31:46] ACTION: Completed journey: 46 tiles
+    SCRIPT: Walking.walk(new Tile(3209, 3422, 0))
+
+[02:31:46] Journey: Walked 46 tiles in 16s | (3164, 3433, 0) → (3209, 3422, 0)
+[02:31:46] Position: Arrived at (3209, 3422, 0)
+[02:32:06] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Ok, thanks.
+
+[02:32:06] QUEST STEP 4: CONFIG DISCOVERED: Unknown Quest config 144 changed from 20 to 30
+    SCRIPT: // DISCOVERED: Quest uses config 144 (value 20 → 30)
+
+[02:32:09] Movement: Started significant journey from (3210, 3422, 0)
+[02:32:11] Position: Arrived at (3216, 3425, 0)
+[02:32:37] ACTION: Completed journey: 65 tiles
+    SCRIPT: Walking.walk(new Tile(3255, 3477, 0))
+
+[02:32:37] Journey: Walked 65 tiles in 23s | (3216, 3425, 0) → (3255, 3477, 0)
+[02:32:37] Position: Arrived at (3255, 3477, 0)
+[02:32:39] Movement: Started significant journey from (3255, 3477, 0)
+[02:32:44] ACTION: Selected 'Talk-to' on Father Lawrence
+    SCRIPT: NPCs.closest("Father Lawrence").interact("Talk-to");
+
+[02:32:44] USER_ACTION: Talk-to | NPC_Tile: (3254, 3487, 0)
+[02:32:47] Position: Arrived at (3255, 3487, 0)
+[02:33:04] QUEST STEP 5: CONFIG DISCOVERED: Unknown Quest config 144 changed from 30 to 40
+    SCRIPT: // DISCOVERED: Quest uses config 144 (value 30 → 40)
+
+[02:33:13] Movement: Started significant journey from (3255, 3487, 0)
+[02:33:30] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[02:33:33] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[02:33:34] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[02:33:40] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[02:33:41] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[02:33:44] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[02:33:47] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[02:33:49] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[02:33:52] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[02:33:55] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[02:34:02] ACTION: Completed journey: 120 tiles
+    SCRIPT: Walking.walk(new Tile(3281, 3370, 0))
+
+[02:34:02] Journey: Walked 120 tiles in 49s | (3255, 3487, 0) → (3281, 3370, 0)
+[02:34:02] Position: Arrived at (3281, 3370, 0)
+[02:34:04] Movement: Started significant journey from (3281, 3370, 0)
+[02:34:07] ACTION: Selected 'Pick-from' on Cadava bush
+    SCRIPT: // Pick-from on Cadava bush
+
+[02:34:07] USER_ACTION: Pick-from | Target: Cadava bush
+[02:34:09] Position: Arrived at (3271, 3366, 0)
+[02:34:24] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[02:34:40] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[02:34:42] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[02:34:43] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[02:34:48] ACTION: Selected 'Talk-to' on Apothecary
+    SCRIPT: NPCs.closest("Apothecary").interact("Talk-to");
+
+[02:34:48] USER_ACTION: Talk-to | NPC_Tile: (3197, 3406, 0)
+[02:34:50] ACTION: Completed journey: 84 tiles
+    SCRIPT: Walking.walk(new Tile(3197, 3405, 0))
+
+[02:34:50] Journey: Walked 84 tiles in 38s | (3271, 3366, 0) → (3197, 3405, 0)
+[02:34:50] Position: Arrived at (3197, 3405, 0)
+[02:35:36] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Talk about Romeo & Juliet., Do you know a potion to make hair fall out?, Have you got any good potions to give away?, No thanks.]
+
+[02:35:51] QUEST STEP 6: CONFIG DISCOVERED: Unknown Quest config 144 changed from 40 to 50
+    SCRIPT: // DISCOVERED: Quest uses config 144 (value 40 → 50)
+
+[02:35:58] Movement: Started significant journey from (3197, 3405, 0)
+[02:35:59] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[02:36:02] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[02:36:10] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[02:36:12] ACTION: Completed journey: 31 tiles
+    SCRIPT: Walking.walk(new Tile(3191, 3435, 0))
+
+[02:36:12] Journey: Walked 31 tiles in 14s | (3197, 3405, 0) → (3191, 3435, 0)
+[02:36:12] Position: Arrived at (3191, 3435, 0)
+[02:36:14] Movement: Started significant journey from (3191, 3435, 0)
+[02:36:23] Position: Arrived at (3167, 3434, 0)
+[02:36:23] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[02:36:23] USER_ACTION: Climb-up | Object_Tile: (3156, 3435, 0)
+[02:36:24] Movement: Started significant journey from (3167, 3434, 0)
+[02:36:29] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[02:36:29] USER_ACTION: Open | Object_Tile: (3159, 3438, 1)
+[02:36:31] Position: Arrived at (3157, 3431, 1)
+[02:36:31] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[02:36:31] USER_ACTION: Open | Object_Tile: (3157, 3431, 1)
+[02:36:36] ACTION: Selected 'Talk-to' on Juliet
+    SCRIPT: NPCs.closest("Juliet").interact("Talk-to");
+
+[02:36:36] USER_ACTION: Talk-to | NPC_Tile: (3158, 3425, 1)
+[02:36:36] Movement: Started significant journey from (3158, 3427, 1)
+[02:36:37] Position: Arrived at (3158, 3426, 1)
+[02:37:29] QUEST STEP 7: CONFIG DISCOVERED: Unknown Quest config 144 changed from 50 to 60
+    SCRIPT: // DISCOVERED: Quest uses config 144 (value 50 → 60)
+
+[02:37:37] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[02:37:37] USER_ACTION: Climb-down | Object_Tile: (3156, 3435, 1)
+[02:37:38] Movement: Started significant journey from (3157, 3425, 1)
+[02:37:41] Position: Arrived at (3155, 3435, 1)
+[02:37:59] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[02:37:59] USER_ACTION: Drop | Target: Vial
+[02:37:59] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(4) x8, Coins x232782, Vial x4, Energy potion(2)
+
+[02:37:59] ACTION: Completed journey: 50 tiles
+    SCRIPT: Walking.walk(new Tile(3210, 3429, 0))
+
+[02:37:59] Journey: Walked 50 tiles in 16s | (3160, 3435, 0) → (3210, 3429, 0)
+[02:37:59] Position: Arrived at (3210, 3429, 0)
+[02:38:00] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[02:38:01] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[02:38:01] USER_ACTION: Drop | Target: Vial
+[02:38:01] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Energy potion(4) x8, Coins x232782, Vial x3, Energy potion(1)
+
+[02:38:02] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[02:38:04] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[02:38:04] USER_ACTION: Drop | Target: Vial
+[02:38:04] ACTION: Inventory changed: Items lost/used
+    SCRIPT: // Current inventory: Energy potion(4) x8, Coins x232782, Vial x3
+
+[02:38:05] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[02:38:05] USER_ACTION: Drop | Target: Vial
+[02:38:05] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Energy potion(4) x8, Coins x232782, Vial x2
+
+[02:38:07] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[02:38:07] USER_ACTION: Drop | Target: Vial
+[02:38:07] ACTION: Inventory changed: Items lost/used
+    SCRIPT: // Current inventory: Energy potion(4) x8, Coins x232782, Vial
+
+[02:38:29] ACTION: Selected 'Talk-to' on Romeo
+    SCRIPT: NPCs.closest("Romeo").interact("Talk-to");
+
+[02:38:29] USER_ACTION: Talk-to | NPC_Tile: (3209, 3423, 0)
+[02:38:29] Movement: Started significant journey from (3210, 3429, 0)
+[02:38:32] Position: Arrived at (3212, 3423, 0)
+[02:51:40] QUEST_END: === QUEST RECORDING ENDED ===

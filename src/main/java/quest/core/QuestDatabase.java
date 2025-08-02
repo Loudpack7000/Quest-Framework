@@ -71,6 +71,16 @@ public class QuestDatabase {
             new ArrayList<>(), // skill requirements
             Arrays.asList("Raw beef", "Eye of newt", "Onion") // required items
         ));
+        
+        // Romeo and Juliet
+        questInfo.put("ROMEO_AND_JULIET", new QuestInfo(
+            "ROMEO_AND_JULIET",
+            "Romeo and Juliet",
+            1, // difficulty
+            12, // estimated duration minutes
+            new ArrayList<>(), // skill requirements
+            new ArrayList<>() // no items required to start
+        ));
     }
     
     public static QuestInfo getQuestInfo(String questId) {

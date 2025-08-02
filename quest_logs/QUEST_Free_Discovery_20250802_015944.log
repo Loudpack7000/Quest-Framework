@@ -1,0 +1,56 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-08-02 01:59:44
+Player: 72diamond329
+Starting Location: (3219, 3428, 0)
+Starting Inventory: Energy potion(3) x2, Energy potion(4) x11, Coins x232782
+=====================================
+
+[01:59:44] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[01:59:44] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[01:59:44] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[01:59:44] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[01:59:44] ACTIVE_QUEST_DETECTED: RUNE_MYSTERIES is currently in progress
+[01:59:44] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 69 varbits (including 0-values)
+
+[01:59:44] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[01:59:50] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Yes, I have seen her actually!
+
+[01:59:57] Movement: Started significant journey from (3219, 3428, 0)
+[01:59:58] Position: Arrived at (3220, 3428, 0)
+[02:00:00] ACTION: Selected 'Talk-to' on Romeo
+    SCRIPT: NPCs.closest("Romeo").interact("Talk-to");
+
+[02:00:00] USER_ACTION: Talk-to | NPC_Tile: (3219, 3427, 0)
+[02:00:37] ACTION: Selected 'Talk-to' on Romeo
+    SCRIPT: NPCs.closest("Romeo").interact("Talk-to");
+
+[02:00:37] USER_ACTION: Talk-to | NPC_Tile: (3219, 3427, 0)
+[02:00:38] Movement: Started significant journey from (3219, 3429, 0)
+[02:00:38] Position: Arrived at (3219, 3428, 0)
+[02:00:40] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Yes, I have seen her actually!
+
+[02:00:50] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes., No.]
+
+[02:01:05] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Is there anything else you can tell me about Juliet?
+
+[02:01:09] QUEST STEP 3: CONFIG DISCOVERED: Unknown Quest config 144 changed from 0 to 10
+    SCRIPT: // DISCOVERED: Quest uses config 144 (value 0 → 10)
+
+[02:01:09] Movement: Started significant journey from (3219, 3427, 0)
+[02:02:39] ACTION: Selected 'Dismiss' on Capt' Arnav
+    SCRIPT: // Dismiss on Capt' Arnav
+
+[02:02:39] USER_ACTION: Dismiss | Target: Capt' Arnav
+[02:14:57] QUEST_END: === QUEST RECORDING ENDED ===

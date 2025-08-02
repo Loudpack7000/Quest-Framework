@@ -1,10 +1,10 @@
 @echo off
 echo ========================================
-echo    AI Quest Framework v7.5 - Builder
+echo    AI Quest Framework v7.6 - Builder
 echo ========================================
 echo Script Name: "AI Quest Framework"
 echo Author: Leone
-echo Version: 7.5 (Reliable Dialogue Detection + Unified Item Gathering + Vampire Slayer)
+echo Version: 7.6 (Tree-Based Quest System + Romeo and Juliet + GE Integration)
 echo Category: UTILITY
 echo ========================================
 
@@ -34,6 +34,10 @@ if exist "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.4.jar" (
 if exist "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.5.jar" (
     del "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.5.jar"
     echo   [SUCCESS] Removed previous AI_Quest_Framework_v7.5.jar
+)
+if exist "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.6.jar" (
+    del "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.6.jar"
+    echo   [SUCCESS] Removed previous AI_Quest_Framework_v7.6.jar
 )
 echo - Old versions cleaned up
 
@@ -86,13 +90,13 @@ if not exist "src\main\java\quest\core\QuestExecutor.java" (
     pause
     exit /b 1
 )
-if not exist "src\main\java\quest\gui\QuestSelectionGUI.java" (
-    echo [ERROR] QuestSelectionGUI.java not found!
+if not exist "src\main\java\quest\core\QuestEventLogger.java" (
+    echo [ERROR] QuestEventLogger.java not found!
     pause
     exit /b 1
 )
-if not exist "src\main\java\quest\core\QuestEventLogger.java" (
-    echo [ERROR] QuestEventLogger.java not found!
+if not exist "src\main\java\quest\gui\QuestSelectionGUI.java" (
+    echo [ERROR] QuestSelectionGUI.java not found!
     pause
     exit /b 1
 )
@@ -186,7 +190,44 @@ if %errorlevel% neq 0 goto :compile_error
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\WitchsPotionScript.java"
 if %errorlevel% neq 0 goto :compile_error
 
-echo - Compiling quest executor...
+echo - Compiling Tree-Based Quest System...
+echo   - Compiling core tree classes...
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\core\QuestNode.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\core\QuestTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+echo   - Compiling tree node classes...
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\ActionNode.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\DecisionNode.java"
+if %errorlevel% neq 0 goto :compile_error
+
+echo   - Compiling action nodes...
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\actions\TalkToNPCNode.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\actions\WalkToLocationNode.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\actions\InteractWithObjectNode.java"
+if %errorlevel% neq 0 goto :compile_error
+
+echo   - Compiling decision nodes...
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\decisions\QuestProgressDecisionNode.java"
+if %errorlevel% neq 0 goto :compile_error
+
+echo   - Compiling quest trees...
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\RomeoAndJulietTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+echo   - Compiling tree wrapper...
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\core\TreeQuestWrapper.java"
+if %errorlevel% neq 0 goto :compile_error
+
+echo - Compiling quest executor (depends on tree system)...
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\core\QuestExecutor.java"
 if %errorlevel% neq 0 goto :compile_error
 
@@ -204,18 +245,18 @@ echo [SUCCESS] All Java files compiled successfully
 
 echo [5/7] Creating JAR file...
 cd target\classes
-jar cf "..\AI_Quest_Framework_v7.5.jar" quest\*
+jar cf "..\AI_Quest_Framework_v7.6.jar" quest\*
 cd ..\..
 
-if not exist "target\AI_Quest_Framework_v7.5.jar" (
+if not exist "target\AI_Quest_Framework_v7.6.jar" (
     echo [ERROR] JAR file creation failed!
     pause
     exit /b 1
 )
-echo [SUCCESS] JAR file created: AI_Quest_Framework_v7.5.jar
+echo [SUCCESS] JAR file created: AI_Quest_Framework_v7.6.jar
 
 echo [6/7] Installing to DreamBot Scripts directory...
-copy "target\AI_Quest_Framework_v7.5.jar" "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.5.jar"
+copy "target\AI_Quest_Framework_v7.6.jar" "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.6.jar"
 if %errorlevel% neq 0 (
     echo [ERROR] Failed to copy JAR to DreamBot Scripts directory!
     echo Please check if DreamBot directory exists: C:\Users\Leone\DreamBot\Scripts\
@@ -225,8 +266,8 @@ if %errorlevel% neq 0 (
 echo [SUCCESS] New version installed to DreamBot!
 
 echo [7/7] Final verification...
-if exist "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.5.jar" (
-    echo [SUCCESS] AI Quest Framework v7.5 is ready!
+if exist "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.6.jar" (
+    echo [SUCCESS] AI Quest Framework v7.6 is ready!
 ) else (
     echo [ERROR] Installation verification failed!
     pause
@@ -234,36 +275,37 @@ if exist "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.5.jar" (
 )
 
 echo ========================================
-echo [SUCCESS] AI QUEST FRAMEWORK v7.5 INSTALLED
+echo [SUCCESS] AI QUEST FRAMEWORK v7.6 INSTALLED
 echo ========================================
-echo Script Location: C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.5.jar
-echo Script Name: "AI Quest Framework v7.5"
+echo Script Location: C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.6.jar
+echo Script Name: "AI Quest Framework v7.6"
 echo Author: Leone
-echo Version: 7.5 (Reliable Dialogue Detection + Unified Item Gathering + Vampire Slayer)
+echo Version: 7.6 (Tree-Based Quest System + Romeo and Juliet + GE Integration)
 echo Category: UTILITY
 echo ========================================
-echo Features in v7.5:
-echo - Reliable dialogue option detection using state-based monitoring
-echo - Universal DialogueUtil with DialogueStep pattern for complex dialogue sequences
-echo - GrandExchangeUtil with intelligent price increase strategies (5%-50%)
-echo - QuestData storage system for centralized quest information management
-echo - Enhanced logging system with QuestLogger and QuestEventLogger
-echo - Scalable architecture supporting dialogue, Grand Exchange, and item management
-echo - Cook's Assistant and Vampire Slayer quest implementations
+echo Features in v7.6:
+echo - Tree-based quest execution system with dynamic branching
+echo - Romeo and Juliet quest implementation with complete dialogue handling
+echo - GrandExchangeUtil integration for automated item purchasing
+echo - Action nodes: TalkToNPC, WalkToLocation, InteractWithObject
+echo - Decision nodes: QuestProgressDecision for config-based branching
+echo - Progress-based quest resumption from any step
+echo - Enhanced error handling and retry logic
+echo - Scalable architecture for easy quest addition
 echo Quest logs saved to: quest_logs\
 echo ========================================
 
 echo.
 echo [IMPORTANT NOTES]:
 echo 1. RESTART DreamBot completely to clear script cache
-echo 2. Look for "AI Quest Framework v7.5" in your scripts
+echo 2. Look for "AI Quest Framework v7.6" in your scripts
 echo 3. If still showing old version, click "Refresh Scripts"
 echo.
-echo Ready to test! The framework includes universal utilities for scalable automation.
+echo Ready to test! The tree-based system includes Romeo and Juliet quest.
 
 echo [CLEANUP] Keeping target folder for debugging...
 echo Target folder preserved at: target\
-echo JAR file location: target\AI_Quest_Framework_v7.5.jar
+echo JAR file location: target\AI_Quest_Framework_v7.6.jar
 
 pause
 goto :end

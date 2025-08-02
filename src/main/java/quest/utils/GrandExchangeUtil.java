@@ -11,6 +11,7 @@ import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Logger;
+import java.util.Arrays;
 
 /**
  * Grand Exchange Utility for automated trading
@@ -627,6 +628,149 @@ public class GrandExchangeUtil {
         @Override
         public String toString() {
             return quantity + "x " + itemName + " (" + strategy + ")";
+        }
+    }
+    
+    /**
+     * Quest Tree Node wrapper for Grand Exchange operations
+     * This allows GrandExchangeUtil to be used in the tree-based quest system
+     */
+    public static abstract class GrandExchangeNode {
+        protected final ItemRequest[] itemRequests;
+        protected final String description;
+        
+        public GrandExchangeNode(String description, ItemRequest... itemRequests) {
+            this.description = description;
+            this.itemRequests = itemRequests;
+        }
+        
+        /**
+         * Execute the Grand Exchange purchase
+         * @return true if all items were successfully purchased
+         */
+        public boolean execute() {
+            Logger.log("=== QUEST TREE: " + description + " ===");
+            
+            // Log what we're trying to buy
+            Logger.log("Purchasing quest items:");
+            for (ItemRequest request : itemRequests) {
+                Logger.log("  - " + request.toString());
+            }
+            
+            // Calculate total cost
+            int totalCost = calculateTotalCost(itemRequests);
+            int availableCoins = Inventory.count("Coins");
+            Logger.log("Total cost: " + totalCost + " gp, Available: " + availableCoins + " gp");
+            
+            // Check if we have enough coins
+            if (!hasEnoughCoins(itemRequests)) {
+                Logger.log("[ERROR] Not enough coins for quest items!");
+                return false;
+            }
+            
+            // Execute the purchase
+            boolean success = buyItems(itemRequests);
+            
+            if (success) {
+                Logger.log("[SUCCESS] All quest items purchased successfully!");
+            } else {
+                Logger.log("[FAILED] Could not purchase all required quest items");
+            }
+            
+            return success;
+        }
+        
+        /**
+         * Get description of this node's purpose
+         */
+        public String getDescription() {
+            return description;
+        }
+        
+        /**
+         * Get the items this node will purchase
+         */
+        public ItemRequest[] getItemRequests() {
+            return itemRequests.clone();
+        }
+        
+        /**
+         * Check if we already have all required items
+         * @return true if no purchase needed
+         */
+        public boolean isAlreadyComplete() {
+            for (ItemRequest request : itemRequests) {
+                if (Inventory.count(request.getItemName()) < request.getQuantity()) {
+                    return false;
+                }
+            }
+            Logger.log("All items already in inventory, skipping GE purchase");
+            return true;
+        }
+        
+        /**
+         * Get items we still need to buy
+         */
+        public ItemRequest[] getMissingItems() {
+            java.util.List<ItemRequest> missing = new java.util.ArrayList<>();
+            
+            for (ItemRequest request : itemRequests) {
+                int currentCount = Inventory.count(request.getItemName());
+                int needed = request.getQuantity() - currentCount;
+                
+                if (needed > 0) {
+                    missing.add(new ItemRequest(
+                        request.getItemName(), 
+                        needed, 
+                        request.getStrategy(), 
+                        request.getTimeoutMs()
+                    ));
+                }
+            }
+            
+            return missing.toArray(new ItemRequest[0]);
+        }
+    }
+    
+    /**
+     * Pre-built Grand Exchange nodes for common quest scenarios
+     */
+    public static class QuestGENodes {
+        
+        /**
+         * Cook's Assistant quest items
+         */
+        public static GrandExchangeNode cooksAssistantItems() {
+            return new GrandExchangeNode("Cook's Assistant - Buy Ingredients") {
+                {
+                    // Constructor body - items are set in parent constructor
+                }
+            };
+        }
+        
+        /**
+         * Create a custom quest item buying node
+         */
+        public static GrandExchangeNode questItems(String questName, ItemRequest... items) {
+            return new GrandExchangeNode(questName + " - Buy Quest Items", items) {
+                {
+                    // Constructor body - items are set in parent constructor
+                }
+            };
+        }
+        
+        /**
+         * Emergency supplies node (food, teleports, etc.)
+         */
+        public static GrandExchangeNode emergencySupplies() {
+            return new GrandExchangeNode("Buy Emergency Supplies",
+                new ItemRequest("Lobster", 5, PriceStrategy.MODERATE),
+                new ItemRequest("Varrock teleport", 2, PriceStrategy.MODERATE)
+            ) {
+                {
+                    // Constructor body - items are set in parent constructor
+                }
+            };
         }
     }
 }

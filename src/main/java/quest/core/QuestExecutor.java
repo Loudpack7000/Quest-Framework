@@ -6,6 +6,7 @@ import quest.quests.RuneMysteriesScript;
 import quest.quests.ImpCatcherScript;
 import quest.quests.LemonTutQuest;
 import quest.quests.WitchsPotionScript;
+import quest.trees.RomeoAndJulietTree;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.utilities.Timer;
 import org.dreambot.api.script.AbstractScript;
@@ -350,6 +351,8 @@ public class QuestExecutor {
                 return new ImpCatcherScript();
             case "WITCHS_POTION":
                 return new WitchsPotionScript();
+            case "ROMEO_AND_JULIET":
+                return new TreeQuestWrapper(new RomeoAndJulietTree(), questId, "Romeo and Juliet");
             case "RESTLESS_GHOST": 
                 // TODO: Implement Restless Ghost script
                 log("Restless Ghost script not yet implemented");

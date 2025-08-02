@@ -73,7 +73,7 @@ public class QuestSelectionGUI extends JFrame {
     }
     
     private void createFallbackGUI() {
-        setTitle("AI Quest Framework v7.4 (Fallback Mode)");
+        setTitle("AI Quest Framework v7.6 (Fallback Mode)");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setSize(400, 200);
         JPanel panel = new JPanel();
@@ -82,7 +82,7 @@ public class QuestSelectionGUI extends JFrame {
     }
     
     private void initializeGUI() {
-        setTitle("AI Quest Framework v7.4");
+        setTitle("AI Quest Framework v7.6");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setResizable(true);
         setAlwaysOnTop(true);
@@ -128,7 +128,7 @@ public class QuestSelectionGUI extends JFrame {
         titleLabel.setForeground(UIManager.getColor("Label.foreground"));
         
         // Version
-        JLabel versionLabel = new JLabel("v7.4 - Advanced Quest Automation");
+        JLabel versionLabel = new JLabel("v7.6 - Tree-Based Quest System");
         versionLabel.setFont(new Font("Segoe UI", Font.ITALIC, 12));
         versionLabel.setForeground(UIManager.getColor("Label.foreground"));
         
