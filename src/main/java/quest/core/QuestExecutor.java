@@ -1,12 +1,16 @@
 package quest.core;
 
 import quest.quests.VampireSlayerScript;
-import quest.quests.CooksAssistantScript;
-import quest.quests.RuneMysteriesScript;
+
+
 import quest.quests.ImpCatcherScript;
 import quest.quests.LemonTutQuest;
-import quest.quests.WitchsPotionScript;
+
 import quest.trees.RomeoAndJulietTree;
+import quest.trees.RuneMysteriesTree;
+import quest.trees.CooksAssistantTree;
+import quest.trees.WitchsPotionTree;
+import quest.trees.SheepShearerTree;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.utilities.Timer;
 import org.dreambot.api.script.AbstractScript;
@@ -344,15 +348,17 @@ public class QuestExecutor {
             case "VAMPIRE_SLAYER":
                 return new VampireSlayerScript();
             case "COOKS_ASSISTANT":
-                return new CooksAssistantScript();
+                return new TreeQuestWrapper(new CooksAssistantTree(), questId, "Cook's Assistant");
             case "RUNE_MYSTERIES":
-                return new RuneMysteriesScript();
+                return new TreeQuestWrapper(new RuneMysteriesTree(), questId, "Rune Mysteries");
             case "IMP_CATCHER":
                 return new ImpCatcherScript();
             case "WITCHS_POTION":
-                return new WitchsPotionScript();
+                return new TreeQuestWrapper(new WitchsPotionTree(), questId, "Witch's Potion");
             case "ROMEO_AND_JULIET":
                 return new TreeQuestWrapper(new RomeoAndJulietTree(), questId, "Romeo and Juliet");
+            case "SHEEP_SHEARER":
+                return new TreeQuestWrapper(new SheepShearerTree(), questId, "Sheep Shearer");
             case "RESTLESS_GHOST": 
                 // TODO: Implement Restless Ghost script
                 log("Restless Ghost script not yet implemented");

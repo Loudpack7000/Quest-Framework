@@ -10,8 +10,7 @@ echo ========================================
 
 echo [1/7] Cleaning old builds and removing old versions...
 REM Clean local build files
-if exist "target\classes" rmdir /s /q "target\classes"
-if exist "target\*.jar" del /q "target\*.jar"
+if exist "target" rmdir /s /q "target"
 
 REM Remove ALL old versions from DreamBot Scripts folder
 echo - Removing old versions from DreamBot...
@@ -100,11 +99,7 @@ if not exist "src\main\java\quest\gui\QuestSelectionGUI.java" (
     pause
     exit /b 1
 )
-if not exist "src\main\java\quest\quests\CooksAssistantScript.java" (
-    echo [ERROR] CooksAssistantScript.java not found!
-    pause
-    exit /b 1
-)
+
 if not exist "src\main\java\quest\quests\LemonTutQuest.java" (
     echo [ERROR] LemonTutQuest.java not found!
     pause
@@ -115,11 +110,7 @@ if not exist "src\main\java\quest\quests\VampireSlayerScript.java" (
     pause
     exit /b 1
 )
-if not exist "src\main\java\quest\quests\RuneMysteriesScript.java" (
-    echo [ERROR] RuneMysteriesScript.java not found!
-    pause
-    exit /b 1
-)
+
 if not exist "src\main\java\quest\SimpleQuestBot.java" (
     echo [ERROR] SimpleQuestBot.java not found!
     pause
@@ -175,20 +166,17 @@ echo - Compiling quest implementations...
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\LemonTutQuest.java"
 if %errorlevel% neq 0 goto :compile_error
 
-javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\CooksAssistantScript.java"
-if %errorlevel% neq 0 goto :compile_error
+
 
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\VampireSlayerScript.java"
 if %errorlevel% neq 0 goto :compile_error
 
-javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\RuneMysteriesScript.java"
-if %errorlevel% neq 0 goto :compile_error
+
 
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\ImpCatcherScript.java"
 if %errorlevel% neq 0 goto :compile_error
 
-javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\WitchsPotionScript.java"
-if %errorlevel% neq 0 goto :compile_error
+
 
 echo - Compiling Tree-Based Quest System...
 echo   - Compiling core tree classes...
@@ -219,8 +207,24 @@ echo   - Compiling decision nodes...
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\decisions\QuestProgressDecisionNode.java"
 if %errorlevel% neq 0 goto :compile_error
 
+echo   - Compiling QuestTree base class...
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\core\QuestTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
 echo   - Compiling quest trees...
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\RomeoAndJulietTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\RuneMysteriesTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\CooksAssistantTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\WitchsPotionTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\SheepShearerTree.java"
 if %errorlevel% neq 0 goto :compile_error
 
 echo   - Compiling tree wrapper...
@@ -303,9 +307,18 @@ echo 3. If still showing old version, click "Refresh Scripts"
 echo.
 echo Ready to test! The tree-based system includes Romeo and Juliet quest.
 
-echo [CLEANUP] Keeping target folder for debugging...
-echo Target folder preserved at: target\
+echo [CLEANUP] Cleaning up build artifacts...
 echo JAR file location: target\AI_Quest_Framework_v7.6.jar
+echo.
+echo Do you want to remove the target folder? (Y/N)
+set /p cleanup_choice=
+if /i "%cleanup_choice%"=="Y" (
+    echo Removing target folder...
+    rmdir /s /q "target"
+    echo [SUCCESS] Target folder removed
+) else (
+    echo Target folder preserved at: target\
+)
 
 pause
 goto :end

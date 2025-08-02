@@ -42,23 +42,31 @@ public class TalkToNPCNode extends ActionNode {
     protected boolean performAction() {
         try {
             log("Walking to expected location: " + npcLocation);
-            if (!Walking.walk(npcLocation)) {
-                log("Failed to initiate walk to NPC location");
-                return false;
+            
+            // NO TIMEOUT WALKING - Keep trying until we arrive
+            int failedAttempts = 0;
+            while (Players.getLocal().getTile().distance(npcLocation) > 8) {
+                double currentDistance = Players.getLocal().getTile().distance(npcLocation);
+                log("Current distance to target: " + String.format("%.1f", currentDistance) + " tiles");
+                
+                if (!Walking.walk(npcLocation)) {
+                    failedAttempts++;
+                    log("Walking.walk() failed (attempt " + failedAttempts + ")");
+                    if (failedAttempts > 15) {
+                        log("Failed to walk to NPC location after 15 failed attempts - pathfinder may be stuck");
+                        return false;
+                    }
+                } else {
+                    failedAttempts = 0; // Reset on successful walk initiation
+                    log("Walk initiated successfully, waiting for movement...");
+                }
+                
+                // Wait a bit before trying again
+                Sleep.sleep(1500, 2500);
             }
             
-            // Wait for arrival - check if we're within reasonable distance
-            boolean arrived = Sleep.sleepUntil(() -> {
-                double distance = Players.getLocal().getTile().distance(npcLocation);
-                return distance < 8; // More lenient distance check
-            }, 15000); // Longer timeout
+            log("Successfully arrived near NPC location: " + Players.getLocal().getTile());
             
-            if (!arrived) {
-                log("Failed to arrive at NPC location within timeout");
-                return false;
-            }
-            
-            log("Successfully walked to NPC area");
             // Now look for the NPC
             NPC targetNPC = NPCs.closest(npcName);
             if (targetNPC == null) {
@@ -66,27 +74,37 @@ public class TalkToNPCNode extends ActionNode {
                 return false;
             }
             log("Found NPC: " + npcName + " at " + targetNPC.getTile());
+            
             // Walk closer if needed
             if (targetNPC.distance() > 5) {
                 log("NPC is " + String.format("%.1f", targetNPC.distance()) + " tiles away, walking closer");
                 final NPC finalNPC = targetNPC;
-                if (!Walking.walk(targetNPC.getTile())) {
-                    log("Failed to initiate walk to NPC");
-                    return false;
-                }
-                boolean close = Sleep.sleepUntil(() -> finalNPC.distance() < 6, 8000);
-                if (!close) {
-                    log("Failed to walk close to NPC, current distance: " + String.format("%.1f", finalNPC.distance()));
-                    return false;
+                
+                // NO TIMEOUT WALKING for getting close to NPC
+                int npcFailedAttempts = 0;
+                while (finalNPC.distance() > 5) {
+                    if (!Walking.walk(targetNPC.getTile())) {
+                        npcFailedAttempts++;
+                        log("Failed to walk to NPC (attempt " + npcFailedAttempts + ")");
+                        if (npcFailedAttempts > 10) {
+                            log("Failed to walk close to NPC after 10 attempts");
+                            return false;
+                        }
+                    } else {
+                        npcFailedAttempts = 0;
+                    }
+                    Sleep.sleep(1200, 1800);
                 }
                 log("Successfully walked close to NPC");
             }
+            
             // Interact with the NPC
             log("Attempting to talk to " + npcName);
             if (!targetNPC.interact("Talk-to")) {
                 log("Failed to interact with NPC");
                 return false;
             }
+            
             // Wait for dialogue to open
             boolean dialogueOpened = Sleep.sleepUntil(() -> Dialogues.inDialogue(), 7000);
             if (!dialogueOpened) {
@@ -94,10 +112,12 @@ public class TalkToNPCNode extends ActionNode {
                 return false;
             }
             log("Successfully initiated dialogue with " + npcName);
+            
             // Handle dialogue options if specified
             if (expectedDialogueOptions != null && selectedOption != null) {
                 return handleDialogueOptions();
             }
+            
             // If no specific dialogue handling, just continue through dialogue
             return continueDialogue();
         } catch (Exception e) {
@@ -135,6 +155,9 @@ public class TalkToNPCNode extends ActionNode {
             for (int i = 0; i < options.length; i++) {
                 if (options[i].contains(selectedOption)) {
                     log("Selecting dialogue option " + (i + 1) + ": " + options[i]);
+                    
+                    // MEXXXY'S SOLUTION: Log the selected option by index
+                    log("DIALOGUE OPTION SELECTED: " + options[i] + " (index: " + i + ")");
                     
                     if (Dialogues.chooseOption(i + 1)) {
                         log("Successfully selected dialogue option");
@@ -193,7 +216,15 @@ public class TalkToNPCNode extends ActionNode {
     private boolean waitForDialogueComplete() {
         try {
             // Continue through any remaining dialogue
-            return continueDialogue();
+            boolean dialogueComplete = continueDialogue();
+            
+            if (dialogueComplete) {
+                // For quest dialogues, wait a bit for config changes to register
+                log("Dialogue completed, waiting for quest state to update...");
+                Sleep.sleep(2000, 3000);
+            }
+            
+            return dialogueComplete;
         } catch (Exception e) {
             log("Exception waiting for dialogue completion: " + e.getMessage());
             return false;

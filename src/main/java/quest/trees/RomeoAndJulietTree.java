@@ -9,10 +9,11 @@ import quest.nodes.actions.InteractWithObjectNode;
 import quest.nodes.decisions.QuestProgressDecisionNode;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.settings.PlayerSettings;
+import org.dreambot.api.methods.interactive.Players;
 
 /**
  * Romeo and Juliet Quest Tree
- * Based on quest log data from user completion
+ * SIMPLIFIED LOGIC: Use location + config to determine next step
  * Config 144 tracks quest progress: 0 -> 10 -> 20 -> 30 -> 40 -> 50 -> 60 (complete)
  */
 public class RomeoAndJulietTree extends QuestTree {
@@ -30,7 +31,7 @@ public class RomeoAndJulietTree extends QuestTree {
     private static final Tile APOTHECARY_LOCATION = new Tile(3197, 3406, 0); // Apothecary
     
     // Quest nodes
-    private QuestNode questProgressCheck;
+    private QuestNode smartDecisionNode;
     private QuestNode talkToRomeoInitial;
     private QuestNode walkToJulietHouse;
     private QuestNode climbUpToJuliet;
@@ -59,21 +60,14 @@ public class RomeoAndJulietTree extends QuestTree {
         // Build all the nodes
         createNodes();
         
-        // Link the nodes together
-        linkNodes();
-        
-        // Set the root node
-        rootNode = questProgressCheck;
+        // Set the root node to our smart decision node
+        rootNode = smartDecisionNode;
     }
     
     private void createNodes() {
-        // Progress check node - determines where we are in the quest
-        questProgressCheck = new QuestProgressDecisionNode("progress_check", "Romeo and Juliet", QUEST_CONFIG);
-        
         // Step 1: Talk to Romeo initially (config 0 -> 10)
         talkToRomeoInitial = new TalkToNPCNode("talk_romeo_initial", "Romeo", ROMEO_LOCATION_1,
             new String[]{"Yes.", "No."}, "Yes", null);
-        
         // Step 2: Go to Juliet
         walkToJulietHouse = new WalkToLocationNode("walk_juliet_house", JULIET_HOUSE_GROUND, "Juliet's house");
         climbUpToJuliet = new InteractWithObjectNode("climb_up_juliet", "Staircase", "Climb-up", 
@@ -81,36 +75,55 @@ public class RomeoAndJulietTree extends QuestTree {
         talkToJuliet = new TalkToNPCNode("talk_juliet", "Juliet", JULIET_LOCATION);
         climbDownFromJuliet = new InteractWithObjectNode("climb_down_juliet", "Staircase", "Climb-down",
             new Tile(3156, 3435, 1), "Juliet's house stairs");
-        
-        // Step 3: Return to Romeo with message (config 10 -> 20 -> 30)
+        // Step 3: Return to Romeo with message (config 10 -> 20 -> 30) - FIXED DIALOGUE
         returnToRomeo = new TalkToNPCNode("return_romeo", "Romeo", ROMEO_LOCATION_2,
-            null, "Ok, thanks", null);
-        
+            new String[]{"I have a message from Juliet.", "I'm just passing by."}, 
+            "I have a message from Juliet", null);
         // Step 4: Go to Father Lawrence (config 30 -> 40)
         walkToFatherLawrence = new WalkToLocationNode("walk_father_lawrence", FATHER_LAWRENCE_LOCATION, "Father Lawrence");
         talkToFatherLawrence = new TalkToNPCNode("talk_father_lawrence", "Father Lawrence", FATHER_LAWRENCE_LOCATION);
-        
         // Step 5: Get Cadava berries and go to Apothecary (config 40 -> 50)
         walkToCadavaBush = new WalkToLocationNode("walk_cadava_bush", CADAVA_BUSH_LOCATION, "Cadava bush");
         pickCadavaBerries = new InteractWithObjectNode("pick_cadava_berries", "Cadava bush", "Pick-from",
             CADAVA_BUSH_LOCATION, "Cadava bush");
         walkToApothecary = new WalkToLocationNode("walk_apothecary", APOTHECARY_LOCATION, "Apothecary");
-        talkToApothecary = new TalkToNPCNode("talk_apothecary", "Apothecary", APOTHECARY_LOCATION,
-            new String[]{"Talk about Romeo & Juliet.", "Do you know a potion to make hair fall out?", 
-                        "Have you got any good potions to give away?", "No thanks."}, 
-            "Talk about Romeo & Juliet", null);
-        
+        talkToApothecary = new TalkToNPCNode("talk_apothecary", "Apothecary", APOTHECARY_LOCATION);
         // Step 6: Return to Juliet with potion (config 50 -> 60)
         returnToJulietWithPotion = new WalkToLocationNode("return_juliet_potion", JULIET_HOUSE_GROUND, "Juliet's house for potion");
         climbUpToJulietFinal = new InteractWithObjectNode("climb_up_juliet_final", "Staircase", "Climb-up",
             new Tile(3156, 3435, 0), "Juliet's house stairs final");
-        giveJulietPotion = new TalkToNPCNode("give_juliet_potion", "Juliet", JULIET_LOCATION);
+        giveJulietPotion = new TalkToNPCNode("give_juliet_potion", "Juliet", JULIET_LOCATION) {
+            @Override
+            protected boolean performAction() {
+                // Enhanced dialogue handling for cutscene
+                try {
+                    log("Giving Juliet the Cadava potion with enhanced dialogue handling...");
+                    
+                    // Call the parent method to handle basic NPC interaction
+                    boolean success = super.performAction();
+                    
+                    if (success) {
+                        // Additional wait for cutscene completion
+                        log("Waiting for cutscene to complete...");
+                        org.dreambot.api.utilities.Sleep.sleep(3000, 5000);
+                        
+                        // Verify quest progression by checking if potion was consumed
+                        if (!org.dreambot.api.methods.container.impl.Inventory.contains("Cadava potion")) {
+                            log("Successfully gave Juliet the potion - cutscene completed");
+                        }
+                    }
+                    
+                    return success;
+                } catch (Exception e) {
+                    log("Exception in enhanced Juliet dialogue: " + e.getMessage());
+                    return super.performAction(); // Fallback to basic handling
+                }
+            }
+        };
         climbDownFinal = new InteractWithObjectNode("climb_down_final", "Staircase", "Climb-down",
             new Tile(3156, 3435, 1), "Juliet's house stairs final");
-        
         // Step 7: Final return to Romeo (quest complete)
         finalReturnToRomeo = new TalkToNPCNode("final_return_romeo", "Romeo", ROMEO_LOCATION_2);
-        
         // Quest completion node
         questComplete = new ActionNode("quest_complete", "Quest Complete") {
             @Override
@@ -119,49 +132,104 @@ public class RomeoAndJulietTree extends QuestTree {
                 return true;
             }
         };
-    }
-    
-    private void linkNodes() {
-        // Set up the progress check branches
-        QuestProgressDecisionNode progressNode = (QuestProgressDecisionNode) questProgressCheck;
-        progressNode.addStepBranch(0, talkToRomeoInitial);      // Quest not started
-        progressNode.addStepBranch(10, walkToJulietHouse);      // Talked to Romeo, go to Juliet
-        progressNode.addStepBranch(20, returnToRomeo);          // Talked to Juliet, return to Romeo
-        progressNode.addStepBranch(30, walkToFatherLawrence);   // Romeo sent us to Father Lawrence
-        progressNode.addStepBranch(40, walkToCadavaBush);       // Father Lawrence told us about berries
-        progressNode.addStepBranch(50, returnToJulietWithPotion); // Got potion, return to Juliet
-        progressNode.addStepBranch(60, questComplete);          // Quest complete
-        progressNode.setDefaultBranch(talkToRomeoInitial);      // Default to start
-        
-        // Link the action sequences
-        // Step 1: Talk to Romeo -> Go to Juliet
-        ((ActionNode) talkToRomeoInitial).setNextNode(walkToJulietHouse);
-        ((ActionNode) walkToJulietHouse).setNextNode(climbUpToJuliet);
-        ((ActionNode) climbUpToJuliet).setNextNode(talkToJuliet);
-        ((ActionNode) talkToJuliet).setNextNode(climbDownFromJuliet);
-        ((ActionNode) climbDownFromJuliet).setNextNode(returnToRomeo);
-        
-        // Step 2: Return to Romeo -> Go to Father Lawrence
-        ((ActionNode) returnToRomeo).setNextNode(walkToFatherLawrence);
-        ((ActionNode) walkToFatherLawrence).setNextNode(talkToFatherLawrence);
-        
-        // Step 3: Father Lawrence -> Get berries -> Apothecary
-        ((ActionNode) talkToFatherLawrence).setNextNode(walkToCadavaBush);
-        ((ActionNode) walkToCadavaBush).setNextNode(pickCadavaBerries);
-        ((ActionNode) pickCadavaBerries).setNextNode(walkToApothecary);
-        ((ActionNode) walkToApothecary).setNextNode(talkToApothecary);
-        
-        // Step 4: Apothecary -> Return to Juliet with potion
-        ((ActionNode) talkToApothecary).setNextNode(returnToJulietWithPotion);
-        ((ActionNode) returnToJulietWithPotion).setNextNode(climbUpToJulietFinal);
-        ((ActionNode) climbUpToJulietFinal).setNextNode(giveJulietPotion);
-        ((ActionNode) giveJulietPotion).setNextNode(climbDownFinal);
-        
-        // Step 5: Final return to Romeo
-        ((ActionNode) climbDownFinal).setNextNode(finalReturnToRomeo);
-        ((ActionNode) finalReturnToRomeo).setNextNode(questComplete);
-        
-        // Quest complete has no next node (null = quest finished)
+        // SMART DECISION NODE - uses config + location to determine next step
+        smartDecisionNode = new QuestNode("smart_decision", "Smart Quest Decision") {
+            @Override
+            public ExecutionResult execute() {
+                int config = PlayerSettings.getConfig(QUEST_CONFIG);
+                Tile currentTile = Players.getLocal().getTile();
+                int currentZ = currentTile.getZ();
+                log("Config 144 = " + config + ", Location: " + currentTile + " (Z=" + currentZ + ")");
+                QuestNode nextStep = null;
+                if (config == 0) {
+                    nextStep = talkToRomeoInitial;
+                    log("-> Talk to Romeo (quest not started)");
+                } else if (config == 10) {
+                    if (currentZ == 0 && currentTile.distance(JULIET_HOUSE_GROUND) > 5) {
+                        nextStep = walkToJulietHouse;
+                        log("-> Walk to Juliet's house");
+                    } else if (currentZ == 0 && currentTile.distance(JULIET_HOUSE_GROUND) <= 5) {
+                        nextStep = climbUpToJuliet;
+                        log("-> Climb up to Juliet");
+                    } else if (currentZ == 1) {
+                        nextStep = talkToJuliet;
+                        log("-> Talk to Juliet");
+                    }
+                } else if (config == 20) {
+                    if (currentZ == 1) {
+                        nextStep = climbDownFromJuliet;
+                        log("-> Climb down from Juliet");
+                    } else {
+                        nextStep = returnToRomeo;
+                        log("-> Return to Romeo");
+                    }
+                } else if (config == 30) {
+                    // FIXED: Add location-based logic for Father Lawrence
+                    if (currentTile.distance(FATHER_LAWRENCE_LOCATION) > 3) {
+                        nextStep = walkToFatherLawrence;
+                        log("-> Walk to Father Lawrence");
+                    } else {
+                        nextStep = talkToFatherLawrence;
+                        log("-> Talk to Father Lawrence");
+                    }
+                } else if (config == 40) {
+                    if (!org.dreambot.api.methods.container.impl.Inventory.contains("Cadava berries")) {
+                        if (currentTile.distance(CADAVA_BUSH_LOCATION) > 3) {
+                            nextStep = walkToCadavaBush;
+                            log("-> Walk to Cadava bush");
+                        } else {
+                            nextStep = pickCadavaBerries;
+                            log("-> Pick Cadava berries");
+                        }
+                    } else {
+                        // New logic: Walk to Apothecary if more than 3 tiles away, talk if within 3 tiles
+                        if (currentTile.distance(APOTHECARY_LOCATION) > 3) {
+                            nextStep = walkToApothecary;
+                            log("-> Walk to Apothecary (more than 3 tiles away)");
+                        } else {
+                            nextStep = talkToApothecary;
+                            log("-> Talk to Apothecary (within 3 tiles)");
+                        }
+                    }
+                } else if (config == 50) {
+                    if (currentZ == 0 && currentTile.distance(JULIET_HOUSE_GROUND) > 5) {
+                        nextStep = returnToJulietWithPotion;
+                        log("-> Return to Juliet's house with potion");
+                    } else if (currentZ == 0) {
+                        nextStep = climbUpToJulietFinal;
+                        log("-> Climb up to Juliet (final)");
+                    } else if (currentZ == 1) {
+                        nextStep = giveJulietPotion;
+                        log("-> Give Juliet the potion");
+                    }
+                } else if (config == 60) {
+                    // After giving Juliet the potion, need to return to Romeo to complete quest
+                    if (currentZ == 1) {
+                        nextStep = climbDownFinal;
+                        log("-> Climb down after giving potion to Juliet");
+                    } else if (currentZ == 0 && currentTile.distance(ROMEO_LOCATION_2) > 3) {
+                        nextStep = finalReturnToRomeo;
+                        log("-> Walk to Romeo to complete quest");
+                    } else if (currentZ == 0 && currentTile.distance(ROMEO_LOCATION_2) <= 3) {
+                        nextStep = finalReturnToRomeo;
+                        log("-> Talk to Romeo to complete quest");
+                    } else {
+                        // Only mark complete after talking to Romeo
+                        nextStep = questComplete;
+                        log("-> Quest complete!");
+                    }
+                } else {
+                    log("ERROR: Unknown config value: " + config);
+                    return ExecutionResult.failure("Unknown config value: " + config);
+                }
+                if (nextStep != null) {
+                    return ExecutionResult.success(nextStep, "Next step determined: " + nextStep.getDescription());
+                } else {
+                    log("ERROR: Could not determine next step");
+                    return ExecutionResult.failure("Could not determine next step for config " + config);
+                }
+            }
+        };
     }
     
     @Override

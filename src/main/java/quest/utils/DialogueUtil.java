@@ -60,6 +60,10 @@ public class DialogueUtil {
                 for (int i = 0; i < options.length; i++) {
                     if (options[i].toLowerCase().contains(optionText.toLowerCase())) {
                         Logger.log("Selecting dialogue option: " + options[i]);
+                        
+                        // MEXXXY'S SOLUTION: Log the selected option by index
+                        Logger.log("DIALOGUE OPTION SELECTED: " + options[i] + " (index: " + i + ")");
+                        
                         if (Dialogues.chooseOption(options[i])) {
                             Sleep.sleep(1000, 2000);
                             return true;

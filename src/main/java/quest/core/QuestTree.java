@@ -1,120 +1,97 @@
 package quest.core;
 
 import org.dreambot.api.utilities.Logger;
-import quest.utils.QuestLogger;
 
 /**
- * Base class for all quest trees
- * Handles tree execution, state management, and logging
+ * Base class for tree-based quest implementations
+ * Provides a structured approach to quest execution using decision trees
  */
 public abstract class QuestTree {
     
     protected final String questName;
-    protected final QuestLogger questLogger;
     protected QuestNode rootNode;
     protected QuestNode currentNode;
-    protected boolean questCompleted;
-    protected boolean questFailed;
+    protected boolean questComplete = false;
+    protected boolean questFailed = false;
+    protected String failureReason = null;
     
     public QuestTree(String questName) {
         this.questName = questName;
-        this.questLogger = QuestLogger.getInstance();
-        this.questCompleted = false;
-        this.questFailed = false;
-        
-        // Build the quest tree structure
         buildTree();
-        
-        Logger.log("=== QUEST TREE INITIALIZED: " + questName + " ===");
-        Logger.log("Root node: " + (rootNode != null ? rootNode.getDescription() : "NULL"));
     }
     
     /**
-     * Abstract method - each quest must implement its own tree structure
+     * Build the quest decision tree - must be implemented by subclasses
      */
     protected abstract void buildTree();
     
     /**
      * Execute one iteration of the quest tree
-     * @return true if quest should continue, false if completed or failed
+     * @return true if quest should continue, false if quest is complete/failed
      */
     public boolean execute() {
-        if (questCompleted) {
-            Logger.log("Quest " + questName + " already completed!");
-            return false;
-        }
-        
-        if (questFailed) {
-            Logger.log("Quest " + questName + " has failed!");
-            return false;
-        }
-        
-        if (currentNode == null) {
-            currentNode = rootNode;
-        }
-        
-        if (currentNode == null) {
-            Logger.log("ERROR: No current node to execute!");
-            questFailed = true;
-            return false;
-        }
-        
         try {
-            Logger.log("=== EXECUTING NODE: " + currentNode.getDescription() + " ===");
-            
-            // Execute the current node
-            QuestNode.ExecutionResult result = currentNode.execute();
-            
-            switch (result.getStatus()) {
-                case SUCCESS:
-                    Logger.log("[SUCCESS] Node completed: " + currentNode.getDescription());
-                    QuestNode nextNode = result.getNextNode();
-                    
-                    if (nextNode == null) {
-                        Logger.log("=== QUEST COMPLETED: " + questName + " ===");
-                        questCompleted = true;
-                        return false;
-                    } else {
-                        currentNode = nextNode;
-                        Logger.log("Moving to next node: " + nextNode.getDescription());
-                    }
-                    break;
-                    
-                case FAILED:
-                    Logger.log("[FAILED] Node failed: " + currentNode.getDescription());
-                    Logger.log("Failure reason: " + result.getFailureReason());
-                    questFailed = true;
-                    return false;
-                    
-                case IN_PROGRESS:
-                    Logger.log("[IN_PROGRESS] Node still executing: " + currentNode.getDescription());
-                    break;
-                    
-                case RETRY:
-                    Logger.log("[RETRY] Node needs retry: " + currentNode.getDescription());
-                    break;
+            // Initialize current node if not set
+            if (currentNode == null) {
+                currentNode = rootNode;
             }
             
+            if (currentNode == null) {
+                log("ERROR: No current node to execute");
+                questFailed = true;
+                failureReason = "No current node to execute";
+                return false;
+            }
+            
+            log("Executing node: " + currentNode.getDescription());
+            QuestNode.ExecutionResult result = currentNode.execute();
+            
+            if (result.isSuccess()) {
+                QuestNode nextNode = result.getNextNode();
+                if (nextNode != null) {
+                    log("Moving to next node: " + nextNode.getDescription());
+                    currentNode = nextNode;
+                } else {
+                    // Return to root node (smart decision node)
+                    log("Action completed, returning to root decision node");
+                    currentNode = rootNode;
+                }
+                return true; // Continue executing
+                
+            } else if (result.isFailed()) {
+                log("Quest failed: " + result.getFailureReason());
+                questFailed = true;
+                failureReason = result.getFailureReason();
+                return false;
+                
+            } else if (result.isRetry()) {
+                log("Retrying current node: " + result.getStatusMessage());
+                // Keep current node the same for retry
+                return true;
+                
+            } else if (result.isInProgress()) {
+                log("Node in progress: " + result.getStatusMessage());
+                return true;
+            }
+            
+            // Unknown result status
+            log("Unknown execution result status: " + result.getStatus());
             return true;
             
         } catch (Exception e) {
-            Logger.log("CRITICAL ERROR in quest tree execution: " + e.getMessage());
+            log("Exception during quest tree execution: " + e.getMessage());
             e.printStackTrace();
             questFailed = true;
+            failureReason = "Exception during execution: " + e.getMessage();
             return false;
         }
     }
     
     /**
-     * Get the current quest progress as a percentage
-     */
-    public abstract int getQuestProgress();
-    
-    /**
      * Check if the quest is complete
      */
     public boolean isQuestComplete() {
-        return questCompleted;
+        return questComplete;
     }
     
     /**
@@ -125,6 +102,13 @@ public abstract class QuestTree {
     }
     
     /**
+     * Get the failure reason if quest failed
+     */
+    public String getFailureReason() {
+        return failureReason;
+    }
+    
+    /**
      * Get the quest name
      */
     public String getQuestName() {
@@ -132,27 +116,78 @@ public abstract class QuestTree {
     }
     
     /**
-     * Get the current node description for debugging
-     */
-    public String getCurrentNodeDescription() {
-        return currentNode != null ? currentNode.getDescription() : "No current node";
-    }
-    
-    /**
-     * Reset the quest tree to start from beginning
+     * Reset the quest tree to initial state
      */
     public void reset() {
         currentNode = rootNode;
-        questCompleted = false;
+        questComplete = false;
         questFailed = false;
-        Logger.log("Quest tree reset: " + questName);
+        failureReason = null;
+        log("Quest tree reset to initial state");
     }
     
     /**
-     * Force move to a specific node (for debugging/testing)
+     * Mark the quest as complete
      */
-    public void setCurrentNode(QuestNode node) {
-        this.currentNode = node;
-        Logger.log("Manually set current node to: " + node.getDescription());
+    protected void setQuestComplete() {
+        questComplete = true;
+        log("Quest marked as complete: " + questName);
+    }
+    
+    /**
+     * Mark the quest as failed
+     */
+    protected void setQuestFailed(String reason) {
+        questFailed = true;
+        failureReason = reason;
+        log("Quest marked as failed: " + questName + " - " + reason);
+    }
+    
+    /**
+     * Logging method for quest trees
+     */
+    protected void log(String message) {
+        String logMessage = "[" + questName + "] " + message;
+        Logger.log(logMessage);
+    }
+    
+    /**
+     * Get current node for debugging
+     */
+    public QuestNode getCurrentNode() {
+        return currentNode;
+    }
+    
+    /**
+     * Get root node for debugging
+     */
+    public QuestNode getRootNode() {
+        return rootNode;
+    }
+    
+    /**
+     * Get quest progress as a percentage (0-100)
+     * Subclasses should override this to provide quest-specific progress tracking
+     */
+    public int getQuestProgress() {
+        // Default implementation - return 0 if not started, 100 if complete
+        if (questComplete) {
+            return 100;
+        } else if (questFailed) {
+            return 0;
+        } else {
+            return 50; // In progress
+        }
+    }
+    
+    /**
+     * Get description of the current node being executed
+     */
+    public String getCurrentNodeDescription() {
+        if (currentNode != null) {
+            return currentNode.getDescription();
+        } else {
+            return "No current node";
+        }
     }
 }

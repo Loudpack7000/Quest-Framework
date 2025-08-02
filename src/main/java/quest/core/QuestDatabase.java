@@ -81,6 +81,16 @@ public class QuestDatabase {
             new ArrayList<>(), // skill requirements
             new ArrayList<>() // no items required to start
         ));
+        
+        // Sheep Shearer
+        questInfo.put("SHEEP_SHEARER", new QuestInfo(
+            "SHEEP_SHEARER",
+            "Sheep Shearer",
+            1, // difficulty
+            8, // estimated duration minutes
+            new ArrayList<>(), // skill requirements
+            new ArrayList<>() // no items required to start
+        ));
     }
     
     public static QuestInfo getQuestInfo(String questId) {

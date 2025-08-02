@@ -35,7 +35,7 @@ public abstract class ActionNode extends QuestNode {
             // Check if we should skip this action
             if (shouldSkip()) {
                 log("Skipping action (conditions not met)");
-                return ExecutionResult.success(nextNode, "Action skipped");
+                return ExecutionResult.success(null, "Action skipped");
             }
             
             // Perform the actual action
@@ -44,7 +44,7 @@ public abstract class ActionNode extends QuestNode {
             if (actionSuccess) {
                 log("Action completed successfully");
                 currentRetries = 0; // Reset retry counter on success
-                return ExecutionResult.success(nextNode);
+                return ExecutionResult.success(null); // Return null to go back to smart decision node
             } else {
                 currentRetries++;
                 log("Action failed (attempt " + currentRetries + "/" + maxRetries + ")");

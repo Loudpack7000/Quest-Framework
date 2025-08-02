@@ -48,12 +48,30 @@ public class InteractWithObjectNode extends ActionNode {
             
             if (targetObject == null) {
                 log("Object not found, walking to expected location: " + objectLocation);
-                Walking.walk(objectLocation);
-                boolean arrived = Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(objectLocation) < 5, 10000);
-                if (!arrived) {
-                    log("Failed to walk to object location");
-                    return false;
+                
+                // NO TIMEOUT WALKING - Keep trying until we arrive
+                int failedAttempts = 0;
+                while (Players.getLocal().getTile().distance(objectLocation) > 8) {
+                    double currentDistance = Players.getLocal().getTile().distance(objectLocation);
+                    log("Current distance to object location: " + String.format("%.1f", currentDistance) + " tiles");
+                    
+                    if (!Walking.walk(objectLocation)) {
+                        failedAttempts++;
+                        log("Walking.walk() failed (attempt " + failedAttempts + ")");
+                        if (failedAttempts > 15) {
+                            log("Failed to walk to object location after 15 failed attempts");
+                            return false;
+                        }
+                    } else {
+                        failedAttempts = 0;
+                        log("Walk initiated successfully, waiting for movement...");
+                    }
+                    
+                    Sleep.sleep(1500, 2500);
                 }
+                
+                log("Successfully arrived near object location");
+                
                 // Wait for object to appear
                 boolean found = Sleep.sleepUntil(() -> GameObjects.closest(objectName) != null, 8000);
                 if (!found) {
@@ -67,13 +85,25 @@ public class InteractWithObjectNode extends ActionNode {
             
             // Walk closer if needed
             if (targetObject.distance() > 5) {
+                log("Object is " + String.format("%.1f", targetObject.distance()) + " tiles away, walking closer");
                 final GameObject finalObject = targetObject;
-                Walking.walk(targetObject.getTile());
-                boolean close = Sleep.sleepUntil(() -> finalObject.distance() < 5, 5000);
-                if (!close) {
-                    log("Failed to walk close to object");
-                    return false;
+                
+                // NO TIMEOUT WALKING for getting close to object
+                int objectFailedAttempts = 0;
+                while (finalObject.distance() > 5) {
+                    if (!Walking.walk(targetObject.getTile())) {
+                        objectFailedAttempts++;
+                        log("Failed to walk to object (attempt " + objectFailedAttempts + ")");
+                        if (objectFailedAttempts > 10) {
+                            log("Failed to walk close to object after 10 attempts");
+                            return false;
+                        }
+                    } else {
+                        objectFailedAttempts = 0;
+                    }
+                    Sleep.sleep(1200, 1800);
                 }
+                log("Successfully walked close to object");
             }
             
             // Store current position to detect movement/changes

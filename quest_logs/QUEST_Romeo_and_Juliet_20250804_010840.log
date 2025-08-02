@@ -1,0 +1,21 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Romeo and Juliet
+Started: 2025-08-04 01:08:40
+Player: LordFareigth
+Starting Location: (3188, 3284, 0)
+Starting Inventory: Willow logs x4, Coins x60, Shears
+=====================================
+
+[01:08:40] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[01:08:40] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[01:08:40] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[01:08:40] ACTION: Quest recording started
+    SCRIPT: // Quest: Romeo and Juliet
+
+[01:09:59] ACTION: Selected 'Talk-to' on Romeo
+    SCRIPT: NPCs.closest("Romeo").interact("Talk-to");
+
+[01:09:59] USER_ACTION: Talk-to | NPC_Tile: (3214, 3418, 0)
+[01:10:51] QUEST_END: === QUEST RECORDING ENDED ===

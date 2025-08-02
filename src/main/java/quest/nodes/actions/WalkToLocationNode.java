@@ -53,21 +53,28 @@ public class WalkToLocationNode extends ActionNode {
                 return true;
             }
             
-            // Initiate walking
+            // Initiate walking with no-timeout logic
             log("Walking to " + locationDescription + "...");
-            if (!Walking.walk(targetLocation)) {
-                log("Failed to initiate walking to target location");
-                return false;
+            int failedAttempts = 0;
+            while (Players.getLocal().getTile().distance(targetLocation) > acceptableDistance) {
+                double distanceToTarget = Players.getLocal().getTile().distance(targetLocation);
+                log("Current distance to target: " + String.format("%.1f", distanceToTarget) + " tiles");
+                
+                if (!Walking.walk(targetLocation)) {
+                    failedAttempts++;
+                    log("Walking.walk() failed (attempt " + failedAttempts + ")");
+                    if (failedAttempts > 15) { // Max consecutive failures before giving up
+                        log("Failed to walk to target location after 15 failed attempts - pathfinder may be stuck");
+                        return false;
+                    }
+                } else {
+                    failedAttempts = 0; // Reset on successful walk initiation
+                    log("Walk initiated successfully, waiting for movement...");
+                }
+                Sleep.sleep(1500, 2500); // Wait a bit before trying again
             }
-            // Wait for arrival with progress monitoring
-            boolean arrived = Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(targetLocation) <= acceptableDistance, 20000);
-            if (arrived) {
-                log("Successfully reached " + locationDescription);
-                return true;
-            } else {
-                log("Failed to reach " + locationDescription + " within timeout");
-                return false;
-            }
+            log("Successfully reached " + locationDescription + ": " + Players.getLocal().getTile());
+            return true;
             
         } catch (Exception e) {
             log("Exception in WalkToLocationNode: " + e.getMessage());
@@ -76,15 +83,7 @@ public class WalkToLocationNode extends ActionNode {
         }
     }
     
-    @Override
-    public boolean shouldSkip() {
-        // Check if we're already at the target location
-        if (Players.getLocal() != null) {
-            double distance = Players.getLocal().getTile().distance(targetLocation);
-            return distance <= acceptableDistance;
-        }
-        return false;
-    }
+
     
     @Override
     public int getEstimatedDurationSeconds() {

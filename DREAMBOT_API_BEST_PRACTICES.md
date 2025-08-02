@@ -128,10 +128,25 @@ if (!Sleep.sleepUntil(() -> Inventory.count(itemName) > beforeCount, 5000)) {
     Logger.log("Item was not withdrawn");
     return false;
 }
+
+// 6. ANIMATION WAITS - Wait for player animations to complete (sheep shearing, mining, etc.)
+if (sheep.interact("Shear")) {
+    // Wait for animation to start (ensures action was accepted)
+    Sleep.sleepUntil(() -> Players.getLocal().isAnimating(), 3000);
+    // Wait for animation to finish (prevents spam-clicking)
+    Sleep.sleepUntil(() -> !Players.getLocal().isAnimating(), 5000);
+    Sleep.sleep(500, 1000); // Small delay after animation
+}
 ```
 
 **❌ DON'T do this:**
 ```java
+// Spam-clicking without waiting for animations
+while (needMoreWool) {
+    sheep.interact("Shear"); // Might click before previous action finishes
+    Sleep.sleep(1000); // Fixed delay - inefficient
+}
+
 // Fixed delays - inefficient and unreliable
 Walking.walk(targetTile);
 Sleep.sleep(10000); // Might be too short OR too long
@@ -142,6 +157,12 @@ Sleep.sleep(3000); // Bank might open in 500ms, wasting 2500ms
 
 **✅ DO this:**
 ```java
+// Smart waiting with animation checks - human-like and reliable
+if (sheep.interact("Shear")) {
+    Sleep.sleepUntil(() -> Players.getLocal().isAnimating(), 3000); // Wait for action to start
+    Sleep.sleepUntil(() -> !Players.getLocal().isAnimating(), 5000); // Wait for completion
+}
+
 // Smart waiting - efficient and reliable
 Walking.walk(targetTile);
 Sleep.sleepUntil(() -> targetArea.contains(Players.getLocal()), 15000);
@@ -156,6 +177,7 @@ Sleep.sleepUntil(() -> Bank.isOpen(), 10000);
 - **Dialogue**: 5 seconds
 - **Inventory/Bank Operations**: 3-5 seconds
 - **Quest State Changes**: 10 seconds (with fallback check)
+- **Animation Waits**: 3-5 seconds (start/finish respectively)
 
 ---
 
