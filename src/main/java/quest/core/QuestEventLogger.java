@@ -30,8 +30,6 @@ import org.dreambot.api.methods.quest.book.Quest.State;
 
 // NEW: Import action detection system
 import org.dreambot.api.script.listener.ActionListener;
-// Testing what other listeners are available
-import org.dreambot.api.script.listener.*;
 import org.dreambot.api.wrappers.widgets.MenuRow;
 
 import java.io.BufferedWriter;
@@ -65,14 +63,10 @@ public class QuestEventLogger implements ActionListener {
     // State tracking for the 7 core requirements
     private String lastInventoryState = "";
     private boolean lastDialogueState = false;
-    private String[] lastDialogueOptions = null;
     private boolean lastBankState = false;
     private int lastAnimation = -1;
     
-    // Dialogue option tracking for proper logging
-    private String lastClickedDialogueOption = "";
-    private long lastDialogueOptionClickTime = 0;
-    private static final long DIALOGUE_OPTION_COOLDOWN = 1000; // 1 second between dialogue option logs
+    // REMOVED: Unused dialogue tracking variables - now handled by onAction() with mouse position
     
     // Spam reduction tracking
     private String lastInventoryChangeType = "";
@@ -83,15 +77,12 @@ public class QuestEventLogger implements ActionListener {
     private long lastActionLogTime = 0;
     private static final long ACTION_LOG_COOLDOWN = 3000; // 3 seconds between similar action logs
     
-    // Movement logging cooldowns to reduce spam
-    private long lastMovementStateLogTime = 0;
-    private static final long MOVEMENT_STATE_LOG_COOLDOWN = 10000; // 10 seconds between movement state logs
-    private static final double MIN_SIGNIFICANT_JOURNEY_DISTANCE = 25.0; // Increased from 15.0 tiles
+    // Removed unused movement logging variables after refactoring
     
     // Journey tracking for better movement logging
     private Tile journeyStartTile = null;
     private long journeyStartTime = 0;
-    private Tile lastPosition = null; // Used by movement tracking
+    // Removed: lastPosition - unused after movement tracking refactor
     
     // NEW: Movement spam reduction
     private long lastMovementStartLog = 0;
@@ -123,26 +114,14 @@ public class QuestEventLogger implements ActionListener {
         put("DRAGON_SLAYER", 176);
     }};
     
-    // Quest progress tracking
-    private Map<String, Integer> questVarbits = new HashMap<>();
-    private Map<String, Integer> lastVarbitValues = new HashMap<>();
-    private long lastMovementTime = 0;
-    private static final long MOVEMENT_COOLDOWN = 3000; // 3 seconds between movement logs
+    // Removed: questVarbits, lastVarbitValues, lastMovementTime, MOVEMENT_COOLDOWN - unused after consolidation
     
-    // Object interaction throttling
-    private String lastInteractedObject = "";
-    private long lastObjectInteractionTime = 0;
-    private static final long OBJECT_INTERACTION_COOLDOWN = 5000; // 5 seconds between object logs
-    private Tile lastObjectInteractionTile = null;
+    // Removed: object interaction throttling variables - unused after ActionListener integration
     
     // Widget interaction tracking
     private String lastLoggedWidgetText = "";
     
-    // NEW: Comprehensive interaction tracking using DreamBot API
-    private GameObject lastTrackedGameObject = null;
-    private NPC lastTrackedNPC = null;
-    private Tile lastPlayerTile = null;
-    private String lastTrackedAction = "";
+    // Removed: comprehensive interaction tracking variables - unused after ActionListener integration
     private long lastTrackedInteractionTime = 0;
     
     // Quest completion detection cooldown (prevent level-up spam)
@@ -160,23 +139,15 @@ public class QuestEventLogger implements ActionListener {
     private long lastQuestCheckTime = 0;
     private static final long QUEST_CHECK_INTERVAL = 1000; // Check quest states every second
     
-    // Spell/Magic tracking
-    private Tab lastActiveTab = null;
+    // Magic tracking (consolidated)
     private boolean lastMagicTabState = false;
-    private String lastCastSpell = "";
     private long lastSpellCastTime = 0;
     private static final long SPELL_CAST_COOLDOWN = 1000; // 1 second between spell logs
     
-    // Combat tracking
+    // Combat tracking (consolidated)
     private boolean lastCombatState = false;
-    private NPC lastCombatTarget = null;
-    private boolean lastSpecialAttackState = false;
-    private long lastCombatActionTime = 0;
-    private static final long COMBAT_ACTION_COOLDOWN = 2000; // 2 seconds between combat logs
     
-    // Prayer tracking
-    private boolean lastPrayerActiveState = false;
-    private String lastActivePrayer = "";
+    // Prayer tracking (consolidated)
     private long lastPrayerChangeTime = 0;
     private static final long PRAYER_CHANGE_COOLDOWN = 1000; // 1 second between prayer logs
     
@@ -185,24 +156,18 @@ public class QuestEventLogger implements ActionListener {
     private long lastGEActionTime = 0;
     private static final long GE_ACTION_COOLDOWN = 3000; // 3 seconds between GE logs
     
-    // Banking specific cooldowns to prevent spam
+    // Banking specific cooldowns to prevent spam (consolidated)
     private long lastBankCheckTime = 0;
     private long lastBankActionLogTime = 0;
-    private long lastBankInterfaceLogTime = 0;
     private static final long BANK_CHECK_COOLDOWN = 1000; // 1 second cooldown for checkBanking() execution
     private static final long BANK_ACTION_LOG_COOLDOWN = 5000; // Log bank open/close every 5 seconds
-    private static final long BANK_INTERFACE_LOG_COOLDOWN = 5000; // 5 seconds between bank interface logs
     
     // Run/Energy tracking
     private boolean lastRunState = false;
     private long lastRunToggleTime = 0;
     private static final long RUN_TOGGLE_COOLDOWN = 2000; // 2 seconds between run logs
     
-    private long lastDialogueChange = 0;
-    private long lastAnimationLog = 0;
-    private long lastPositionLog = 0;
-    private long lastHealthLog = 0;
-    private long lastSkillLog = 0;
+    // Removed: unused tracking variables after refactoring
     
     public QuestEventLogger(AbstractScript script, String questName) {
         this.script = script;
@@ -274,13 +239,12 @@ public class QuestEventLogger implements ActionListener {
     private void initializeStateTracking() {
         // Initialize tracking variables
         if (Players.getLocal() != null) {
-            lastPosition = Players.getLocal().getTile();
+            // Initialize tracking state
             lastAnimation = Players.getLocal().getAnimation();
             lastMovingState = Players.getLocal().isMoving();
         }
         lastInventoryState = getCurrentInventoryString();
         lastDialogueState = Dialogues.inDialogue();
-        lastDialogueOptions = Dialogues.getOptions();
         lastBankState = Bank.isOpen();
         
         script.log("QUEST LOGGER: State tracking initialized");
@@ -332,42 +296,10 @@ public class QuestEventLogger implements ActionListener {
             return;
         }
         
-        // NEW: Dialogue option detection - capture ACTUAL dialogue clicks
-        if (isDialogueOption(action, targetName)) {
-            long currentTime = System.currentTimeMillis();
-            String dialogueKey = targetName.trim();
-            
-            // Only log if this exact dialogue option hasn't been logged recently
-            if (!dialogueKey.equals(lastClickedDialogueOption) || (currentTime - lastDialogueOptionClickTime > DIALOGUE_OPTION_COOLDOWN)) {
-                
-                // Generate proper dialogue option index for script code
-                String[] currentOptions = Dialogues.getOptions();
-                int optionIndex = findDialogueOptionIndex(targetName, currentOptions);
-                String scriptCode;
-                
-                if (optionIndex >= 0) {
-                    scriptCode = "Dialogues.chooseOption(" + (optionIndex + 1) + "); // \"" + targetName + "\"";
-                } else {
-                    // Fallback if we can't find exact index
-                    scriptCode = "Dialogues.chooseOption(\"" + targetName + "\");";
-                }
-                
-                logAction("Selected dialogue option: \"" + targetName + "\"", scriptCode);
-                logDetail("DIALOGUE_SELECTION", "Player clicked: \"" + targetName + "\"");
-                
-                script.log("DIALOGUE OPTION CLICKED: \"" + targetName + "\"");
-                
-                // Mark this dialogue option as recently logged
-                lastClickedDialogueOption = dialogueKey;
-                lastDialogueOptionClickTime = currentTime;
-                
-                // Trigger quest progression checks after dialogue selection
-                triggerConfigCheck("Dialogue option selected: " + targetName);
-                smartInventoryCheck("Dialogue option selected - checking for quest rewards");
-            }
-            
-            // Continue with normal action logging for dialogue options (but with reduced priority)
-        }
+        // DIALOGUE OPTION DETECTION: Handled by state monitoring in checkDialogue()
+        // No longer need to handle "Continue" actions here since we use direct API monitoring
+        
+        // Dialogue continuation handled by state monitoring in checkDialogue()
         
         // Get tile coordinates for NPCs and GameObjects
         String coordinateInfo = getTargetCoordinates(action, targetName, mouseX, mouseY);
@@ -420,6 +352,117 @@ public class QuestEventLogger implements ActionListener {
             // Silent catch to prevent spam
         }
     }
+    
+    // REMOVED: Conflicting dialogue detection method - now handled by onAction() with mouse position
+    
+    /**
+     * Log dialogue option by text (used by the working dialogue detection system)
+     */
+    public void logSelectedDialogueOption(String optionText) {
+        try {
+            if (optionText != null && !optionText.trim().isEmpty()) {
+                script.log("DIALOGUE OPTION SELECTED: " + optionText);
+                logAction("DIALOGUE_SELECTION", optionText);
+            }
+        } catch (Exception e) {
+            script.log("Error logging dialogue option: " + e.getMessage());
+        }
+    }
+    
+    // Dialogue option tracking state
+    private String[] lastDialogueOptions = null;
+    private long lastDialogueOptionsTime = 0;
+    private static final long DIALOGUE_OPTION_TIMEOUT = 5000; // 5 seconds to detect option selection
+    
+    /**
+     * Detect dialogue option selection by monitoring dialogue state changes
+     */
+    private void detectDialogueOptionSelection(String[] currentOptions) {
+        long currentTime = System.currentTimeMillis();
+        
+        // Store the current options for comparison
+        if (lastDialogueOptions == null || !Arrays.equals(lastDialogueOptions, currentOptions)) {
+            lastDialogueOptions = currentOptions.clone();
+            lastDialogueOptionsTime = currentTime;
+        }
+    }
+    
+    /**
+     * Check for dialogue option selection by monitoring when options disappear
+     */
+    private void checkDialogueOptionSelection() {
+        if (lastDialogueOptions == null) return;
+        
+        long currentTime = System.currentTimeMillis();
+        
+        // Check if dialogue options are no longer available (user made a selection)
+        if (!Dialogues.areOptionsAvailable() && (currentTime - lastDialogueOptionsTime < DIALOGUE_OPTION_TIMEOUT)) {
+            // Try to determine which option was selected by checking the current dialogue text
+            String selectedOption = determineSelectedOptionFromDialogue();
+            
+            if (selectedOption != null) {
+                logSelectedDialogueOption(selectedOption);
+            } else {
+                // Fallback: log all available options
+                logAction("DIALOGUE_OPTION_SELECTED", "// User selected one of: " + Arrays.toString(lastDialogueOptions));
+            }
+            
+            // Clear the stored options
+            lastDialogueOptions = null;
+        }
+        
+        // Clear old options if timeout exceeded
+        if (currentTime - lastDialogueOptionsTime > DIALOGUE_OPTION_TIMEOUT) {
+            lastDialogueOptions = null;
+        }
+    }
+    
+    /**
+     * Determine which dialogue option was selected by checking the current dialogue text
+     */
+    private String determineSelectedOptionFromDialogue() {
+        try {
+            // Get the current dialogue text
+            String currentDialogue = Dialogues.getNPCDialogue();
+            if (currentDialogue == null || currentDialogue.trim().isEmpty()) {
+                return null;
+            }
+            
+            // Compare with stored options to see which one matches
+            for (String option : lastDialogueOptions) {
+                if (option != null && currentDialogue.contains(option)) {
+                    return option; // Found the selected option
+                }
+            }
+            
+            // If no exact match, try partial matching
+            for (String option : lastDialogueOptions) {
+                if (option != null) {
+                    // Split option into words and check if most words match
+                    String[] optionWords = option.split("\\s+");
+                    int matchCount = 0;
+                    for (String word : optionWords) {
+                        if (word.length() > 2 && currentDialogue.toLowerCase().contains(word.toLowerCase())) {
+                            matchCount++;
+                        }
+                    }
+                    // If more than 50% of words match, consider it a match
+                    if (matchCount > optionWords.length / 2) {
+                        return option;
+                    }
+                }
+            }
+            
+            return null; // Could not determine which option was selected
+        } catch (Exception e) {
+            script.log("Error determining selected dialogue option: " + e.getMessage());
+            return null;
+        }
+    }
+    
+    // REMOVED: Unused widget logging method - not needed for dialogue selection
+    
+
     
     /**
      * Determine if an action is quest-relevant and should trigger config checking
@@ -626,7 +669,7 @@ public class QuestEventLogger implements ActionListener {
      * SMART BANKING CHECK - Only check when banking-affecting actions occur
      */
     private void smartBankingCheck(String triggerReason) {
-        script.log("SMART BANKING CHECK: Triggered by " + triggerReason);
+        // Silent banking check - the main action log already captures banking interactions
         checkBanking();
     }
     
@@ -674,6 +717,9 @@ public class QuestEventLogger implements ActionListener {
             
             // Critical: NPC Interactions and Dialogue Choices (user input)
             checkDialogue();
+            
+            // NEW: Check for dialogue option selection
+            checkDialogueOptionSelection();
             
             // NOTE: All other systems now use smart event-driven triggers:
             // - Inventory: Only checked when items are used/moved via ActionListener
@@ -734,92 +780,20 @@ public class QuestEventLogger implements ActionListener {
                 }
             }
             
-            // Bank interface detection (with dedicated cooldown to prevent spam)
-            if (Widgets.isVisible(12)) { // Bank interface
-                if (currentTime - lastBankInterfaceLogTime > BANK_INTERFACE_LOG_COOLDOWN) {
-                    logAction("Opened bank (interface detected)", "// Bank.open() - banking interaction");
-                    logDetail("BANK_INTERACTION", "Bank interface opened");
-                    lastBankInterfaceLogTime = currentTime;
-                    script.log("BANK INTERFACE DETECTED");
-                }
-            }
+                    // Bank interface detection - DISABLED (ActionListener handles bank interactions)
+            // The ActionListener already captures "Bank" clicks with proper context
+            // No need for duplicate interface-based detection
         } catch (Exception e) {
             // Silent catch to prevent spam
         }
     }
     
     // Enhanced detection methods
-    private void detectAnimationBasedInteraction(long currentTime) {
-        int currentAnimation = Players.getLocal().getAnimation();
-        
-        // Look for nearby objects that could be interacted with
-        GameObject nearestObject = GameObjects.closest(obj -> 
-            obj != null && obj.distance() <= 3.0 && obj.exists());
-        
-        if (nearestObject != null && 
-            (lastTrackedGameObject == null || !nearestObject.equals(lastTrackedGameObject) || 
-             currentTime - lastTrackedInteractionTime > 3000)) {
-            
-            // Log interaction with script code generation
-            String actionName = determineObjectAction(nearestObject);
-            logAction("Interacting with " + nearestObject.getName(), 
-                formatGameObjectInteraction(nearestObject, actionName));
-            logDetail("OBJECT_INTERACTION", 
-                nearestObject.getName() + " at " + formatLocation(nearestObject.getTile()) + 
-                " | Action: " + actionName + " | Distance: " + String.format("%.1f", nearestObject.distance()));
-            
-            lastTrackedGameObject = nearestObject;
-            lastTrackedInteractionTime = currentTime;
-            
-            script.log("ANIMATION-BASED INTERACTION: " + nearestObject.getName() + 
-                       " | Animation: " + currentAnimation +
-                       " | Action: " + actionName +
-                       " | Distance: " + String.format("%.1f", nearestObject.distance()));
-        }
-    }
+    // Removed: detectAnimationBasedInteraction() - unused after ActionListener integration
     
-    private void detectMovementBasedInteraction(long currentTime) {
-        // DISABLED: Annoying guessed action logs removed per user request
-        // We only want to log ACTUAL user-selected actions via ActionListener
-        // This method previously logged guessed actions like "Climb-down" for nearby objects
-        
-        // Still track player position for other detection methods
-        if (Players.getLocal() != null) {
-            Tile currentTile = Players.getLocal().getTile();
-            lastPlayerTile = currentTile;
-        }
-    }
+    // Removed: detectMovementBasedInteraction() - unused after ActionListener integration
     
-    private void detectStateBasedInteraction(long currentTime) {
-        // Check for interface changes that might indicate interactions
-        if (Players.getLocal() != null) {
-            // Check for nearby clickable objects even without animation
-            GameObject nearestObject = GameObjects.closest(obj -> 
-                obj != null && obj.exists() && obj.distance() <= 1.5 &&
-                obj.hasAction("Climb-up", "Climb-down", "Open", "Search"));
-            
-            if (nearestObject != null && 
-                (lastTrackedGameObject == null || !nearestObject.equals(lastTrackedGameObject)) &&
-                currentTime - lastTrackedInteractionTime > 2000) {
-                
-                // Check if we're very close to an interactive object
-                if (nearestObject.distance() <= 1.5) {
-                    String actionName = determineObjectAction(nearestObject);
-                    logAction("Close proximity to " + nearestObject.getName(), 
-                        formatGameObjectInteraction(nearestObject, actionName));
-                    logDetail("PROXIMITY_INTERACTION", 
-                        nearestObject.getName() + " detected in close proximity | Action: " + actionName);
-                    
-                    lastTrackedGameObject = nearestObject;
-                    lastTrackedInteractionTime = currentTime;
-                    
-                    script.log("PROXIMITY-BASED INTERACTION: " + nearestObject.getName() + 
-                               " | Distance: " + String.format("%.1f", nearestObject.distance()) +
-                               " | Action: " + actionName);
-                }
-            }
-        }
-    }
+    // Removed: detectStateBasedInteraction() - unused after ActionListener integration
     
     // Helper method to determine the most likely GameObject action - ENHANCED
     private String determineObjectAction(GameObject obj) {
@@ -872,25 +846,7 @@ public class QuestEventLogger implements ActionListener {
         return "Interact"; // Generic fallback
     }
     
-    // Helper method to determine the most likely NPC action
-    private String determineNPCAction(NPC npc) {
-        String[] actions = npc.getActions();
-        if (actions != null && actions.length > 0) {
-            for (String action : actions) {
-                if (action != null && !action.trim().isEmpty()) {
-                    return action;
-                }
-            }
-        }
-        
-        // Fallback based on NPC patterns
-        String name = npc.getName().toLowerCase();
-        if (name.contains("banker")) return "Bank";
-        if (name.contains("shop") || name.contains("store")) return "Trade";
-        if (name.contains("guard") || name.contains("warrior")) return "Attack";
-        
-        return "Talk-to"; // Most common fallback
-    }
+    // Removed: determineNPCAction() - unused after ActionListener integration
     
     // Helper method to format GameObject interactions for script generation
     private String formatGameObjectInteraction(GameObject obj, String action) {
@@ -898,11 +854,7 @@ public class QuestEventLogger implements ActionListener {
                             obj.getName(), action);
     }
     
-    // Helper method to format NPC interactions for script generation
-    private String formatNPCInteraction(NPC npc, String action) {
-        return String.format("NPCs.closest(\"%s\").interact(\"%s\")", 
-                            npc.getName(), action);
-    }
+    // Removed: formatNPCInteraction() - unused after ActionListener integration
     
     // 1. Movement Detection - Journey-Based Tracking (REDUCED VERBOSITY)
     private void checkMovement() {
@@ -954,7 +906,6 @@ public class QuestEventLogger implements ActionListener {
                 // ALWAYS log final position (but only when cooldown allows)
                 if (currentPos != null && currentTime - lastMovementStopLog > 5000) { // 5 second cooldown for position updates
                     logDetail("Position", "Arrived at " + formatLocation(currentPos));
-                    lastPosition = currentPos;
                     lastMovementStopLog = currentTime;
                 }
                 
@@ -969,105 +920,40 @@ public class QuestEventLogger implements ActionListener {
             lastMovingState = currentlyMoving;
         }
         
-        // Always update current position
-        if (currentPos != null) {
-            lastPosition = currentPos;
-        }
+        // Position tracking handled by journey system
     }
     
-    // 2 & 3. NPC Interactions and Dialogue - OPTIMIZED for instant detection
+    // 2 & 3. NPC Interactions and Dialogue - State-based option detection
     private void checkDialogue() {
         boolean currentDialogueState = Dialogues.inDialogue();
         
-        // INSTANT DETECTION: Dialogue state change (highest priority)
+        // Track dialogue state changes for quest progression
         if (currentDialogueState != lastDialogueState) {
-            
-            if (currentDialogueState) {
-                // Dialogue just started - immediate logging
-                NPC nearestNPC = NPCs.closest(npc -> npc != null && npc.distance() <= 3);
-                if (nearestNPC != null) {
-                    logAction("Started dialogue with " + nearestNPC.getName(),
-                        "NPCs.closest(\"" + nearestNPC.getName() + "\").interact(\"Talk-to\")");
-                    script.log("INSTANT DETECTION: Dialogue started with " + nearestNPC.getName());
-                    
-                    // SMART CONFIG CHECK: Dialogue started
-                    triggerConfigCheck("Dialogue started with " + nearestNPC.getName());
-                }
-                
-                String currentNPCText = Dialogues.getNPCDialogue();
-                if (currentNPCText != null && !currentNPCText.isEmpty()) {
-                    logDetail("NPC Dialogue", currentNPCText);
-                }
-            } else {
-                // Dialogue ended
-                script.log("INSTANT DETECTION: Dialogue ended");
-                
-                // SMART CONFIG CHECK: Dialogue ended (quest may have progressed)
+            if (!currentDialogueState) {
+                // Dialogue ended - trigger quest progress check
                 triggerConfigCheck("Dialogue ended");
             }
-            
             lastDialogueState = currentDialogueState;
         }
         
-        // Only check options if we're in dialogue (performance optimization)
-        if (currentDialogueState) {
-            String[] currentOptions = Dialogues.getOptions();
-            
-            // INSTANT DETECTION: Dialogue options appeared or changed
-            if (!Arrays.equals(lastDialogueOptions, currentOptions)) {
-                
-                if (currentOptions != null && currentOptions.length > 0) {
-                    logDetail("Dialogue Options Available", Arrays.toString(currentOptions));
-                    script.log("INSTANT DETECTION: New dialogue options appeared");
-                }
-                
-                // REMOVED: Broken dialogue option detection that used hardcoded selectOption(1)
-                // Dialogue options are now properly detected in onAction() method with actual clicked text
-                // This legacy detection only tracked state changes, not actual user selections
-                
-                // Keep only the essential quest progression checks for dialogue state changes
-                if (lastDialogueOptions != null && lastDialogueOptions.length > 0) {
-                    if (currentOptions == null || currentOptions.length == 0) {
-                        // Dialogue ended after having options - might indicate progression
-                        script.log("DIALOGUE STATE: Options disappeared - dialogue may have progressed");
-                        triggerConfigCheck("Dialogue options disappeared");
-                    }
-                    else if (!Arrays.equals(lastDialogueOptions, currentOptions) && 
-                             currentOptions.length > 0) {
-                        // Options changed to different set - dialogue progressed to new question
-                        script.log("DIALOGUE STATE: Options changed - dialogue progressed");
-                        triggerConfigCheck("Dialogue options changed");
-                    }
-                }
-                
-                lastDialogueOptions = currentOptions;
+        // Direct dialogue option detection using DreamBot API
+        if (currentDialogueState && Dialogues.areOptionsAvailable()) {
+            String[] options = Dialogues.getOptions();
+            if (options != null && options.length > 0) {
+                // Store options for detection
+                detectDialogueOptionSelection(options);
             }
         }
     }
     
-    // 4. Object Interactions
-    private void checkObjectInteractions() {
-        // Object interactions are now only detected when player stops moving near objects
-        // This prevents spam from continuous checking
-    }
+    // Removed: checkObjectInteractions() - unused after ActionListener integration
     
     private void checkNearbyTargets() {
         // DISABLED: No more guessing nearby object interactions since ActionListener captures real clicks
         // This method was causing logs like "Likely interacted with object" which are unnecessary
     }
     
-    private boolean isQuestRelevant(String objectName) {
-        if (objectName == null) return false;
-        String name = objectName.toLowerCase();
-        
-        // Quest-relevant objects
-        return name.contains("door") || name.contains("chest") || name.contains("altar") ||
-               name.contains("stairs") || name.contains("ladder") || name.contains("gate") ||
-               name.contains("lever") || name.contains("table") || name.contains("bookshelf") ||
-               name.contains("coffin") || name.contains("statue") || name.contains("crate") ||
-               name.contains("barrel") || name.contains("well") || name.contains("furnace") ||
-               name.contains("anvil") || name.contains("bank");
-    }
+    // Removed: isQuestRelevant() - unused after refactoring
     
     // 5. Inventory Changes - Enhanced Item Usage Detection (REDUCED SPAM)
     private void checkInventory() {
@@ -1138,10 +1024,7 @@ public class QuestEventLogger implements ActionListener {
         if (currentBankState != lastBankState) {
             // Only log if it's been long enough since the last logged state change
             if (currentTime - lastBankActionLogTime > BANK_ACTION_LOG_COOLDOWN) {
-                if (currentBankState) {
-                    logAction("Opened bank (state changed)", "Bank.open()");
-                    logDetail("Banking", "Bank interface opened - Current inventory: " + getCurrentInventoryString());
-                } else {
+                if (!currentBankState) {
                     logAction("Closed bank (state changed)", "Bank.close()");
                     logDetail("Banking", "Bank interface closed");
                 }
@@ -1189,51 +1072,7 @@ public class QuestEventLogger implements ActionListener {
         }
     }
     
-    /**
-     * Determine if a MenuRow represents a dialogue option click
-     */
-    private boolean isDialogueOption(String action, String targetName) {
-        // Dialogue options typically have "Select" or "Continue" as action
-        // and the target is the dialogue text
-        if (action == null || targetName == null) return false;
-        
-        // In dialogue, we're looking for user clicking on dialogue option text
-        // The action is often "Select" and target is the dialogue option text
-        boolean isSelectAction = action.equals("Select") || action.equals("Continue");
-        boolean isInDialogue = Dialogues.inDialogue() || Dialogues.areOptionsAvailable();
-        
-        // Additional check: if we're in dialogue and the target looks like dialogue text
-        boolean looksLikeDialogueText = targetName.length() > 3 && // Not just short words
-                                       !targetName.toLowerCase().contains("bank") &&
-                                       !targetName.toLowerCase().contains("attack") &&
-                                       !targetName.toLowerCase().contains("trade");
-        
-        return isSelectAction && isInDialogue && looksLikeDialogueText;
-    }
-    
-    /**
-     * Find the index of a dialogue option in the current options array
-     */
-    private int findDialogueOptionIndex(String targetOption, String[] currentOptions) {
-        if (currentOptions == null || targetOption == null) return -1;
-        
-        // Look for exact match first
-        for (int i = 0; i < currentOptions.length; i++) {
-            if (currentOptions[i] != null && currentOptions[i].equals(targetOption)) {
-                return i;
-            }
-        }
-        
-        // Look for partial match (in case of truncation or slight differences)
-        for (int i = 0; i < currentOptions.length; i++) {
-            if (currentOptions[i] != null && 
-                (currentOptions[i].contains(targetOption) || targetOption.contains(currentOptions[i]))) {
-                return i;
-            }
-        }
-        
-        return -1; // Not found
-    }
+    // Dialogue detection now handled by onAction() with mouse position
     
     private void checkEquipmentChanges() {
         try {
@@ -1384,36 +1223,57 @@ public class QuestEventLogger implements ActionListener {
         return null; // No clear consumption detected
     }
     
-    // Helper: Check if item is likely deposited to bank rather than consumed
-    private boolean isLikelyDepositedNotConsumed(String itemName) {
-        String lower = itemName.toLowerCase();
-        return lower.contains("clay") || 
-               lower.contains("ore") || 
-               lower.contains("bar") || 
-               lower.contains("coin") ||
-               lower.contains("rune") ||
-               lower.contains("gem") ||
-               lower.contains("log") ||
-               lower.contains("wizard hat") ||
-               lower.contains("armor") ||
-               lower.contains("weapon") ||
-               lower.contains("helm") ||
-               lower.contains("shield");
+    /**
+     * Unified item classification system - consolidates all item type detection
+     */
+    private enum ItemType {
+        CONSUMABLE, BANKABLE, EQUIPMENT, QUEST_ITEM, CURRENCY, OTHER
     }
     
-    // Helper: Check if item is actually consumable
-    private boolean isLikelyConsumable(String itemName) {
+    private ItemType getItemType(String itemName) {
+        if (itemName == null) return ItemType.OTHER;
+        
         String lower = itemName.toLowerCase();
-        return lower.contains("potion") || 
-               lower.contains("food") || 
-               lower.contains("bread") ||
-               lower.contains("fish") ||
-               lower.contains("meat") ||
-               lower.contains("cake") ||
-               lower.contains("pie") ||
-               lower.contains("beer") ||
-               lower.contains("wine") ||
-               lower.contains("tea");
+        
+        // Consumables (food, potions, etc.)
+        if (lower.contains("potion") || lower.contains("food") || lower.contains("bread") ||
+            lower.contains("fish") || lower.contains("meat") || lower.contains("cake") ||
+            lower.contains("pie") || lower.contains("beer") || lower.contains("wine") ||
+            lower.contains("tea")) {
+            return ItemType.CONSUMABLE;
+        }
+        
+        // Equipment
+        if (lower.contains("armor") || lower.contains("weapon") || lower.contains("helm") ||
+            lower.contains("shield") || lower.contains("sword") || lower.contains("bow") ||
+            lower.contains("staff") || lower.contains("robe") || lower.contains("boots") ||
+            lower.contains("gloves")) {
+            return ItemType.EQUIPMENT;
+        }
+        
+        // Currency
+        if (lower.contains("coin") || lower.contains("gp") || lower.contains("gold")) {
+            return ItemType.CURRENCY;
+        }
+        
+        // Bankable items (resources, etc.)
+        if (lower.contains("clay") || lower.contains("ore") || lower.contains("bar") ||
+            lower.contains("rune") || lower.contains("gem") || lower.contains("log") ||
+            lower.contains("raw ") || lower.contains("cooked ")) {
+            return ItemType.BANKABLE;
+        }
+        
+        return ItemType.OTHER;
+    }
+    
+    // Helper methods using the unified system
+    private boolean isLikelyDepositedNotConsumed(String itemName) {
+        ItemType type = getItemType(itemName);
+        return type == ItemType.BANKABLE || type == ItemType.CURRENCY || type == ItemType.EQUIPMENT;
+    }
+    
+    private boolean isLikelyConsumable(String itemName) {
+        return getItemType(itemName) == ItemType.CONSUMABLE;
     }
     
     private String analyzeInventoryChange(String oldInv, String newInv) {
@@ -1532,8 +1392,7 @@ public class QuestEventLogger implements ActionListener {
         }
     }
     
-    // Quest state tracking using DreamBot's PlayerSettings API
-    private Map<String, Integer> legacyQuestStates = new HashMap<>();
+    // Removed: legacyQuestStates - unused after varbit-based tracking
     
     // 8. Quest Progress Tracking - Enhanced with Real-Time Varbit Monitoring
     private void checkQuestProgress() {
@@ -1789,143 +1648,17 @@ public class QuestEventLogger implements ActionListener {
     
     /**
      * Get human-readable description of quest step based on varbit value
+     * Now uses the unified QUEST_INFO system
      */
     private String getQuestStepDescription(String questName, int step) {
-        switch (questName) {
-            case "THE_RESTLESS_GHOST":
-                switch (step) {
-                    case 0: return "[NOT STARTED]";
-                    case 1: return "[TALKED TO FATHER AERECK]";
-                    case 2: return "[GOT GHOSTSPEAK AMULET]";
-                    case 3: return "[FOUND GHOST'S SKULL]";
-                    case 4: return "[QUEST COMPLETED!]";
-                    default: return "[STEP " + step + "]";
-                }
-            case "COOKS_ASSISTANT":
-                switch (step) {
-                    case 0: return "[NOT STARTED]";
-                    case 1: return "[TALKED TO COOK]";
-                    case 2: return "[GATHERING INGREDIENTS]";
-                    case 3: return "[QUEST COMPLETED!]";
-                    default: return "[STEP " + step + "]";
-                }
-            case "IMP_CATCHER":
-                switch (step) {
-                    case 0: return "[NOT STARTED]";
-                    case 1: return "[TALKED TO WIZARD MIZGOG]";
-                    case 2: return "[COLLECTING BEADS]";
-                    case 3: return "[QUEST COMPLETED!]";
-                    default: return "[STEP " + step + "]";
-                }
-            case "ROMEO_AND_JULIET":
-                switch (step) {
-                    case 0: return "[NOT STARTED]";
-                    case 10: return "[TALKED TO ROMEO]";
-                    case 20: return "[DELIVERED MESSAGE TO JULIET]";
-                    case 30: return "[TALKED TO FATHER LAWRENCE]";
-                    case 40: return "[GOT CADAVA POTION]";
-                    case 50: return "[GAVE POTION TO JULIET]";
-                    case 60: return "[QUEST COMPLETED!]";
-                    default: return "[STEP " + step + "]";
-                }
-            default:
-                return "[STEP " + step + "]";
+        QuestInfo info = QUEST_INFO.get(questName);
+        if (info != null) {
+            return info.getStepDescription(step);
         }
+        return "[STEP " + step + "]";
     }
     
-    /**
-     * Legacy high-level quest state checking (for completion detection)
-     */
-    private void checkHighLevelQuestStates() {
-        try {
-            // Get all F2P quests for monitoring
-            FreeQuest[] freeQuests = {
-                FreeQuest.COOKS_ASSISTANT,
-                FreeQuest.DORICS_QUEST,
-                FreeQuest.SHEEP_SHEARER,
-                FreeQuest.VAMPIRE_SLAYER,
-                FreeQuest.THE_RESTLESS_GHOST,
-                FreeQuest.ROMEO_AND_JULIET,
-                FreeQuest.ERNEST_THE_CHICKEN,
-                FreeQuest.IMP_CATCHER,
-                FreeQuest.THE_KNIGHTS_SWORD,
-                FreeQuest.BLACK_KNIGHTS_FORTRESS,
-                FreeQuest.GOBLIN_DIPLOMACY,
-                FreeQuest.PIRATES_TREASURE,
-                FreeQuest.PRINCE_ALI_RESCUE,
-                FreeQuest.DEMON_SLAYER,
-                FreeQuest.DRAGON_SLAYER,
-                FreeQuest.WITCHS_POTION,
-                FreeQuest.RUNE_MYSTERIES
-            };
-            
-            // Check each quest for state changes
-            for (FreeQuest quest : freeQuests) {
-                State currentState = quest.getState();
-                State lastState = lastQuestStates.get(quest);
-                
-                if (lastState == null) {
-                    // Initialize tracking
-                    lastQuestStates.put(quest, currentState);
-                    
-                    // If quest is already started or finished, note it
-                    if (currentState == State.STARTED) {
-                        logStep("Quest tracking initialized", "// " + quest.toString() + " is currently IN PROGRESS");
-                        logDetail("QUEST_TRACK_INIT", quest.toString() + " detected as started");
-                        currentActiveQuest = quest;
-                        script.log("[QUEST] ACTIVE QUEST DETECTED: " + quest.toString() + " (In Progress)");
-                    } else if (currentState == State.FINISHED) {
-                        logStep("Quest tracking initialized", "// " + quest.toString() + " is already COMPLETED");
-                        logDetail("QUEST_TRACK_INIT", quest.toString() + " detected as finished");
-                    }
-                } else if (currentState != lastState) {
-                    // QUEST STATE CHANGED!
-                    lastQuestStates.put(quest, currentState);
-                    
-                    if (currentState == State.STARTED && lastState == State.NOT_STARTED) {
-                        // Quest was just started!
-                        logStep("[QUEST STARTED!]", "// " + quest.toString() + " has been started!");
-                        logDetail("QUEST_STARTED", quest.toString() + " state changed from NOT_STARTED to STARTED");
-                        currentActiveQuest = quest;
-                        
-                        script.log("=================================");
-                        script.log("[QUEST STARTED]: " + quest.toString());
-                        script.log("=================================");
-                        
-                    } else if (currentState == State.FINISHED && lastState == State.STARTED) {
-                        // Quest was just completed!
-                        logStep("[QUEST COMPLETED!]", "// " + quest.toString() + " has been completed!");
-                        logDetail("QUEST_COMPLETED", quest.toString() + " state changed from STARTED to FINISHED");
-                        
-                        script.log("=================================");
-                        script.log("[QUEST COMPLETED]: " + quest.toString());
-                        script.log("=================================");
-                        
-                        // Clear active quest if this was the active one
-                        if (currentActiveQuest == quest) {
-                            currentActiveQuest = null;
-                        }
-                        
-                        // Check for any other started quests to set as active
-                        detectCurrentActiveQuest();
-                        
-                    } else {
-                        // Other state changes
-                        logStep("Quest State Change", "// " + quest.toString() + " changed from " + lastState + " to " + currentState);
-                        logDetail("QUEST_STATE_CHANGE", quest.toString() + " state: " + lastState + " -> " + currentState);
-                    }
-                }
-            }
-            
-            // Debug: Show current active quest periodically
-            if (debugCounter % 300 == 0 && currentActiveQuest != null) {
-                script.log("[QUEST] CURRENTLY TRACKING: " + currentActiveQuest.toString());
-            }
-            
-        } catch (Exception e) {
-            script.log("Error in universal quest detection: " + e.getMessage());
-        }
-    }
+    // Removed: checkHighLevelQuestStates() - unused after varbit-based tracking implementation
     
     // Helper method to detect which quest is currently active
     private void detectCurrentActiveQuest() {
@@ -1984,113 +1717,9 @@ public class QuestEventLogger implements ActionListener {
                text.matches(".*\\d+.*xp.*");          // Contains numbers and xp
     }
     
-    // Helper method to determine if a config value indicates quest completion
-    private boolean isQuestCompletionState(String questName, int configValue) {
-        switch (questName) {
-            case "Cooks_Assistant":
-                return configValue >= 2; // Cook's Assistant completion value
-            case "Vampire_Slayer":
-                return configValue >= 3; // Vampire Slayer completion value
-            case "Sheep_Shearer":
-                return configValue >= 21; // Sheep Shearer completion value  
-            case "Restless_Ghost":
-                return configValue >= 5; // Restless Ghost completion value
-            case "Romeo_Juliet":
-                return configValue >= 100; // Romeo & Juliet completion value
-            default:
-                return configValue >= 100; // Generic high value for completion
-        }
-    }
+    // Removed: isQuestCompletionState() - consolidated into unified QUEST_INFO system
     
-    // 9. Widget/Interface Interactions (Fixed to avoid spam and detect quest completion)
-    private void checkWidgetInteractions() {
-        try {
-            // Only check widgets occasionally to avoid spam (every 10 loops = ~3 seconds)
-            if (debugCounter % 10 != 0) return;
-            
-            // Check if any interfaces are open that might be quest-related
-            if (Widgets.isOpen()) {
-                
-                // PRIORITY 1: Quest completion dialog detection
-                WidgetChild questComplete = Widgets.get(widget ->
-                    widget != null && widget.isVisible() &&
-                    widget.getText() != null && 
-                    // Make quest completion detection more specific - exclude level up notifications
-                    ((widget.getText().toLowerCase().contains("quest complete") ||
-                      widget.getText().toLowerCase().contains("you have completed") ||
-                      widget.getText().toLowerCase().contains("well done")) &&
-                      // Exclude level-up notifications
-                      !widget.getText().toLowerCase().contains("advanced your") &&
-                      !widget.getText().toLowerCase().contains("level.") &&
-                      !widget.getText().toLowerCase().contains("are now level") &&
-                      // Only include if it mentions quest-related keywords
-                      (widget.getText().toLowerCase().contains("quest") ||
-                       widget.getText().toLowerCase().contains("task") ||
-                       widget.getText().toLowerCase().contains("adventure")))
-                );
-                
-                if (questComplete != null) {
-                    // Add cooldown to prevent spam from level-up notifications
-                    long currentTime = System.currentTimeMillis();
-                    if (currentTime - lastQuestCompletionTime > QUEST_COMPLETION_COOLDOWN) {
-                        logStep("QUEST COMPLETION INTERFACE DETECTED!", 
-                            "// Quest completion dialog found: " + questComplete.getText());
-                        logDetail("QUEST_COMPLETION_WIDGET", "Quest completion dialog: " + questComplete.getText());
-                        lastQuestCompletionTime = currentTime;
-                    }
-                    return; // Found completion, no need to check other widgets
-                }
-                
-                // PRIORITY 2: Experience gained widgets (quest rewards) - FIXED: Filter out player chat
-                WidgetChild xpWidget = Widgets.get(widget ->
-                    widget != null && widget.isVisible() &&
-                    widget.getText() != null && 
-                    !widget.getText().trim().isEmpty() &&
-                    // Filter out player chat messages (they contain color codes but aren't XP)
-                    !widget.getText().contains("I just do") && // Player chat filter
-                    !widget.getText().contains("im ") && // Common chat patterns
-                    !widget.getText().contains("i am ") &&
-                    !widget.getText().contains("you ") &&
-                    !widget.getText().toLowerCase().contains("player says:") &&
-                    // Only match actual XP reward patterns
-                    (widget.getText().toLowerCase().contains("experience") ||
-                     widget.getText().toLowerCase().contains("xp") ||
-                     widget.getText().contains("gained") ||
-                     widget.getText().contains("reward"))
-                );
-                
-                if (xpWidget != null && !xpWidget.getText().equals(lastLoggedWidgetText)) {
-                    // Additional validation: Only log if it looks like real XP
-                    String xpText = xpWidget.getText();
-                    if (isValidXPReward(xpText)) {
-                        logStep("Experience reward detected", 
-                            "// XP Reward: " + xpText);
-                        logDetail("XP_REWARD", "Experience gained: " + xpText);
-                        lastLoggedWidgetText = xpText;
-                    }
-                    return;
-                }
-                
-                // PRIORITY 3: Quest journal/interface updates
-                WidgetChild questJournal = Widgets.get(widget ->
-                    widget != null && widget.isVisible() &&
-                    widget.getText() != null && 
-                    (widget.getText().toLowerCase().contains("quest") && 
-                     !widget.getText().toLowerCase().contains("makeover")) // Filter out makeover mage
-                );
-                
-                if (questJournal != null && !questJournal.getText().equals(lastLoggedWidgetText)) {
-                    logStep("Quest interface update", 
-                        "// Quest widget: " + questJournal.getText());
-                    logDetail("QUEST_INTERFACE", "Quest-related widget: " + questJournal.getText());
-                    lastLoggedWidgetText = questJournal.getText();
-                }
-            }
-            
-        } catch (Exception e) {
-            // Silent fail to avoid spam
-        }
-    }
+    // Removed: checkWidgetInteractions() - unused after simplification
     
     // 10. Spell/Magic Interactions - OPTIMIZED for instant detection
     private void checkSpellCasting() {
@@ -2124,13 +1753,11 @@ public class QuestEventLogger implements ActionListener {
                     logDetail("SPELL_CAST", "Player cast spell: " + spellName + " (Animation: " + currentAnimation + ")");
                     script.log("INSTANT DETECTION: Spell cast - " + spellName + " (Anim: " + currentAnimation + ")");
                     
-                    lastCastSpell = spellName;
                     lastSpellCastTime = currentTime;
                 }
             }
             
             // Update tracking variables
-            lastActiveTab = currentTab;
             lastMagicTabState = isMagicTabOpen;
             
         } catch (Exception e) {
@@ -2138,9 +1765,28 @@ public class QuestEventLogger implements ActionListener {
         }
     }
     
-    private boolean isMagicCastingAnimation(int animationId) {
-        // Common magic casting animation IDs in OSRS
+    /**
+     * Unified animation detection system for all animation types
+     */
+    private enum AnimationType {
+        COMBAT, MAGIC, PRAYER, MOVEMENT, SKILL, CONSUMPTION, OTHER
+    }
+    
+    private AnimationType getAnimationType(int animationId) {
         switch (animationId) {
+            // Combat animations
+            case 422:   // Punch/Unarmed combat
+            case 393:   // Sword slash
+            case 395:   // Sword stab
+            case 400:   // Pickaxe swing (also combat)
+            case 401:   // Axe swing (also combat)
+            case 806:   // Bow shooting
+            case 1979:  // Whip attack
+            case 2080:  // Dagger stab
+            case 390:   // Hammer/mace crush
+                return AnimationType.COMBAT;
+                
+            // Magic animations
             case 711:   // Standard spell casting
             case 724:   // High level spell casting  
             case 1162:  // Ancient magic casting
@@ -2149,10 +1795,41 @@ public class QuestEventLogger implements ActionListener {
             case 708:   // Teleport casting
             case 9493:  // Enchant spell casting
             case 1818:  // Alchemy casting
-                return true;
+                return AnimationType.MAGIC;
+                
+            // Prayer animations
+            case 645:   // Prayer activation
+            case 827:   // Bone burying (also walking - context dependent)
+                return AnimationType.PRAYER;
+                
+            // Movement animations
+            case 819:   // Walking
+            case 824:   // Running
+                return AnimationType.MOVEMENT;
+                
+            // Consumption animations
+            case 829:   // Consuming item
+                return AnimationType.CONSUMPTION;
+                
+            // Skill animations
+            case 881:   // Fishing
+            case 896:   // Mining
+            case 886:   // Woodcutting
+                return AnimationType.SKILL;
+                
+            // Significant animations (teleports, level ups, etc.)
+            case 1816:  // Death animation
+            case 2108:  // Quest completion animation
+            case 3864:  // Levelup animation
+                return AnimationType.OTHER;
+                
             default:
-                return false;
+                return AnimationType.OTHER;
         }
+    }
+    
+    private boolean isMagicCastingAnimation(int animationId) {
+        return getAnimationType(animationId) == AnimationType.MAGIC;
     }
     
     private String detectSpellFromAnimation(int animationId) {
@@ -2209,11 +1886,7 @@ public class QuestEventLogger implements ActionListener {
                     logDetail("COMBAT_END", "Combat ended");
                 }
                 lastCombatState = inCombat;
-                lastCombatActionTime = currentTime;
             }
-            
-            // Update tracking variables
-            lastCombatTarget = currentTarget;
             
         } catch (Exception e) {
             // Silent fail to avoid spam in logs
@@ -2221,21 +1894,7 @@ public class QuestEventLogger implements ActionListener {
     }
     
     private boolean isCombatAnimation(int animationId) {
-        // Common combat animation IDs
-        switch (animationId) {
-            case 422:   // Punch/Unarmed combat
-            case 393:   // Sword slash
-            case 395:   // Sword stab
-            case 400:   // Pickaxe swing (also combat)
-            case 401:   // Axe swing (also combat)
-            case 806:   // Bow shooting
-            case 1979:  // Whip attack
-            case 2080:  // Dagger stab
-            case 390:   // Hammer/mace crush
-                return true;
-            default:
-                return false;
-        }
+        return getAnimationType(animationId) == AnimationType.COMBAT;
     }
     
     // 12. Prayer Activation - NEW (Simplified)
@@ -2339,81 +1998,76 @@ public class QuestEventLogger implements ActionListener {
     }
     
     // Helper method for common quest interface detection (DISABLED to prevent spam)
-    private void checkCommonQuestInterfaces() {
-        // DISABLED: This method was causing excessive widget spam
-        // Only check for critical quest completion dialogs in main widget method
-    }
+    // Removed: checkCommonQuestInterfaces() - unused after widget refactoring
     
-    private void initializeQuestVarbits() {
-        // Common F2P quest varbits (same as seen in your log)
-        questVarbits.put("Cooks_Assistant", 29);
-        questVarbits.put("Dorics_Quest", 101); // FIXED: Doric's Quest uses config 101, not 31
-        questVarbits.put("Ernest_Chicken", 32);
-        questVarbits.put("Goblin_Diplomacy", 62);
-        questVarbits.put("Rune_Mysteries", 63);
-        questVarbits.put("Witchs_Potion", 67);
-        questVarbits.put("Pirates_Treasure", 71);
-        questVarbits.put("Vampire_Slayer", 77);
-        questVarbits.put("Restless_Ghost", 107);
-        questVarbits.put("Knights_Sword", 122);
-        questVarbits.put("Black_Knights", 130);
-        questVarbits.put("Romeo_Juliet", 144);
-        questVarbits.put("Imp_Catcher", 11);  // FIXED: Correct varbit for Imp Catcher
-        questVarbits.put("Dragon_Slayer", 176);
-        questVarbits.put("Sheep_Shearer", 179); // Keep original mapping for Sheep Shearer
-        questVarbits.put("Demon_Slayer", 222);
-        questVarbits.put("Prince_Ali", 273);
+    // This method was removed as it duplicated the QUEST_VARBITS static map above
+    // All quest varbit mappings are now consolidated in the static QUEST_VARBITS map
+    
+    // Removed: getCurrentVarbitValue() - unused after consolidation
+    
+    /**
+     * Unified quest information system - consolidates completion values and step descriptions
+     */
+    private static class QuestInfo {
+        final int completionValue;
+        final String[] stepDescriptions;
         
-        script.log("QUEST LOGGER: Initialized " + questVarbits.size() + " quest varbits for tracking");
-    }
-    
-    private int getCurrentVarbitValue(int varbitId) {
-        try {
-            // Use proper DreamBot API for varbit access with debugging
-            int value = PlayerSettings.getBitValue(varbitId);
-            
-            // DEBUG: Extra logging for Cook's Assistant to track what's happening
-            if (varbitId == 29 && debugCounter % 50 == 0) { // Cook's Assistant varbit
-                logDetail("VARBIT_DEBUG", "Cook's Assistant varbit 29 = " + value);
+        QuestInfo(int completionValue, String... stepDescriptions) {
+            this.completionValue = completionValue;
+            this.stepDescriptions = stepDescriptions;
+        }
+        
+        String getStepDescription(int step) {
+            if (step >= stepDescriptions.length) {
+                return "[STEP " + step + "]";
             }
-            
-            return value;
-        } catch (Exception e) {
-            // Log the specific error for debugging
-            logDetail("VARBIT_ERROR", "Failed to read varbit " + varbitId + ": " + e.getMessage());
-            return 0; // Return 0 if varbit cannot be read
+            return stepDescriptions[step];
         }
-    }
-    
-    private boolean isQuestComplete(int varbitValue, String questName) {
-        // Enhanced quest completion detection with specific quest values
-        switch (questName) {
-            case "Sheep_Shearer":
-                return varbitValue >= 21; // Sheep Shearer completes at 21
-            case "Cooks_Assistant":
-                return varbitValue >= 2; // Cook's Assistant completes at 2
-            case "Rune_Mysteries":
-                return varbitValue >= 6; // Rune Mysteries completes at 6
-            case "Restless_Ghost":
-                return varbitValue >= 5; // Restless Ghost completes at 5
-            case "Romeo_Juliet":
-                return varbitValue >= 100; // Romeo & Juliet completes at 100
-            case "Demon_Slayer":
-                return varbitValue >= 3; // Demon Slayer completes at 3
-            default:
-                return varbitValue >= 10; // Generic completion threshold for unknown quests
-        }
-    }
-    
-    // Enhanced log formatting for better DreamBot console integration
-    private void logWithConsoleIntegration(String category, String message) {
-        // Log to file
-        logDetail(category, message);
         
-        // Enhanced console output that matches DreamBot's log format
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-        script.log("[" + timestamp + "] " + category + ": " + message);
+        boolean isComplete(int varbitValue) {
+            return varbitValue >= completionValue;
+        }
     }
+    
+    private static final Map<String, QuestInfo> QUEST_INFO = new HashMap<String, QuestInfo>() {{
+        put("THE_RESTLESS_GHOST", new QuestInfo(4,
+            "[NOT STARTED]",
+            "[TALKED TO FATHER AERECK]", 
+            "[GOT GHOSTSPEAK AMULET]",
+            "[FOUND GHOST'S SKULL]",
+            "[QUEST COMPLETED!]"
+        ));
+        put("COOKS_ASSISTANT", new QuestInfo(2,
+            "[NOT STARTED]",
+            "[TALKED TO COOK]",
+            "[GATHERING INGREDIENTS]",
+            "[QUEST COMPLETED!]"
+        ));
+        put("IMP_CATCHER", new QuestInfo(3,
+            "[NOT STARTED]",
+            "[TALKED TO WIZARD MIZGOG]",
+            "[COLLECTING BEADS]",
+            "[QUEST COMPLETED!]"
+        ));
+        put("ROMEO_AND_JULIET", new QuestInfo(60,
+            "[NOT STARTED]", "", "", "", "", "", // Steps 0-5
+            "[TALKED TO ROMEO]", "", "", "", // Steps 6-9
+            "[TALKED TO ROMEO]", "", "", "", "", "", "", "", "", "", // Steps 10-19
+            "[DELIVERED MESSAGE TO JULIET]", "", "", "", "", "", "", "", "", "", // Steps 20-29  
+            "[TALKED TO FATHER LAWRENCE]", "", "", "", "", "", "", "", "", "", // Steps 30-39
+            "[GOT CADAVA POTION]", "", "", "", "", "", "", "", "", "", // Steps 40-49
+            "[GAVE POTION TO JULIET]", "", "", "", "", "", "", "", "", "", // Steps 50-59
+            "[QUEST COMPLETED!]" // Step 60
+        ));
+        put("SHEEP_SHEARER", new QuestInfo(21));
+        put("RUNE_MYSTERIES", new QuestInfo(6));
+        put("DEMON_SLAYER", new QuestInfo(3));
+    }};
+    
+    // Removed: isQuestComplete() - this functionality is now handled by QuestInfo.isComplete()
+    
+    // This method was removed as it duplicated logDetail() functionality
+    // All logging now uses logDetail() directly which already includes console output
     
     // DreamBot Console Integration System
     private void setupConsoleIntegration() {

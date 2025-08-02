@@ -1,10 +1,10 @@
 @echo off
 echo ========================================
-echo    AI Quest Framework v7.4 - Builder
+echo    AI Quest Framework v7.5 - Builder
 echo ========================================
 echo Script Name: "AI Quest Framework"
 echo Author: Leone
-echo Version: 7.4 (Unified Item Gathering + Vampire Slayer + Enhanced Logging)
+echo Version: 7.5 (Reliable Dialogue Detection + Unified Item Gathering + Vampire Slayer)
 echo Category: UTILITY
 echo ========================================
 
@@ -30,6 +30,10 @@ if exist "C:\Users\Leone\DreamBot\Scripts\AI_Quest_System.jar" (
 if exist "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.4.jar" (
     del "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.4.jar"
     echo   [SUCCESS] Removed previous AI_Quest_Framework_v7.4.jar
+)
+if exist "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.5.jar" (
+    del "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.5.jar"
+    echo   [SUCCESS] Removed previous AI_Quest_Framework_v7.5.jar
 )
 echo - Old versions cleaned up
 
@@ -200,18 +204,18 @@ echo [SUCCESS] All Java files compiled successfully
 
 echo [5/7] Creating JAR file...
 cd target\classes
-jar cf "..\AI_Quest_Framework_v7.4.jar" quest\*
+jar cf "..\AI_Quest_Framework_v7.5.jar" quest\*
 cd ..\..
 
-if not exist "target\AI_Quest_Framework_v7.4.jar" (
+if not exist "target\AI_Quest_Framework_v7.5.jar" (
     echo [ERROR] JAR file creation failed!
     pause
     exit /b 1
 )
-echo [SUCCESS] JAR file created: AI_Quest_Framework_v7.4.jar
+echo [SUCCESS] JAR file created: AI_Quest_Framework_v7.5.jar
 
 echo [6/7] Installing to DreamBot Scripts directory...
-copy "target\AI_Quest_Framework_v7.4.jar" "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.4.jar"
+copy "target\AI_Quest_Framework_v7.5.jar" "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.5.jar"
 if %errorlevel% neq 0 (
     echo [ERROR] Failed to copy JAR to DreamBot Scripts directory!
     echo Please check if DreamBot directory exists: C:\Users\Leone\DreamBot\Scripts\
@@ -221,8 +225,8 @@ if %errorlevel% neq 0 (
 echo [SUCCESS] New version installed to DreamBot!
 
 echo [7/7] Final verification...
-if exist "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.4.jar" (
-    echo [SUCCESS] AI Quest Framework v7.4 is ready!
+if exist "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.5.jar" (
+    echo [SUCCESS] AI Quest Framework v7.5 is ready!
 ) else (
     echo [ERROR] Installation verification failed!
     pause
@@ -230,15 +234,16 @@ if exist "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.4.jar" (
 )
 
 echo ========================================
-echo [SUCCESS] AI QUEST FRAMEWORK v7.4 INSTALLED
+echo [SUCCESS] AI QUEST FRAMEWORK v7.5 INSTALLED
 echo ========================================
-echo Script Location: C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.4.jar
-echo Script Name: "AI Quest Framework v7.4"
+echo Script Location: C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.5.jar
+echo Script Name: "AI Quest Framework v7.5"
 echo Author: Leone
-echo Version: 7.4 (Unified Item Gathering + Vampire Slayer + Enhanced Logging)
+echo Version: 7.5 (Reliable Dialogue Detection + Unified Item Gathering + Vampire Slayer)
 echo Category: UTILITY
 echo ========================================
-echo Features in v7.4:
+echo Features in v7.5:
+echo - Reliable dialogue option detection using state-based monitoring
 echo - Universal DialogueUtil with DialogueStep pattern for complex dialogue sequences
 echo - GrandExchangeUtil with intelligent price increase strategies (5%-50%)
 echo - QuestData storage system for centralized quest information management
@@ -251,14 +256,14 @@ echo ========================================
 echo.
 echo [IMPORTANT NOTES]:
 echo 1. RESTART DreamBot completely to clear script cache
-echo 2. Look for "AI Quest Framework v7.4" in your scripts
+echo 2. Look for "AI Quest Framework v7.5" in your scripts
 echo 3. If still showing old version, click "Refresh Scripts"
 echo.
 echo Ready to test! The framework includes universal utilities for scalable automation.
 
 echo [CLEANUP] Keeping target folder for debugging...
 echo Target folder preserved at: target\
-echo JAR file location: target\AI_Quest_Framework_v7.4.jar
+echo JAR file location: target\AI_Quest_Framework_v7.5.jar
 
 pause
 goto :end

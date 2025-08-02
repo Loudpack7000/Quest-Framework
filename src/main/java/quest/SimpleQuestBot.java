@@ -25,10 +25,10 @@ import java.awt.Color;
  */
 @ScriptManifest(
     category = Category.UTILITY,
-    name = "AI Quest Framework v7.0",
+    name = "AI Quest Framework v7.5",
     author = "Leone", 
-    version = 7.0,
-    description = "Complete AI Quest Discovery & Automation Framework with varbit+config monitoring and automated quest execution"
+    version = 7.5,
+    description = "Complete AI Quest Discovery & Automation Framework with varbit+config monitoring, automated quest execution, and reliable dialogue detection"
 )
 public class SimpleQuestBot extends AbstractScript implements ActionListener {
     
@@ -383,4 +383,6 @@ public class SimpleQuestBot extends AbstractScript implements ActionListener {
             questLogger.onAction(menuRow, mouseX, mouseY);
         }
     }
+    
+
 }
