@@ -9,6 +9,8 @@ import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.settings.PlayerSettings;
+import java.util.Arrays;
 
 /**
  * Action node for talking to NPCs
@@ -215,13 +217,43 @@ public class TalkToNPCNode extends ActionNode {
      */
     private boolean waitForDialogueComplete() {
         try {
+            // Get initial quest config to detect changes
+            int initialConfig = org.dreambot.api.methods.settings.PlayerSettings.getConfig(144);
+            log("Initial quest config (144): " + initialConfig);
+            
             // Continue through any remaining dialogue
             boolean dialogueComplete = continueDialogue();
             
             if (dialogueComplete) {
-                // For quest dialogues, wait a bit for config changes to register
+                // For quest dialogues, wait for config changes to register
                 log("Dialogue completed, waiting for quest state to update...");
-                Sleep.sleep(2000, 3000);
+                
+                // Wait up to 15 seconds for config to change (increased from 10)
+                boolean configChanged = Sleep.sleepUntil(() -> {
+                    int currentConfig = org.dreambot.api.methods.settings.PlayerSettings.getConfig(144);
+                    if (currentConfig != initialConfig) {
+                        log("Quest config changed from " + initialConfig + " to " + currentConfig);
+                        return true;
+                    }
+                    return false;
+                }, 15000);
+                
+                if (!configChanged) {
+                    log("Warning: Quest config did not change after dialogue - this may cause loops");
+                    // Still wait a bit in case it's a delayed update
+                    Sleep.sleep(4000, 6000);
+                    
+                    // Check one more time
+                    int finalConfig = org.dreambot.api.methods.settings.PlayerSettings.getConfig(144);
+                    if (finalConfig != initialConfig) {
+                        log("Quest config finally changed from " + initialConfig + " to " + finalConfig + " (delayed)");
+                    } else {
+                        log("Quest config still unchanged - continuing anyway to avoid infinite loops");
+                    }
+                } else {
+                    // Give a small buffer for any additional processing
+                    Sleep.sleep(1000, 1500);
+                }
             }
             
             return dialogueComplete;

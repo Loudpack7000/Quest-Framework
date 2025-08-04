@@ -1,0 +1,162 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-08-04 02:12:22
+Player: LordFareigth
+Starting Location: (3229, 3239, 0)
+Starting Inventory: Energy potion(3), Energy potion(4) x4, Spade, Coins x184704, Energy potion(2), Ghostspeak amulet
+=====================================
+
+[02:12:22] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[02:12:22] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[02:12:22] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[02:12:22] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[02:12:22] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 69 varbits (including 0-values)
+
+[02:12:22] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[02:12:29] ACTION: Selected 'Talk-to' on Veos
+    SCRIPT: NPCs.closest("Veos").interact("Talk-to");
+
+[02:12:29] USER_ACTION: Talk-to | NPC_Tile: (3228, 3242, 0)
+[02:12:30] Movement: Started significant journey from (3229, 3239, 0)
+[02:12:31] Position: Arrived at (3228, 3241, 0)
+[02:12:33] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I'm looking for a quest.
+
+[02:12:38] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes., No.]
+
+[02:12:45] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Okay, thanks Veos.
+
+[02:12:49] Movement: Started significant journey from (3228, 3241, 0)
+[02:12:53] Position: Arrived at (3230, 3232, 0)
+[02:13:07] ACTION: Selected 'Read' on Treasure scroll
+    SCRIPT: // Read on Treasure scroll
+
+[02:13:07] USER_ACTION: Read | Target: Treasure scroll
+[02:13:10] Movement: Started significant journey from (3230, 3231, 0)
+[02:13:19] Position: Arrived at (3230, 3210, 0)
+[02:13:22] ACTION: Selected 'Dig' on Spade
+    SCRIPT: // Dig on Spade
+
+[02:13:22] USER_ACTION: Dig | Target: Spade
+[02:14:16] ACTION: Selected 'Read' on Treasure scroll
+    SCRIPT: // Read on Treasure scroll
+
+[02:14:16] USER_ACTION: Read | Target: Treasure scroll
+[02:14:23] Movement: Started significant journey from (3229, 3209, 0)
+[02:14:40] ACTION: Completed journey: 26 tiles
+    SCRIPT: Walking.walk(new Tile(3203, 3210, 0))
+
+[02:14:40] Journey: Walked 26 tiles in 16s | (3229, 3209, 0) → (3203, 3210, 0)
+[02:14:40] Position: Arrived at (3203, 3210, 0)
+[02:14:41] Movement: Started significant journey from (3203, 3210, 0)
+[02:14:42] ACTION: Selected 'Dig' on Spade
+    SCRIPT: // Dig on Spade
+
+[02:14:42] USER_ACTION: Dig | Target: Spade
+[02:15:25] Movement: Started significant journey from (3203, 3213, 0)
+[02:16:09] ACTION: Completed journey: 107 tiles
+    SCRIPT: Walking.walk(new Tile(3104, 3253, 0))
+
+[02:16:09] Journey: Walked 107 tiles in 43s | (3203, 3213, 0) → (3104, 3253, 0)
+[02:16:09] Position: Arrived at (3104, 3253, 0)
+[02:16:13] Movement: Started significant journey from (3104, 3253, 0)
+[02:16:18] Position: Arrived at (3105, 3265, 0)
+[02:16:23] Position: Arrived at (3108, 3265, 0)
+[02:16:26] Movement: Started significant journey from (3108, 3265, 0)
+[02:16:27] ACTION: Selected 'Dig' on Spade
+    SCRIPT: // Dig on Spade
+
+[02:16:27] USER_ACTION: Dig | Target: Spade
+[02:16:52] ACTION: Completed journey: 30 tiles
+    SCRIPT: Walking.walk(new Tile(3078, 3259, 0))
+
+[02:16:52] Journey: Walked 30 tiles in 17s | (3108, 3264, 0) → (3078, 3259, 0)
+[02:16:52] Position: Arrived at (3078, 3259, 0)
+[02:16:53] Movement: Started significant journey from (3078, 3259, 0)
+[02:16:54] ACTION: Selected 'Dig' on Spade
+    SCRIPT: // Dig on Spade
+
+[02:16:54] USER_ACTION: Dig | Target: Spade
+[02:16:57] ACTION: Selected 'Open' on Ancient casket
+    SCRIPT: GameObjects.closest("Ancient casket").interact("Open");
+
+[02:16:57] USER_ACTION: Open | Target: Ancient casket
+[02:17:03] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[02:17:06] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[02:17:47] ACTION: Selected 'Open' on Gate
+    SCRIPT: GameObjects.closest("Gate").interact("Open");
+
+[02:17:47] USER_ACTION: Open | Object_Tile: (3077, 3258, 0)
+[02:18:27] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[02:18:30] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[02:18:32] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[02:18:36] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[02:18:41] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[02:18:46] Position: Arrived at (3059, 3264, 0)
+[02:18:47] Movement: Started significant journey from (3059, 3264, 0)
+[02:18:50] ACTION: Selected 'Open' on Ancient casket
+    SCRIPT: GameObjects.closest("Ancient casket").interact("Open");
+
+[02:18:50] USER_ACTION: Open | Target: Ancient casket
+[02:18:52] ACTION: Selected 'Use' on Ancient casket
+    SCRIPT: GameObjects.closest("Ancient casket").interact("Use");
+
+[02:18:52] USER_ACTION: Use | Target: Ancient casket
+[02:18:52] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3) x2, Energy potion(4) x2, Spade, Coins x184704, Vial x2, Ancient casket, Ghostspeak amulet
+
+[02:18:52] Position: Arrived at (3053, 3249, 0)
+[02:18:52] ACTION: Selected 'Use' on Ancient casket -> Veos
+    SCRIPT: GameObjects.closest("Ancient casket -> Veos").interact("Use");
+
+[02:18:52] USER_ACTION: Use | Target: Ancient casket -> Veos
+[02:18:58] QUEST STEP 3: CONFIG DISCOVERED: Unknown Quest config 101 changed from 11 to 12
+    SCRIPT: // DISCOVERED: Quest uses config 101 (value 11 → 12)
+
+[02:19:02] ACTION: Selected 'Rub' on Antique lamp
+    SCRIPT: // Rub on Antique lamp
+
+[02:19:02] USER_ACTION: Rub | Target: Antique lamp
+[02:19:17] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[02:19:17] USER_ACTION: Drop | Target: Vial
+[02:19:19] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[02:19:19] USER_ACTION: Drop | Target: Vial
+[02:19:19] ACTION: Inventory changed: Items lost/used
+    SCRIPT: // Current inventory: Energy potion(3) x2, Energy potion(4) x2, Spade, Scroll box (beginner), Coins x184904, Vial, Ghostspeak amulet
+
+[02:21:44] ACTION: Selected 'Open' on Scroll box (beginner)
+    SCRIPT: GameObjects.closest("Scroll box (beginner)").interact("Open");
+
+[02:21:44] USER_ACTION: Open | Target: Scroll box (beginner)
+[02:21:47] ACTION: Selected 'Read' on Clue scroll (beginner)
+    SCRIPT: // Read on Clue scroll (beginner)
+
+[02:21:47] USER_ACTION: Read | Target: Clue scroll (beginner)
+[02:21:53] QUEST_END: === QUEST RECORDING ENDED ===

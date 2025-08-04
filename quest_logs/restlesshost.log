@@ -1,0 +1,234 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-08-04 01:40:30
+Player: LordFareigth
+Starting Location: (3240, 3208, 0)
+Starting Inventory: Energy potion(4) x10, Coins x184707
+=====================================
+
+[01:40:30] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[01:40:30] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[01:40:30] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[01:40:30] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[01:40:30] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 69 varbits (including 0-values)
+
+[01:40:30] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[01:40:31] ACTION: Selected 'Talk-to' on Father Aereck
+    SCRIPT: NPCs.closest("Father Aereck").interact("Talk-to");
+
+[01:40:31] USER_ACTION: Talk-to | NPC_Tile: (3242, 3208, 0)
+[01:40:32] Movement: Started significant journey from (3240, 3208, 0)
+[01:40:33] Position: Arrived at (3242, 3208, 0)
+[01:40:36] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I'm looking for a quest!
+
+[01:40:39] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes., No.]
+
+[01:40:46] QUEST STEP 3: CONFIG DISCOVERED: Unknown Quest config 107 changed from 0 to 1
+    SCRIPT: // DISCOVERED: Quest uses config 107 (value 0 → 1)
+
+[01:40:48] Movement: Started significant journey from (3242, 3208, 0)
+[01:41:12] ACTION: Completed journey: 55 tiles
+    SCRIPT: Walking.walk(new Tile(3211, 3162, 0))
+
+[01:41:12] Journey: Walked 55 tiles in 24s | (3242, 3208, 0) → (3211, 3162, 0)
+[01:41:12] Position: Arrived at (3211, 3162, 0)
+[01:41:12] Movement: Started significant journey from (3210, 3162, 0)
+[01:41:30] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[01:41:30] USER_ACTION: Open | Object_Tile: (3147, 3172, 0)
+[01:41:34] ACTION: Completed journey: 63 tiles
+    SCRIPT: Walking.walk(new Tile(3148, 3172, 0))
+
+[01:41:34] Journey: Walked 63 tiles in 21s | (3210, 3162, 0) → (3148, 3172, 0)
+[01:41:34] Position: Arrived at (3148, 3172, 0)
+[01:41:35] ACTION: Selected 'Talk-to' on Father Urhney
+    SCRIPT: NPCs.closest("Father Urhney").interact("Talk-to");
+
+[01:41:35] USER_ACTION: Talk-to | NPC_Tile: (3150, 3175, 0)
+[01:41:35] Movement: Started significant journey from (3148, 3172, 0)
+[01:41:40] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Father Aereck sent me to talk to you.
+
+[01:41:44] ACTION: DIALOGUE_SELECTION
+    SCRIPT: He's got a ghost haunting his graveyard.
+
+[01:41:50] QUEST STEP 4: CONFIG DISCOVERED: Unknown Quest config 107 changed from 1 to 2
+    SCRIPT: // DISCOVERED: Quest uses config 107 (value 1 → 2)
+
+[01:41:51] Movement: Started significant journey from (3149, 3175, 0)
+[01:42:00] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[01:42:14] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[01:42:25] ACTION: Selected 'Wear' on Ghostspeak amulet
+    SCRIPT: Inventory.interact("Ghostspeak amulet", "Wear");
+
+[01:42:25] USER_ACTION: Wear | Target: Ghostspeak amulet
+[01:42:25] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(4) x9, Coins x184707, Energy potion(2), Ghostspeak amulet
+
+[01:42:35] ACTION: Selected 'Open' on Coffin
+    SCRIPT: GameObjects.closest("Coffin").interact("Open");
+
+[01:42:35] USER_ACTION: Open | Object_Tile: (3249, 3192, 0)
+[01:42:36] ACTION: Completed journey: 102 tiles
+    SCRIPT: Walking.walk(new Tile(3249, 3194, 0))
+
+[01:42:36] Journey: Walked 102 tiles in 44s | (3149, 3175, 0) → (3249, 3194, 0)
+[01:42:36] Position: Arrived at (3249, 3194, 0)
+[01:42:40] ACTION: Selected 'Talk-to' on Restless ghost
+    SCRIPT: NPCs.closest("Restless ghost").interact("Talk-to");
+
+[01:42:40] USER_ACTION: Talk-to | NPC_Tile: (3250, 3195, 0)
+[01:42:41] Movement: Started significant journey from (3249, 3194, 0)
+[01:42:42] Position: Arrived at (3250, 3194, 0)
+[01:42:45] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Yep, now tell me what the problem is.
+
+[01:42:51] QUEST STEP 5: CONFIG DISCOVERED: Unknown Quest config 107 changed from 2 to 3
+    SCRIPT: // DISCOVERED: Quest uses config 107 (value 2 → 3)
+
+[01:42:55] Movement: Started significant journey from (3250, 3194, 0)
+[01:43:09] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[01:43:11] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[01:43:20] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[01:43:25] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[01:43:27] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[01:43:36] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[01:43:39] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[01:43:43] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[01:44:02] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[01:44:04] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[01:44:11] ACTION: Completed journey: 142 tiles
+    SCRIPT: Walking.walk(new Tile(3111, 3167, 0))
+
+[01:44:11] Journey: Walked 142 tiles in 75s | (3250, 3194, 0) → (3111, 3167, 0)
+[01:44:11] Position: Arrived at (3111, 3167, 0)
+[01:44:12] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[01:44:12] USER_ACTION: Climb-down | Object_Tile: (3104, 3162, 0)
+[01:44:12] Movement: Started significant journey from (3111, 3167, 0)
+[01:44:16] Position: Arrived at (3105, 3162, 0)
+[01:44:22] Position: Arrived at (3109, 9570, 0)
+[01:44:22] ACTION: Selected 'Search' on Altar
+    SCRIPT: GameObjects.closest("Altar").interact("Search");
+
+[01:44:22] USER_ACTION: Search | Object_Tile: (3120, 9566, 0)
+[01:44:23] Movement: Started significant journey from (3109, 9570, 0)
+[01:44:31] Position: Arrived at (3119, 9566, 0)
+[01:44:33] Movement: Started significant journey from (3119, 9566, 0)
+[01:44:34] ACTION: Selected 'Close' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Close");
+
+[01:44:34] USER_ACTION: Close | Object_Tile: (3110, 9559, 0)
+[01:44:34] QUEST STEP 6: CONFIG DISCOVERED: Unknown Quest config 107 changed from 3 to 4
+    SCRIPT: // DISCOVERED: Quest uses config 107 (value 3 → 4)
+
+[01:44:41] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[01:44:41] USER_ACTION: Climb-up | Object_Tile: (3103, 9576, 0)
+[01:44:44] Position: Arrived at (3104, 9576, 0)
+[01:44:47] Movement: Started significant journey from (3105, 3162, 0)
+[01:44:47] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[01:44:51] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[01:44:54] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[01:44:57] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[01:44:58] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[01:45:12] ACTION: Completed journey: 61 tiles
+    SCRIPT: Walking.walk(new Tile(3148, 3205, 0))
+
+[01:45:12] Journey: Walked 61 tiles in 25s | (3105, 3162, 0) → (3148, 3205, 0)
+[01:45:12] Position: Arrived at (3148, 3205, 0)
+[01:45:12] Movement: Started significant journey from (3149, 3204, 0)
+[01:45:15] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[01:45:23] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[01:45:41] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[01:45:41] USER_ACTION: Open | Object_Tile: (3247, 3193, 0)
+[01:45:44] ACTION: Completed journey: 98 tiles
+    SCRIPT: Walking.walk(new Tile(3246, 3193, 0))
+
+[01:45:44] Journey: Walked 98 tiles in 31s | (3149, 3204, 0) → (3246, 3193, 0)
+[01:45:44] Position: Arrived at (3246, 3193, 0)
+[01:45:44] ACTION: Selected 'Inspect' on Ghost's skull
+    SCRIPT: // Inspect on Ghost's skull
+
+[01:45:44] USER_ACTION: Inspect | Target: Ghost's skull
+[01:45:48] ACTION: Selected 'Use' on Ghost's skull
+    SCRIPT: GameObjects.closest("Ghost's skull").interact("Use");
+
+[01:45:48] USER_ACTION: Use | Target: Ghost's skull
+[01:45:49] ACTION: Selected 'Use' on Ghost's skull -> Coffin
+    SCRIPT: GameObjects.closest("Ghost's skull -> Coffin").interact("Use");
+
+[01:45:49] USER_ACTION: Use | Target: Ghost's skull -> Coffin
+[01:45:50] Movement: Started significant journey from (3247, 3193, 0)
+[01:45:50] Position: Arrived at (3248, 3193, 0)
+[01:45:52] ACTION: Selected 'Open' on Coffin
+    SCRIPT: GameObjects.closest("Coffin").interact("Open");
+
+[01:45:52] USER_ACTION: Open | Object_Tile: (3249, 3192, 0)
+[01:45:57] ACTION: Selected 'Use' on Ghost's skull
+    SCRIPT: GameObjects.closest("Ghost's skull").interact("Use");
+
+[01:45:57] USER_ACTION: Use | Target: Ghost's skull
+[01:45:58] ACTION: Selected 'Use' on Ghost's skull -> Coffin
+    SCRIPT: GameObjects.closest("Ghost's skull -> Coffin").interact("Use");
+
+[01:45:58] USER_ACTION: Use | Target: Ghost's skull -> Coffin
+[01:46:12] QUEST STEP 7: CONFIG DISCOVERED: Unknown Quest config 101 changed from 10 to 11
+    SCRIPT: // DISCOVERED: Quest uses config 101 (value 10 → 11)
+
+[01:46:12] QUEST STEP 8: CONFIG DISCOVERED: Unknown Quest config 107 changed from 4 to 5
+    SCRIPT: // DISCOVERED: Quest uses config 107 (value 4 → 5)
+
+[01:46:19] QUEST_END: === QUEST RECORDING ENDED ===

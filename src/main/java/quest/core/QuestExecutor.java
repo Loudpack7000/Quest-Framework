@@ -1,8 +1,6 @@
 package quest.core;
 
 import quest.quests.VampireSlayerScript;
-
-
 import quest.quests.ImpCatcherScript;
 import quest.quests.LemonTutQuest;
 
@@ -11,12 +9,16 @@ import quest.trees.RuneMysteriesTree;
 import quest.trees.CooksAssistantTree;
 import quest.trees.WitchsPotionTree;
 import quest.trees.SheepShearerTree;
+import quest.trees.XMarksTheSpotTree;
+import quest.trees.RestlessGhostTree;
+
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.utilities.Timer;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.container.impl.bank.Bank;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -359,6 +361,10 @@ public class QuestExecutor {
                 return new TreeQuestWrapper(new RomeoAndJulietTree(), questId, "Romeo and Juliet");
             case "SHEEP_SHEARER":
                 return new TreeQuestWrapper(new SheepShearerTree(), questId, "Sheep Shearer");
+            case "X_MARKS_THE_SPOT":
+                return new TreeQuestWrapper(new XMarksTheSpotTree(), questId, "X Marks the Spot");  
+            case "THE_RESTLESS_GHOST":
+                return new TreeQuestWrapper(new RestlessGhostTree(), questId, "The Restless Ghost");
             case "RESTLESS_GHOST": 
                 // TODO: Implement Restless Ghost script
                 log("Restless Ghost script not yet implemented");

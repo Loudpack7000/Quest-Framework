@@ -91,6 +91,26 @@ public class QuestDatabase {
             new ArrayList<>(), // skill requirements
             new ArrayList<>() // no items required to start
         ));
+        
+        // The Restless Ghost
+        questInfo.put("THE_RESTLESS_GHOST", new QuestInfo(
+            "THE_RESTLESS_GHOST",
+            "The Restless Ghost",
+            1, // difficulty
+            10, // estimated duration minutes
+            new ArrayList<>(), // skill requirements
+            new ArrayList<>() // no items required to start (Ghostspeak amulet given during quest)
+        ));
+        
+        // X Marks the Spot
+        questInfo.put("X_MARKS_THE_SPOT", new QuestInfo(
+            "X_MARKS_THE_SPOT",
+            "X Marks the Spot",
+            1, // difficulty
+            8, // estimated duration minutes
+            new ArrayList<>(), // skill requirements
+            Arrays.asList("Spade") // required items - need a spade to dig
+        ));
     }
     
     public static QuestInfo getQuestInfo(String questId) {

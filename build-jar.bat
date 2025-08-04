@@ -227,6 +227,12 @@ if %errorlevel% neq 0 goto :compile_error
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\SheepShearerTree.java"
 if %errorlevel% neq 0 goto :compile_error
 
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\XMarksTheSpotTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\RestlessGhostTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
 echo   - Compiling tree wrapper...
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\core\TreeQuestWrapper.java"
 if %errorlevel% neq 0 goto :compile_error
