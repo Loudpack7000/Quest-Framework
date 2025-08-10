@@ -1,0 +1,255 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-08-07 20:16:23
+Player: D D M P E G
+Starting Location: (3003, 3434, 0)
+Starting Inventory: Energy potion(4) x10, Water rune x99, Knife, Earth rune x1999, Coins x270227, Law rune x188, Cooked meat, Air rune x2989, Staff of fire, Bread, Beer
+=====================================
+
+[20:16:23] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[20:16:23] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[20:16:23] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[20:16:23] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[20:16:23] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 69 varbits (including 0-values)
+
+[20:16:23] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[20:16:28] ACTION: Selected 'Talk-to' on Willow
+    SCRIPT: NPCs.closest("Willow").interact("Talk-to");
+
+[20:16:28] USER_ACTION: Talk-to | NPC_Tile: (3003, 3435, 0)
+[20:16:44] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes., No.]
+
+[20:17:45] Movement: Started significant journey from (3003, 3434, 0)
+[20:18:07] ACTION: Completed journey: 73 tiles
+    SCRIPT: Walking.walk(new Tile(3074, 3418, 0))
+
+[20:18:07] Journey: Walked 73 tiles in 22s | (3003, 3434, 0) → (3074, 3418, 0)
+[20:18:07] Position: Arrived at (3074, 3418, 0)
+[20:18:10] ACTION: Selected 'Talk-to' on Checkal
+    SCRIPT: NPCs.closest("Checkal").interact("Talk-to");
+
+[20:18:10] USER_ACTION: Talk-to | NPC_Tile: (3087, 3415, 0)
+[20:18:10] Movement: Started significant journey from (3075, 3418, 0)
+[20:18:14] Position: Arrived at (3086, 3415, 0)
+[20:18:34] Movement: Started significant journey from (3086, 3415, 0)
+[20:18:39] ACTION: Selected 'Open' on Longhall door
+    SCRIPT: GameObjects.closest("Longhall door").interact("Open");
+
+[20:18:39] USER_ACTION: Open | Object_Tile: (3078, 3435, 0)
+[20:18:39] Position: Arrived at (3078, 3428, 0)
+[20:18:43] ACTION: Selected 'Talk-to' on Atlas
+    SCRIPT: NPCs.closest("Atlas").interact("Talk-to");
+
+[20:18:43] USER_ACTION: Talk-to | NPC_Tile: (3075, 3440, 0)
+[20:18:47] Position: Arrived at (3076, 3440, 0)
+[20:19:00] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes., No.]
+
+[20:19:17] Movement: Started significant journey from (11270, 1677, 0)
+[20:19:22] Position: Arrived at (11274, 1684, 0)
+[20:19:40] ACTION: Completed journey: 113 tiles
+    SCRIPT: Walking.walk(new Tile(11364, 1615, 0))
+
+[20:19:40] Journey: Walked 113 tiles in 14s | (11275, 1684, 0) → (11364, 1615, 0)
+[20:19:40] Position: Arrived at (11364, 1615, 0)
+[20:20:06] Movement: Started significant journey from (11362, 1609, 0)
+[20:20:24] Position: Arrived at (11364, 1615, 0)
+[20:20:42] Movement: Started significant journey from (11271, 1716, 0)
+[20:21:03] ACTION: Completed journey: 68 tiles
+    SCRIPT: Walking.walk(new Tile(11339, 1715, 0))
+
+[20:21:03] Journey: Walked 68 tiles in 21s | (11271, 1716, 0) → (11339, 1715, 0)
+[20:21:03] Position: Arrived at (11339, 1715, 0)
+[20:21:32] Movement: Started significant journey from (3075, 3440, 0)
+[20:21:41] ACTION: Completed journey: 26 tiles
+    SCRIPT: Walking.walk(new Tile(3086, 3416, 0))
+
+[20:21:41] Journey: Walked 26 tiles in 8s | (3075, 3440, 0) → (3086, 3416, 0)
+[20:21:41] Position: Arrived at (3086, 3416, 0)
+[20:21:43] ACTION: Selected 'Talk-to' on Checkal
+    SCRIPT: NPCs.closest("Checkal").interact("Talk-to");
+
+[20:21:43] USER_ACTION: Talk-to | NPC_Tile: (3087, 3415, 0)
+[20:21:43] Movement: Started significant journey from (3086, 3416, 0)
+[20:21:55] ACTION: Selected 'Perform' on Flex
+    SCRIPT: // Perform on Flex
+
+[20:21:55] USER_ACTION: Perform | Target: Flex
+[20:22:37] Movement: Started significant journey from (3087, 3416, 0)
+[20:23:23] ACTION: Selected 'Talk-to' on Charlie the Tramp
+    SCRIPT: NPCs.closest("Charlie the Tramp").interact("Talk-to");
+
+[20:23:23] USER_ACTION: Talk-to | NPC_Tile: (3208, 3392, 0)
+[20:23:25] ACTION: Completed journey: 124 tiles
+    SCRIPT: Walking.walk(new Tile(3209, 3392, 0))
+
+[20:23:25] Journey: Walked 124 tiles in 48s | (3087, 3416, 0) → (3209, 3392, 0)
+[20:23:25] Position: Arrived at (3209, 3392, 0)
+[20:23:34] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Who are you?, I'm looking for a man named Marley. Have you seen him?, Okay, here you go., Sorry, I haven't got any., Go get a job!]
+
+[20:24:05] Movement: Started significant journey from (3209, 3392, 0)
+[20:24:10] Position: Arrived at (3223, 3399, 0)
+[20:24:13] ACTION: Selected 'Talk-to' on Cook
+    SCRIPT: NPCs.closest("Cook").interact("Talk-to");
+
+[20:24:13] USER_ACTION: Talk-to | NPC_Tile: (3232, 3401, 0)
+[20:24:18] Position: Arrived at (3231, 3401, 0)
+[20:24:23] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I was wondering if you'd be able to make me a Steak sandwich?
+
+[20:24:57] ACTION: Selected 'Use' on Knife
+    SCRIPT: GameObjects.closest("Knife").interact("Use");
+
+[20:24:57] USER_ACTION: Use | Target: Knife
+[20:24:57] ACTION: Selected 'Use' on Knife -> Bread
+    SCRIPT: GameObjects.closest("Knife -> Bread").interact("Use");
+
+[20:24:57] USER_ACTION: Use | Target: Knife -> Bread
+[20:25:16] Movement: Started significant journey from (3231, 3401, 0)
+[20:25:30] ACTION: Completed journey: 29 tiles
+    SCRIPT: Walking.walk(new Tile(3215, 3425, 0))
+
+[20:25:30] Journey: Walked 29 tiles in 14s | (3231, 3401, 0) → (3215, 3425, 0)
+[20:25:30] Position: Arrived at (3215, 3425, 0)
+[20:25:31] Movement: Started significant journey from (3215, 3425, 0)
+[20:25:38] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[20:26:16] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[20:26:19] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[20:26:20] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[20:26:24] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[20:26:28] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[20:26:30] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[20:26:52] ACTION: Selected 'Talk-to' on Marley
+    SCRIPT: NPCs.closest("Marley").interact("Talk-to");
+
+[20:26:52] USER_ACTION: Talk-to | NPC_Tile: (3089, 3473, 0)
+[20:27:00] ACTION: Completed journey: 136 tiles
+    SCRIPT: Walking.walk(new Tile(3087, 3471, 0))
+
+[20:27:00] Journey: Walked 136 tiles in 89s | (3215, 3425, 0) → (3087, 3471, 0)
+[20:27:00] Position: Arrived at (3087, 3471, 0)
+[20:27:24] ACTION: Selected 'Cast' on Falador Teleport
+    SCRIPT: // Cast on Falador Teleport
+
+[20:27:24] USER_ACTION: Cast | Target: Falador Teleport
+[20:27:24] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[20:27:24] SPELLBOOK_OPENED: Player opened the magic spellbook
+[20:27:38] Movement: Started significant journey from (2966, 3377, 0)
+[20:27:40] Position: Arrived at (2960, 3379, 0)
+[20:27:43] ACTION: Selected 'Talk-to' on Burntof
+    SCRIPT: NPCs.closest("Burntof").interact("Talk-to");
+
+[20:27:43] USER_ACTION: Talk-to | NPC_Tile: (2956, 3367, 0)
+[20:27:50] Position: Arrived at (2956, 3368, 0)
+[20:28:15] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Rock., Paper., Scissors.]
+
+[20:29:24] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Rock., Paper., Scissors.]
+
+[20:29:39] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Rock., Paper., Scissors.]
+
+[20:30:48] Movement: Started significant journey from (2956, 3368, 0)
+[20:30:54] Position: Arrived at (2965, 3380, 0)
+[20:31:03] Movement: Started significant journey from (2965, 3380, 0)
+[20:31:25] ACTION: Selected 'Open' on Map
+    SCRIPT: GameObjects.closest("Map").interact("Open");
+
+[20:31:25] USER_ACTION: Open | Target: Map
+[20:31:28] ACTION: Completed journey: 66 tiles
+    SCRIPT: Walking.walk(new Tile(2989, 3442, 0))
+
+[20:31:28] Journey: Walked 66 tiles in 25s | (2965, 3380, 0) → (2989, 3442, 0)
+[20:31:28] Position: Arrived at (2989, 3442, 0)
+[20:31:31] Movement: Started significant journey from (2989, 3442, 0)
+[20:31:36] Position: Arrived at (2978, 3450, 0)
+[20:31:46] Movement: Started significant journey from (2978, 3451, 0)
+[20:31:54] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[20:31:57] ACTION: Completed journey: 33 tiles
+    SCRIPT: Walking.walk(new Tile(2979, 3484, 0))
+
+[20:31:57] Journey: Walked 33 tiles in 11s | (2978, 3451, 0) → (2979, 3484, 0)
+[20:31:57] Position: Arrived at (2979, 3484, 0)
+[20:31:57] Movement: Started significant journey from (2980, 3485, 0)
+[20:32:05] Position: Arrived at (2997, 3495, 0)
+[20:32:09] Movement: Started significant journey from (2997, 3495, 0)
+[20:32:13] Position: Arrived at (2996, 3495, 0)
+[20:32:15] ACTION: Selected 'Talk-to' on Willow
+    SCRIPT: NPCs.closest("Willow").interact("Talk-to");
+
+[20:32:15] USER_ACTION: Talk-to | NPC_Tile: (2994, 3496, 0)
+[20:32:25] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes., No.]
+
+[20:33:49] Movement: Started significant journey from (11891, 2023, 0)
+[20:33:52] Position: Arrived at (11887, 2029, 0)
+[20:34:27] Movement: Started significant journey from (11944, 2083, 0)
+[20:34:27] Position: Arrived at (11944, 2084, 0)
+[20:37:04] ACTION: Selected 'Attack' on Ancient Guardian
+    SCRIPT: NPCs.closest("Ancient Guardian").interact("Attack");
+
+[20:37:04] USER_ACTION: Attack | NPC_Tile: (13578, 1995, 0)
+[20:37:09] ACTION: Selected 'Attack' on Ancient Guardian
+    SCRIPT: NPCs.closest("Ancient Guardian").interact("Attack");
+
+[20:37:09] USER_ACTION: Attack | NPC_Tile: (13578, 1995, 0)
+[20:37:18] ACTION: Selected 'Attack' on Ancient Guardian
+    SCRIPT: NPCs.closest("Ancient Guardian").interact("Attack");
+
+[20:37:18] USER_ACTION: Attack | NPC_Tile: (13578, 1995, 0)
+[20:38:33] Movement: Started significant journey from (13576, 1997, 0)
+[20:38:36] Position: Arrived at (13575, 1993, 0)
+[20:38:56] QUEST STEP 3: CONFIG DISCOVERED: Unknown Quest config 101 changed from 28 to 29
+    SCRIPT: // DISCOVERED: Quest uses config 101 (value 28 → 29)
+
+[20:39:01] Movement: Started significant journey from (2950, 5769, 0)
+[20:41:46] ACTION: Selected 'Cast' on Lumbridge Home Teleport
+    SCRIPT: // Cast on Lumbridge Home Teleport
+
+[20:41:46] USER_ACTION: Cast | Target: Lumbridge Home Teleport
+[20:41:50] ACTION: Selected 'Wield' on Staff of fire
+    SCRIPT: Inventory.interact("Staff of fire", "Wield");
+
+[20:41:50] USER_ACTION: Wield | Target: Staff of fire
+[20:41:50] ACTION: Item consumed: Bread
+    SCRIPT: Inventory.getItem("Bread").interact("Drink") // or click
+
+[20:41:50] ITEM_CONSUMPTION: Player consumed: Bread
+[20:41:50] Inventory Change: Items lost/used - New state: Energy potion(4) x8, Water rune x98, Knife, Earth rune x1999, Coins x272227, Law rune x187, Vial x2, Air rune x2986, Staff of fire
+[20:42:04] ACTION: Selected 'Cast' on Varrock Teleport
+    SCRIPT: // Cast on Varrock Teleport
+
+[20:42:04] USER_ACTION: Cast | Target: Varrock Teleport
+[20:42:04] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[20:42:04] SPELLBOOK_OPENED: Player opened the magic spellbook
+[20:51:10] QUEST_END: === QUEST RECORDING ENDED ===

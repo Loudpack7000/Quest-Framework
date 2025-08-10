@@ -6,7 +6,7 @@ import quest.nodes.ActionNode;
 import quest.nodes.actions.TalkToNPCNode;
 import quest.nodes.actions.WalkToLocationNode;
 import quest.nodes.actions.InteractWithObjectNode;
-import quest.nodes.decisions.QuestProgressDecisionNode;
+
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.interactive.Players;
@@ -15,6 +15,8 @@ import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.interactive.GameObjects;
+import org.dreambot.api.wrappers.interactive.GameObject;
 
 /**
  * The Restless Ghost Quest Tree
@@ -32,8 +34,8 @@ public class RestlessGhostTree extends QuestTree {
     private static final Tile GRAVEYARD_COFFIN_LOCATION = new Tile(3249, 3192, 0); // Coffin in graveyard
     private static final Tile RESTLESS_GHOST_LOCATION = new Tile(3250, 3195, 0); // Ghost location
     private static final Tile WIZARD_TOWER_ENTRANCE = new Tile(3104, 3162, 0); // Wizard Tower entrance
-    private static final Tile WIZARD_TOWER_BASEMENT = new Tile(3103, 9576, 0); // Basement ladder
-    private static final Tile ALTAR_LOCATION = new Tile(3120, 9566, 0); // Altar with skull
+    private static final Tile WIZARD_TOWER_BASEMENT = new Tile(3103, 9576, 0); // Basement ladder (correct coordinates)
+    private static final Tile ALTAR_LOCATION = new Tile(3120, 9566, 0); // Altar with skull (in basement)
     
     // Quest nodes
     private QuestNode smartDecisionNode;
@@ -45,8 +47,10 @@ public class RestlessGhostTree extends QuestTree {
     private QuestNode walkToGraveyard;
     private QuestNode openCoffin;
     private QuestNode talkToRestlessGhost;
+
     private QuestNode walkToWizardTower;
     private QuestNode climbDownLadder;
+    private QuestNode walkToAltar;
     private QuestNode searchAltar;
     private QuestNode climbUpLadder;
     private QuestNode returnToGraveyard;
@@ -251,8 +255,35 @@ public class RestlessGhostTree extends QuestTree {
         };
         
         walkToGraveyard = new WalkToLocationNode("walk_to_graveyard", GRAVEYARD_COFFIN_LOCATION, "Graveyard coffin");
-        openCoffin = new InteractWithObjectNode("open_coffin", "Coffin", "Open", 
-            GRAVEYARD_COFFIN_LOCATION, "Coffin in graveyard");
+        
+        // Custom coffin interaction that ONLY opens the coffin (no searching)
+        openCoffin = new ActionNode("open_coffin", "Open coffin to make ghost appear") {
+            @Override
+            protected boolean performAction() {
+                log("Opening coffin to make ghost appear...");
+                
+                GameObject coffin = GameObjects.closest("Coffin");
+                if (coffin == null) {
+                    log("ERROR: Coffin not found!");
+                    return false;
+                }
+                
+                // Only open the coffin - do NOT search it
+                if (coffin.hasAction("Open")) {
+                    log("Opening coffin...");
+                    if (!coffin.interact("Open")) {
+                        log("Failed to open coffin.");
+                        return false;
+                    }
+                    Sleep.sleep(2000, 3000);
+                    log("Coffin opened successfully - ghost should now appear");
+                    return true;
+                } else {
+                    log("Coffin is already open or doesn't need opening");
+                    return true;
+                }
+            }
+        };
             
         // Custom TalkToNPCNode for Restless Ghost with specific dialogue
         talkToRestlessGhost = new TalkToNPCNode("talk_restless_ghost", "Restless ghost", RESTLESS_GHOST_LOCATION) {
@@ -381,6 +412,7 @@ public class RestlessGhostTree extends QuestTree {
         walkToWizardTower = new WalkToLocationNode("walk_to_wizard_tower", WIZARD_TOWER_ENTRANCE, "Wizard Tower");
         climbDownLadder = new InteractWithObjectNode("climb_down_ladder", "Ladder", "Climb-down",
             WIZARD_TOWER_ENTRANCE, "Wizard Tower ladder");
+        walkToAltar = new WalkToLocationNode("walk_to_altar", ALTAR_LOCATION, "Altar in basement");
         searchAltar = new InteractWithObjectNode("search_altar", "Altar", "Search",
             ALTAR_LOCATION, "Altar in basement") {
             @Override
@@ -400,7 +432,37 @@ public class RestlessGhostTree extends QuestTree {
             }
         };
         climbUpLadder = new InteractWithObjectNode("climb_up_ladder", "Ladder", "Climb-up",
-            WIZARD_TOWER_BASEMENT, "Wizard Tower basement ladder");
+            WIZARD_TOWER_BASEMENT, "Wizard Tower basement ladder") {
+            @Override
+            protected boolean performAction() {
+                log("Climbing up from Wizard Tower basement...");
+                Tile beforeTile = Players.getLocal().getTile();
+                log("Starting position: " + beforeTile);
+                
+                boolean result = super.performAction();
+                if (result) {
+                    // Wait a moment for the player to reach the ground floor
+                    org.dreambot.api.utilities.Sleep.sleep(2000, 3000);
+                    Tile afterTile = Players.getLocal().getTile();
+                    log("After climbing position: " + afterTile);
+                    
+                    // Check if we successfully moved from basement to surface
+                    if (beforeTile.getY() >= 9500 && afterTile.getY() < 9500) {
+                        log("SUCCESS: Successfully climbed up from basement to surface");
+                        log("Transition: " + beforeTile + " -> " + afterTile);
+                    } else if (afterTile.getY() >= 9500) {
+                        log("WARNING: Still in basement after climbing up");
+                        log("Position: " + afterTile);
+                    } else {
+                        log("INFO: Climbed up successfully, now on surface");
+                        log("Position: " + afterTile);
+                    }
+                } else {
+                    log("ERROR: Failed to climb up ladder");
+                }
+                return result;
+            }
+        };
         
         // Step 5: Return to graveyard and complete quest (config 4 -> 5)
         returnToGraveyard = new WalkToLocationNode("return_to_graveyard", GRAVEYARD_COFFIN_LOCATION, "Return to graveyard");
@@ -414,7 +476,30 @@ public class RestlessGhostTree extends QuestTree {
                 
                 log("Using Ghost's skull on coffin...");
                 
-                // First try to use the skull
+                // Step 1: First open the coffin if it's not already open
+                org.dreambot.api.wrappers.interactive.GameObject coffin = 
+                    org.dreambot.api.methods.interactive.GameObjects.closest("Coffin");
+                if (coffin == null) {
+                    log("Could not find coffin");
+                    return false;
+                }
+                
+                // Check if coffin needs to be opened first
+                if (coffin.hasAction("Open")) {
+                    log("Opening coffin first...");
+                    if (!coffin.interact("Open")) {
+                        log("Failed to open coffin");
+                        return false;
+                    }
+                    
+                    // Wait for coffin to open
+                    org.dreambot.api.utilities.Sleep.sleep(2000, 3000);
+                } else {
+                    log("Coffin is already open or doesn't need opening");
+                }
+                
+                // Step 2: Now use the skull on the coffin
+                log("Using Ghost's skull on coffin...");
                 if (!Inventory.interact("Ghost's skull", "Use")) {
                     log("Failed to select Ghost's skull for use");
                     return false;
@@ -423,8 +508,8 @@ public class RestlessGhostTree extends QuestTree {
                 // Wait a moment and then click on the coffin
                 org.dreambot.api.utilities.Sleep.sleep(500, 1000);
                 
-                org.dreambot.api.wrappers.interactive.GameObject coffin = 
-                    org.dreambot.api.methods.interactive.GameObjects.closest("Coffin");
+                // Find the coffin again (it might have changed state)
+                coffin = org.dreambot.api.methods.interactive.GameObjects.closest("Coffin");
                 if (coffin == null) {
                     log("Could not find coffin to use skull on");
                     return false;
@@ -457,7 +542,16 @@ public class RestlessGhostTree extends QuestTree {
             public ExecutionResult execute() {
                 int config = PlayerSettings.getConfig(QUEST_CONFIG);
                 Tile currentTile = Players.getLocal().getTile();
+                boolean hasSkull = Inventory.contains("Ghost's skull");
+                log("=== SMART DECISION DEBUG ===");
                 log("Config 107 = " + config + ", Location: " + currentTile);
+                log("Has Ghost's skull: " + hasSkull);
+                log("Distance to altar: " + currentTile.distance(ALTAR_LOCATION));
+                log("Distance to wizard tower: " + currentTile.distance(WIZARD_TOWER_ENTRANCE));
+                log("Distance to graveyard: " + currentTile.distance(GRAVEYARD_COFFIN_LOCATION));
+                log("Z-level: " + currentTile.getZ());
+                log("Y-coordinate: " + currentTile.getY() + " (Basement: Y>=9500, Surface: Y<9500)");
+                log("In basement: " + (currentTile.getY() >= 9500));
                 
                 QuestNode nextStep = null;
                 
@@ -487,39 +581,77 @@ public class RestlessGhostTree extends QuestTree {
                         nextStep = walkToGraveyard;
                         log("-> Walk to graveyard");
                     } else {
-                        // Check if coffin is open, if not open it first
-                        nextStep = openCoffin;
-                        log("-> Open coffin");
-                        // After opening coffin, will talk to ghost in next iteration
+                        // Check if the ghost is visible - if so, talk to it
+                        NPC ghost = NPCs.closest("Restless ghost");
+                        if (ghost != null && ghost.exists()) {
+                            nextStep = talkToRestlessGhost;
+                            log("-> Talk to Restless ghost (ghost is visible)");
+                        } else {
+                            // Ghost not visible yet, need to open/search coffin first
+                            nextStep = openCoffin;
+                            log("-> Open coffin (ghost not visible yet)");
+                        }
                     }
                     
                 } else if (config == 3) {
-                    // Talk to ghost if we haven't yet, otherwise go to Wizard Tower
-                    if (currentTile.distance(RESTLESS_GHOST_LOCATION) <= 5) {
+                    // Check if we need to talk to ghost first, or if we can proceed to Wizard Tower
+                    NPC ghost = NPCs.closest("Restless ghost");
+                    if (ghost != null && ghost.exists() && currentTile.distance(RESTLESS_GHOST_LOCATION) <= 10) {
+                        // Ghost is visible and we're close - talk to it
                         nextStep = talkToRestlessGhost;
-                        log("-> Talk to Restless ghost");
+                        log("-> Talk to Restless ghost (ghost is visible)");
+                    } else if (Inventory.contains("Ghost's skull")) {
+                        // Already have the skull, go back to graveyard
+                        if (currentTile.getY() >= 9500) {
+                            // We're in the basement (Y >= 9500) - climb up
+                            nextStep = climbUpLadder;
+                            log("-> Climb up from basement (have skull)");
+                        } else {
+                            // We're on the surface (Y < 9500) - go to graveyard
+                            if (currentTile.distance(GRAVEYARD_COFFIN_LOCATION) > 5) {
+                                nextStep = returnToGraveyard;
+                                log("-> Return to graveyard (have skull, on surface)");
+                            } else {
+                                nextStep = useSkullOnCoffin;
+                                log("-> Use Ghost's skull on coffin");
+                            }
+                        }
+                    } else if (currentTile.getY() >= 9500) {
+                        // We're in the basement - check if we're near altar or need to walk to it
+                        if (currentTile.distance(ALTAR_LOCATION) <= 5) {
+                            // Close to altar - search it
+                            nextStep = searchAltar;
+                            log("-> Search altar for skull (close to altar)");
+                        } else {
+                            // In basement but not close to altar - walk to altar first
+                            nextStep = walkToAltar;
+                            log("-> Walk to altar in basement (distance: " + currentTile.distance(ALTAR_LOCATION) + ")");
+                        }
                     } else if (currentTile.distance(WIZARD_TOWER_ENTRANCE) > 5) {
+                        // Need to walk to Wizard Tower
                         nextStep = walkToWizardTower;
                         log("-> Walk to Wizard Tower");
-                    } else if (currentTile.getZ() == 0) {
+                    } else {
+                        // At Wizard Tower entrance - climb down to basement
                         nextStep = climbDownLadder;
                         log("-> Climb down to basement");
-                    } else {
-                        nextStep = searchAltar;
-                        log("-> Search altar for skull");
                     }
                     
                 } else if (config == 4) {
                     // Have skull, need to use it on coffin
-                    if (currentTile.getZ() == 3) {
+                    if (currentTile.getY() >= 9500) {
+                        // We're in the basement - climb up
                         nextStep = climbUpLadder;
                         log("-> Climb up from basement");
-                    } else if (currentTile.distance(GRAVEYARD_COFFIN_LOCATION) > 5) {
-                        nextStep = returnToGraveyard;
-                        log("-> Return to graveyard");
                     } else {
-                        nextStep = useSkullOnCoffin;
-                        log("-> Use Ghost's skull on coffin");
+                        // We're on the surface - go to graveyard
+                        if (currentTile.distance(GRAVEYARD_COFFIN_LOCATION) > 5) {
+                            nextStep = returnToGraveyard;
+                            log("-> Return to graveyard (on surface)");
+                        } else {
+                            nextStep = useSkullOnCoffin;
+                            log("-> Use Ghost's skull on coffin");
+                        }
                     }
                     
                 } else if (config == 5) {
@@ -531,7 +663,61 @@ public class RestlessGhostTree extends QuestTree {
                     return ExecutionResult.failure("Unknown config value: " + config);
                 }
                 
+                // SAFETY CHECK: If no next step determined, try to recover based on current state
+                if (nextStep == null) {
+                    log("WARNING: No next step determined, attempting recovery...");
+                    log("RECOVERY DEBUG: Config=" + config + ", HasSkull=" + hasSkull + ", Y=" + currentTile.getY());
+                    
+                    // Recovery logic based on inventory and location
+                    if (hasSkull) {
+                        if (currentTile.getY() >= 9500) {
+                            // Have skull, in basement - climb up
+                            nextStep = climbUpLadder;
+                            log("-> RECOVERY: Climb up from basement (have skull)");
+                        } else {
+                            // Have skull, on surface - go to graveyard
+                            if (currentTile.distance(GRAVEYARD_COFFIN_LOCATION) > 10) {
+                                nextStep = returnToGraveyard;
+                                log("-> RECOVERY: Return to graveyard (have skull, on surface, distance=" + currentTile.distance(GRAVEYARD_COFFIN_LOCATION) + ")");
+                            } else {
+                                nextStep = useSkullOnCoffin;
+                                log("-> RECOVERY: Use skull on coffin (at graveyard)");
+                            }
+                        }
+                    } else {
+                        // No skull - figure out what we need to do based on config and location
+                        if (currentTile.getY() >= 9500) {
+                            // In basement without skull - search altar
+                            if (currentTile.distance(ALTAR_LOCATION) <= 10) {
+                                nextStep = searchAltar;
+                                log("-> RECOVERY: Search altar for skull (in basement)");
+                            } else {
+                                nextStep = walkToAltar;
+                                log("-> RECOVERY: Walk to altar (in basement)");
+                            }
+                        } else {
+                            // On surface without skull - need to go to wizard tower
+                            if (currentTile.distance(WIZARD_TOWER_ENTRANCE) > 10) {
+                                nextStep = walkToWizardTower;
+                                log("-> RECOVERY: Walk to Wizard Tower (no skull)");
+                            } else {
+                                nextStep = climbDownLadder;
+                                log("-> RECOVERY: Climb down to basement (no skull)");
+                            }
+                        }
+                    }
+                    
+                    if (nextStep != null) {
+                        log("RECOVERY SUCCESS: Selected recovery step: " + nextStep.getDescription());
+                    } else {
+                        log("RECOVERY FAILED: Could not determine recovery step");
+                    }
+                }
+                
                 if (nextStep != null) {
+                    log("=== DECISION MADE ===");
+                    log("Selected step: " + nextStep.getDescription());
+                    log("=====================");
                     return ExecutionResult.success(nextStep, "Next step determined: " + nextStep.getDescription());
                 } else {
                     log("ERROR: Could not determine next step");

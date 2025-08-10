@@ -1,0 +1,479 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-08-06 03:07:15
+Player: 72diamond329
+Starting Location: (3053, 3252, 0)
+Starting Inventory: Energy potion(3), Energy potion(4) x6, Coins x1220378
+=====================================
+
+[03:07:15] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[03:07:15] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[03:07:15] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[03:07:15] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[03:07:15] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 69 varbits (including 0-values)
+
+[03:07:15] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[03:07:18] ACTION: Selected 'Talk-to' on Redbeard Frank
+    SCRIPT: NPCs.closest("Redbeard Frank").interact("Talk-to");
+
+[03:07:18] USER_ACTION: Talk-to | NPC_Tile: (3049, 3253, 0)
+[03:07:18] Movement: Started significant journey from (3053, 3252, 0)
+[03:07:19] Position: Arrived at (3050, 3253, 0)
+[03:07:24] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I'm in search of treasure.
+
+[03:07:30] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes., No.]
+
+[03:07:38] Movement: Started significant journey from (3049, 3253, 0)
+[03:07:45] Position: Arrived at (3042, 3238, 0)
+[03:08:25] Movement: Started significant journey from (3042, 3238, 0)
+[03:08:36] ACTION: Selected 'Pay-fare' on Seaman Lorris
+    SCRIPT: // Pay-fare on Seaman Lorris
+
+[03:08:36] USER_ACTION: Pay-fare | Target: Seaman Lorris
+[03:08:38] ACTION: Completed journey: 25 tiles
+    SCRIPT: Walking.walk(new Tile(3027, 3218, 0))
+
+[03:08:38] Journey: Walked 25 tiles in 12s | (3042, 3238, 0) → (3027, 3218, 0)
+[03:08:38] Position: Arrived at (3027, 3218, 0)
+[03:08:42] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Yes please.
+
+[03:08:50] ACTION: Selected 'Cross' on Gangplank
+    SCRIPT: // Cross on Gangplank
+
+[03:08:50] USER_ACTION: Cross | Target: Gangplank
+[03:08:51] Movement: Started significant journey from (2956, 3143, 1)
+[03:08:51] Position: Arrived at (2956, 3146, 0)
+[03:09:03] ACTION: Selected 'Trade' on Zembo
+    SCRIPT: NPCs.closest("Zembo").interact("Trade");
+
+[03:09:03] USER_ACTION: Trade | NPC_Tile: (2927, 3142, 0)
+[03:09:07] ACTION: Completed journey: 31 tiles
+    SCRIPT: Walking.walk(new Tile(2925, 3143, 0))
+
+[03:09:07] Journey: Walked 31 tiles in 13s | (2956, 3146, 0) → (2925, 3143, 0)
+[03:09:07] Position: Arrived at (2925, 3143, 0)
+[03:09:09] ACTION: Selected 'Buy 1' on Karamjan rum
+    SCRIPT: // Buy 1 on Karamjan rum
+
+[03:09:09] USER_ACTION: Buy 1 | Target: Karamjan rum
+[03:09:18] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:18] USER_ACTION: Pick | Target: Banana tree
+[03:09:19] Movement: Started significant journey from (2925, 3143, 0)
+[03:09:23] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:23] USER_ACTION: Pick | Target: Banana tree
+[03:09:27] Position: Arrived at (2920, 3158, 0)
+[03:09:28] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:28] USER_ACTION: Pick | Target: Banana tree
+[03:09:29] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:29] USER_ACTION: Pick | Target: Banana tree
+[03:09:30] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:30] USER_ACTION: Pick | Target: Banana tree
+[03:09:30] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:30] USER_ACTION: Pick | Target: Banana tree
+[03:09:30] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:30] USER_ACTION: Pick | Target: Banana tree
+[03:09:30] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:30] USER_ACTION: Pick | Target: Banana tree
+[03:09:31] ACTION: Selected 'Search' on Banana tree
+    SCRIPT: GameObjects.closest("Banana tree").interact("Search");
+
+[03:09:31] USER_ACTION: Search | Object_Tile: (2921, 3158, 0)
+[03:09:31] ACTION: Selected 'Search' on Banana tree
+    SCRIPT: GameObjects.closest("Banana tree").interact("Search");
+
+[03:09:31] USER_ACTION: Search | Object_Tile: (2921, 3158, 0)
+[03:09:32] ACTION: Selected 'Search' on Banana tree
+    SCRIPT: GameObjects.closest("Banana tree").interact("Search");
+
+[03:09:32] USER_ACTION: Search | Object_Tile: (2921, 3158, 0)
+[03:09:32] ACTION: Selected 'Search' on Banana tree
+    SCRIPT: GameObjects.closest("Banana tree").interact("Search");
+
+[03:09:32] USER_ACTION: Search | Object_Tile: (2921, 3158, 0)
+[03:09:32] ACTION: Selected 'Search' on Banana tree
+    SCRIPT: GameObjects.closest("Banana tree").interact("Search");
+
+[03:09:32] USER_ACTION: Search | Object_Tile: (2921, 3158, 0)
+[03:09:33] ACTION: Selected 'Search' on Banana tree
+    SCRIPT: GameObjects.closest("Banana tree").interact("Search");
+
+[03:09:33] USER_ACTION: Search | Object_Tile: (2921, 3158, 0)
+[03:09:35] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:35] USER_ACTION: Pick | Target: Banana tree
+[03:09:36] Movement: Started significant journey from (2920, 3158, 0)
+[03:09:39] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:39] USER_ACTION: Pick | Target: Banana tree
+[03:09:39] Position: Arrived at (2924, 3157, 0)
+[03:09:39] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:39] USER_ACTION: Pick | Target: Banana tree
+[03:09:39] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:39] USER_ACTION: Pick | Target: Banana tree
+[03:09:39] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:39] USER_ACTION: Pick | Target: Banana tree
+[03:09:39] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:39] USER_ACTION: Pick | Target: Banana tree
+[03:09:40] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:40] USER_ACTION: Pick | Target: Banana tree
+[03:09:40] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:40] USER_ACTION: Pick | Target: Banana tree
+[03:09:40] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:40] USER_ACTION: Pick | Target: Banana tree
+[03:09:40] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:40] USER_ACTION: Pick | Target: Banana tree
+[03:09:41] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:41] USER_ACTION: Pick | Target: Banana tree
+[03:09:41] ACTION: Selected 'Pick' on Banana tree
+    SCRIPT: // Pick on Banana tree
+
+[03:09:41] USER_ACTION: Pick | Target: Banana tree
+[03:09:51] Movement: Started significant journey from (2924, 3157, 0)
+[03:09:57] Position: Arrived at (2926, 3150, 0)
+[03:09:58] ACTION: Selected 'Talk-to' on Luthas
+    SCRIPT: NPCs.closest("Luthas").interact("Talk-to");
+
+[03:09:58] USER_ACTION: Talk-to | NPC_Tile: (2936, 3152, 0)
+[03:10:04] Position: Arrived at (2936, 3153, 0)
+[03:10:14] ACTION: DIALOGUE_SELECTION
+    SCRIPT: That customs officer is annoying isn't she?
+
+[03:10:19] ACTION: Selected 'Talk-to' on Luthas
+    SCRIPT: NPCs.closest("Luthas").interact("Talk-to");
+
+[03:10:19] USER_ACTION: Talk-to | NPC_Tile: (2935, 3153, 0)
+[03:10:22] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Could you offer me employment on your plantation?
+
+[03:10:30] Movement: Started significant journey from (2936, 3153, 0)
+[03:10:32] Position: Arrived at (2939, 3153, 0)
+[03:10:38] ACTION: Selected 'Use' on Karamjan rum
+    SCRIPT: GameObjects.closest("Karamjan rum").interact("Use");
+
+[03:10:38] USER_ACTION: Use | Target: Karamjan rum
+[03:10:38] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3), Energy potion(4) x6, Coins x1220318, Karamjan rum, Banana x10
+
+[03:10:39] ACTION: Selected 'Use' on Karamjan rum -> Crate
+    SCRIPT: GameObjects.closest("Karamjan rum -> Crate").interact("Use");
+
+[03:10:39] USER_ACTION: Use | Target: Karamjan rum -> Crate
+[03:10:42] Position: Arrived at (2942, 3151, 0)
+[03:10:49] ACTION: Selected 'Fill' on Crate
+    SCRIPT: // Fill on Crate
+
+[03:10:49] USER_ACTION: Fill | Target: Crate
+[03:10:59] ACTION: Selected 'Talk-to' on Luthas
+    SCRIPT: NPCs.closest("Luthas").interact("Talk-to");
+
+[03:10:59] USER_ACTION: Talk-to | NPC_Tile: (2936, 3153, 0)
+[03:11:00] Movement: Started significant journey from (2941, 3151, 0)
+[03:11:02] Position: Arrived at (2938, 3152, 0)
+[03:11:10] Movement: Started significant journey from (2938, 3152, 0)
+[03:11:15] Position: Arrived at (2948, 3146, 0)
+[03:11:24] ACTION: Selected 'Talk-to' on Customs officer
+    SCRIPT: NPCs.closest("Customs officer").interact("Talk-to");
+
+[03:11:24] USER_ACTION: Talk-to | NPC_Tile: (2954, 3149, 0)
+[03:11:24] Movement: Started significant journey from (2949, 3146, 0)
+[03:11:26] Position: Arrived at (2954, 3147, 0)
+[03:11:30] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Can I journey on this ship?
+
+[03:11:34] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Search away, I have nothing to hide.
+
+[03:11:38] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Ok.
+
+[03:11:46] ACTION: Selected 'Cross' on Gangplank
+    SCRIPT: // Cross on Gangplank
+
+[03:11:46] USER_ACTION: Cross | Target: Gangplank
+[03:11:47] Movement: Started significant journey from (3032, 3217, 1)
+[03:11:48] Position: Arrived at (3029, 3217, 0)
+[03:12:00] Position: Arrived at (3014, 3219, 0)
+[03:12:03] ACTION: Selected 'Take' on White apron
+    SCRIPT: // Take on White apron
+
+[03:12:03] USER_ACTION: Take | Target: White apron
+[03:12:04] Movement: Started significant journey from (3014, 3219, 0)
+[03:12:07] Position: Arrived at (3016, 3229, 0)
+[03:12:15] ACTION: Selected 'Wear' on White apron
+    SCRIPT: Inventory.interact("White apron", "Wear");
+
+[03:12:15] USER_ACTION: Wear | Target: White apron
+[03:12:15] ACTION: Inventory changed: Items lost/used
+    SCRIPT: // Current inventory: Energy potion(3), Energy potion(4) x6, Coins x1220318, White apron
+
+[03:12:17] Position: Arrived at (3012, 3211, 0)
+[03:12:18] Movement: Started significant journey from (3012, 3211, 0)
+[03:12:21] ACTION: Selected 'Talk-to' on Wydin
+    SCRIPT: NPCs.closest("Wydin").interact("Talk-to");
+
+[03:12:21] USER_ACTION: Talk-to | NPC_Tile: (3015, 3204, 0)
+[03:12:23] Position: Arrived at (3015, 3204, 0)
+[03:12:25] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Can I get a job here?
+
+[03:12:36] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[03:12:36] USER_ACTION: Open | Object_Tile: (3017, 3206, 0)
+[03:12:37] Movement: Started significant journey from (3015, 3204, 0)
+[03:12:39] Position: Arrived at (3011, 3204, 0)
+[03:12:41] ACTION: Selected 'Search' on Crate
+    SCRIPT: GameObjects.closest("Crate").interact("Search");
+
+[03:12:41] USER_ACTION: Search | Object_Tile: (3011, 3203, 0)
+[03:12:54] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes., No.]
+
+[03:13:39] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[03:13:39] USER_ACTION: Open | Object_Tile: (3012, 3204, 0)
+[03:13:40] Movement: Started significant journey from (3010, 3207, 0)
+[03:13:42] Position: Arrived at (3012, 3204, 0)
+[03:14:05] ACTION: Completed journey: 55 tiles
+    SCRIPT: Walking.walk(new Tile(3047, 3247, 0))
+
+[03:14:05] Journey: Walked 55 tiles in 22s | (3012, 3204, 0) → (3047, 3247, 0)
+[03:14:05] Position: Arrived at (3047, 3247, 0)
+[03:14:06] ACTION: Selected 'Talk-to' on Redbeard Frank
+    SCRIPT: NPCs.closest("Redbeard Frank").interact("Talk-to");
+
+[03:14:06] USER_ACTION: Talk-to | NPC_Tile: (3050, 3253, 0)
+[03:14:06] Movement: Started significant journey from (3048, 3247, 0)
+[03:14:11] Position: Arrived at (3050, 3253, 0)
+[03:14:18] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Ok thanks, I'll go and get it.
+
+[03:14:19] Movement: Started significant journey from (3050, 3253, 0)
+[03:14:32] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[03:14:34] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[03:14:36] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[03:14:43] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[03:14:50] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[03:14:59] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[03:15:11] ACTION: Completed journey: 162 tiles
+    SCRIPT: Walking.walk(new Tile(3098, 3408, 0))
+
+[03:15:11] Journey: Walked 162 tiles in 51s | (3050, 3253, 0) → (3098, 3408, 0)
+[03:15:11] Position: Arrived at (3098, 3408, 0)
+[03:15:11] Movement: Started significant journey from (3099, 3409, 0)
+[03:15:28] ACTION: Completed journey: 46 tiles
+    SCRIPT: Walking.walk(new Tile(3135, 3438, 0))
+
+[03:15:28] Journey: Walked 46 tiles in 16s | (3099, 3409, 0) → (3135, 3438, 0)
+[03:15:28] Position: Arrived at (3135, 3438, 0)
+[03:15:28] Movement: Started significant journey from (3136, 3439, 0)
+[03:15:37] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[03:15:47] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[03:15:53] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[03:15:59] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[03:16:03] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[03:16:08] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[03:16:08] USER_ACTION: Climb-up | Object_Tile: (3227, 3393, 0)
+[03:16:12] ACTION: Completed journey: 104 tiles
+    SCRIPT: Walking.walk(new Tile(3230, 3394, 1))
+
+[03:16:12] Journey: Walked 104 tiles in 43s | (3136, 3439, 0) → (3230, 3394, 1)
+[03:16:12] Position: Arrived at (3230, 3394, 1)
+[03:16:26] Movement: Started significant journey from (3230, 3394, 1)
+[03:16:29] ACTION: Selected 'Use' on Chest key
+    SCRIPT: GameObjects.closest("Chest key").interact("Use");
+
+[03:16:29] USER_ACTION: Use | Target: Chest key
+[03:16:29] ACTION: Item consumed: Energy potion(3)
+    SCRIPT: Inventory.getItem("Energy potion(3)").interact("Drink") // or click
+
+[03:16:29] ITEM_CONSUMPTION: Player consumed: Energy potion(3)
+[03:16:30] ACTION: Selected 'Use' on Chest key -> Chest
+    SCRIPT: GameObjects.closest("Chest key -> Chest").interact("Use");
+
+[03:16:30] USER_ACTION: Use | Target: Chest key -> Chest
+[03:16:32] Position: Arrived at (3219, 3395, 1)
+[03:16:36] ACTION: Selected 'Open' on Chest
+    SCRIPT: GameObjects.closest("Chest").interact("Open");
+
+[03:16:36] USER_ACTION: Open | Object_Tile: (3219, 3396, 1)
+[03:16:43] ACTION: Selected 'Read' on Pirate message
+    SCRIPT: // Read on Pirate message
+
+[03:16:43] USER_ACTION: Read | Target: Pirate message
+[03:16:46] Movement: Started significant journey from (3219, 3395, 1)
+[03:16:48] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[03:16:48] USER_ACTION: Climb-down | Object_Tile: (3228, 3393, 1)
+[03:16:51] Position: Arrived at (3226, 3394, 0)
+[03:16:54] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[03:17:05] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[03:17:10] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[03:17:16] ACTION: Completed journey: 59 tiles
+    SCRIPT: Walking.walk(new Tile(3178, 3428, 0))
+
+[03:17:16] Journey: Walked 59 tiles in 23s | (3226, 3394, 0) → (3178, 3428, 0)
+[03:17:16] Position: Arrived at (3178, 3428, 0)
+[03:17:18] Movement: Started significant journey from (3178, 3428, 0)
+[03:17:36] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[03:17:48] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[03:17:54] ACTION: Completed journey: 111 tiles
+    SCRIPT: Walking.walk(new Tile(3068, 3417, 0))
+
+[03:17:54] Journey: Walked 111 tiles in 35s | (3178, 3428, 0) → (3068, 3417, 0)
+[03:17:54] Position: Arrived at (3068, 3417, 0)
+[03:17:54] Movement: Started significant journey from (3067, 3417, 0)
+[03:18:04] ACTION: Completed journey: 30 tiles
+    SCRIPT: Walking.walk(new Tile(3037, 3422, 0))
+
+[03:18:04] Journey: Walked 30 tiles in 9s | (3067, 3417, 0) → (3037, 3422, 0)
+[03:18:04] Position: Arrived at (3037, 3422, 0)
+[03:18:13] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[03:18:27] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[03:18:37] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[03:18:44] ACTION: Completed journey: 72 tiles
+    SCRIPT: Walking.walk(new Tile(2989, 3369, 0))
+
+[03:18:44] Journey: Walked 72 tiles in 39s | (3037, 3422, 0) → (2989, 3369, 0)
+[03:18:44] Position: Arrived at (2989, 3369, 0)
+[03:18:44] Movement: Started significant journey from (2989, 3369, 0)
+[03:18:46] ACTION: Selected 'Bank' on Bank booth
+    SCRIPT: // Bank on Bank booth
+
+[03:18:46] USER_ACTION: Bank | Target: Bank booth
+[03:18:46] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(4) x2, Coins x1220318, Vial x5, Pirate message, Banana
+
+[03:18:46] ACTION: Equipment changed: chest: equipped White apron
+    SCRIPT: // Equipment slots updated: chest: equipped White apron
+
+[03:18:46] EQUIPMENT_CHANGE: Equipment modified: chest: equipped White apron
+[03:18:53] ACTION: Completed journey: 25 tiles
+    SCRIPT: Walking.walk(new Tile(3010, 3355, 0))
+
+[03:18:53] Journey: Walked 25 tiles in 8s | (2989, 3369, 0) → (3010, 3355, 0)
+[03:18:53] Position: Arrived at (3010, 3355, 0)
+[03:18:56] ACTION: Selected 'Withdraw-1' on Spade
+    SCRIPT: // Withdraw-1 on Spade
+
+[03:18:56] USER_ACTION: Withdraw-1 | Target: Spade
+[03:19:00] Movement: Started significant journey from (3010, 3355, 0)
+[03:19:11] ACTION: Selected 'Dig' on Spade
+    SCRIPT: // Dig on Spade
+
+[03:19:11] USER_ACTION: Dig | Target: Spade
+[03:19:13] Position: Arrived at (3003, 3378, 0)
+[03:19:16] Movement: Started significant journey from (3003, 3378, 0)
+[03:19:18] ACTION: Selected 'Dig' on Spade
+    SCRIPT: // Dig on Spade
+
+[03:19:18] USER_ACTION: Dig | Target: Spade
+[03:19:18] Position: Arrived at (2999, 3383, 0)
+[03:19:20] ACTION: Selected 'Attack' on Gardener
+    SCRIPT: NPCs.closest("Gardener").interact("Attack");
+
+[03:19:20] USER_ACTION: Attack | NPC_Tile: (2999, 3382, 0)
+[03:19:32] ACTION: Selected 'Dig' on Spade
+    SCRIPT: // Dig on Spade
+
+[03:19:32] USER_ACTION: Dig | Target: Spade
+[03:20:23] ACTION: Selected 'Open' on Casket
+    SCRIPT: GameObjects.closest("Casket").interact("Open");
+
+[03:20:23] USER_ACTION: Open | Target: Casket
+[03:20:23] QUEST STEP 3: CONFIG DISCOVERED: Unknown Quest config 101 changed from 15 to 17
+    SCRIPT: // DISCOVERED: Quest uses config 101 (value 15 → 17)
+
+[03:20:26] ACTION: Selected 'Wear' on Gold ring
+    SCRIPT: Inventory.interact("Gold ring", "Wear");
+
+[03:20:26] USER_ACTION: Wear | Target: Gold ring
+[03:21:28] QUEST_END: === QUEST RECORDING ENDED ===

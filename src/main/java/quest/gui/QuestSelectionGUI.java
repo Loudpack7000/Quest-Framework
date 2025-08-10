@@ -1,4 +1,12 @@
+
 package quest.gui;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -82,11 +90,12 @@ public class QuestSelectionGUI extends JFrame {
     }
     
     private void initializeGUI() {
-        setTitle("AI Quest Framework v7.6");
+        setTitle("AI Quest Framework v7.6 - OSRS Edition");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setResizable(true);
         setAlwaysOnTop(true);
-        setSize(500, 400);
+        setSize(650, 500); // Larger size for better button visibility
+        getContentPane().setBackground(new Color(32, 28, 24)); // OSRS brown background
         
         // DO NOT change Look and Feel - use DreamBot's default Substance theme
         // Removed UIManager.setLookAndFeel to prevent conflicts with DreamBot's Substance theme
@@ -124,15 +133,24 @@ public class QuestSelectionGUI extends JFrame {
         
         // Title - removed emoji to prevent encoding issues
         JLabel titleLabel = new JLabel("AI Quest Framework");
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        titleLabel.setForeground(UIManager.getColor("Label.foreground"));
-        
+        titleLabel.setFont(new Font("Old English Text MT", Font.BOLD, 22));
+        titleLabel.setForeground(new Color(255, 215, 0)); // Gold text
+
+        // Add OSRS logo (if available)
+        try {
+            ImageIcon osrsIcon = new ImageIcon(getClass().getResource("/osrs_logo.png"));
+            JLabel logoLabel = new JLabel(osrsIcon);
+            header.add(logoLabel, BorderLayout.WEST);
+        } catch (Exception e) {
+            // No logo available, skip
+        }
+
         // Version
         JLabel versionLabel = new JLabel("v7.6 - Tree-Based Quest System");
-        versionLabel.setFont(new Font("Segoe UI", Font.ITALIC, 12));
-        versionLabel.setForeground(UIManager.getColor("Label.foreground"));
-        
-        header.add(titleLabel, BorderLayout.WEST);
+        versionLabel.setFont(new Font("Segoe UI", Font.ITALIC, 13));
+        versionLabel.setForeground(new Color(255, 215, 0));
+
+        header.add(titleLabel, BorderLayout.CENTER);
         header.add(versionLabel, BorderLayout.EAST);
         
         return header;

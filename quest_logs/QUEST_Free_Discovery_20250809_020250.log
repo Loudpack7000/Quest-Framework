@@ -1,0 +1,103 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-08-09 02:02:50
+Player: D D M P E G
+Starting Location: (2970, 3343, 0)
+Starting Inventory: Water rune x2999, Energy potion(4) x10, Earth rune x1995, Redberry pie, Mind rune x4671, Bronze pickaxe, Salmon x5, Law rune x171, Coins x272865, Air rune x2937, Fire rune x496, Iron bar x2
+=====================================
+
+[02:02:50] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[02:02:50] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[02:02:50] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[02:02:50] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[02:02:50] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 1636 varbits (including 0-values)
+
+[02:02:50] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[02:02:50] QUEST STEP 3: QUEST PROGRESS: DEMON_SLAYER step 3 - [STEP 3]
+    SCRIPT: // DEMON_SLAYER varbit 2561 = 3
+
+[02:02:55] ACTION: Selected 'Talk-to' on Squire
+    SCRIPT: NPCs.closest("Squire").interact("Talk-to");
+
+[02:02:55] USER_ACTION: Talk-to | NPC_Tile: (2978, 3339, 0)
+[02:02:55] Movement: Started significant journey from (2971, 3343, 0)
+[02:02:57] Position: Arrived at (2977, 3339, 0)
+[02:02:58] DIALOGUE_OPTIONS: [And how is life as a squire?, Wouldn't you prefer to be a squire for me?]
+[02:03:03] DIALOGUE_OPTIONS: [And how is life as a squire?, Wouldn't you prefer to be a squire for me?]
+[02:03:04] ACTION: DIALOGUE_SELECTION
+    SCRIPT: And how is life as a squire?
+
+[02:03:05] DIALOGUE_OPTIONS: [Do you know where you lost it?, I can make a new sword if you like..., Is he angry?]
+[02:03:06] DIALOGUE_OPTIONS: [Do you know where you lost it?, Please wait..., Is he angry?]
+[02:03:07] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Do you know where you lost it?, Please wait..., Is he angry?]
+
+[02:03:09] DIALOGUE_OPTIONS: [So would these dwarves make another one?, Well I hope you find it soon.]
+[02:03:12] DIALOGUE_OPTIONS: [Please wait..., Well I hope you find it soon.]
+[02:03:13] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Please wait..., Well I hope you find it soon.]
+
+[02:03:14] DIALOGUE_OPTIONS: [Yes., No.]
+[02:03:15] DIALOGUE_OPTIONS: [Please wait..., No.]
+[02:03:15] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Please wait..., No.]
+
+[02:03:59] ACTION: Selected 'Cast' on Varrock Teleport
+    SCRIPT: // Cast on Varrock Teleport
+
+[02:03:59] USER_ACTION: Cast | Target: Varrock Teleport
+[02:03:59] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[02:03:59] SPELLBOOK_OPENED: Player opened the magic spellbook
+[02:04:06] Movement: Started significant journey from (3213, 3423, 0)
+[02:04:26] ACTION: Completed journey: 65 tiles
+    SCRIPT: Walking.walk(new Tile(3207, 3488, 0))
+
+[02:04:26] Journey: Walked 65 tiles in 20s | (3213, 3423, 0) → (3207, 3488, 0)
+[02:04:26] Position: Arrived at (3207, 3488, 0)
+[02:04:27] ACTION: Selected 'Talk-to' on Reldo
+    SCRIPT: NPCs.closest("Reldo").interact("Talk-to");
+
+[02:04:27] USER_ACTION: Talk-to | NPC_Tile: (3210, 3494, 0)
+[02:04:27] ACTIVE_QUEST_DETECTED: THE_KNIGHTS_SWORD is currently in progress
+[02:04:27] Movement: Started significant journey from (3207, 3488, 0)
+[02:04:33] DIALOGUE_OPTIONS: [I'm in search of a quest., What do you know about the Imcando dwarves?, Do you have anything to trade?, I'd better get going.]
+[02:04:34] DIALOGUE_OPTIONS: [I'm in search of a quest., Please wait..., Do you have anything to trade?, I'd better get going.]
+[02:04:35] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [I'm in search of a quest., Please wait..., Do you have anything to trade?, I'd better get going.]
+
+[02:04:50] ACTION: Selected 'Read journal:' on The Knight's Sword
+    SCRIPT: // Read journal: on The Knight's Sword
+
+[02:04:50] USER_ACTION: Read journal: | Target: The Knight's Sword
+[02:05:06] ACTION: Selected 'Cast' on Falador Teleport
+    SCRIPT: // Cast on Falador Teleport
+
+[02:05:06] USER_ACTION: Cast | Target: Falador Teleport
+[02:05:10] Movement: Started significant journey from (2966, 3380, 0)
+[02:05:53] ACTION: Completed journey: 123 tiles
+    SCRIPT: Walking.walk(new Tile(3007, 3264, 0))
+
+[02:05:53] Journey: Walked 123 tiles in 42s | (2966, 3380, 0) → (3007, 3264, 0)
+[02:05:53] Position: Arrived at (3007, 3264, 0)
+[02:06:06] Movement: Started significant journey from (3007, 3264, 0)
+[02:06:07] ACTIVE_QUEST_DETECTED: THE_KNIGHTS_SWORD is currently in progress
+[02:06:08] ACTIVE_QUEST_DETECTED: THE_KNIGHTS_SWORD is currently in progress
+[02:06:09] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[02:06:09] ACTIVE_QUEST_DETECTED: THE_KNIGHTS_SWORD is currently in progress
+[02:06:10] ACTIVE_QUEST_DETECTED: THE_KNIGHTS_SWORD is currently in progress
+[02:06:11] ACTIVE_QUEST_DETECTED: THE_KNIGHTS_SWORD is currently in progress
+[02:06:11] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+02:06:43] QUEST_END: === QUEST RECORDING ENDED ===

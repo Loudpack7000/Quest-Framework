@@ -1,0 +1,778 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-08-07 21:17:37
+Player: D D M P E G
+Starting Location: (3207, 3424, 0)
+Starting Inventory: Water rune x98, Earth rune x1999, Coins x272227, Law rune x186, Air rune x2983, Staff of fire
+=====================================
+
+[21:17:37] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[21:17:37] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[21:17:37] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[21:17:37] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[21:17:37] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 69 varbits (including 0-values)
+
+[21:17:37] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[21:17:39] ACTION: Selected 'Talk-to' on Aris
+    SCRIPT: NPCs.closest("Aris").interact("Talk-to");
+
+[21:17:39] USER_ACTION: Talk-to | NPC_Tile: (3204, 3424, 0)
+[21:17:40] Movement: Started significant journey from (3206, 3424, 0)
+[21:17:40] Position: Arrived at (3205, 3424, 0)
+[21:17:42] DIALOGUE_OPTIONS: [Yes., No.]
+[21:17:43] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes., No.]
+
+[21:17:52] DIALOGUE_OPTIONS: [How am I meant to fight a demon who can destroy cities?, Okay, where is he? I'll kill him for you!, Wally doesn't sound like a very heroic name.]
+[21:17:56] ACTION: DIALOGUE_SELECTION
+    SCRIPT: How am I meant to fight a demon who can destroy cities?
+
+[21:17:59] DIALOGUE_OPTIONS: [Okay, where is he? I'll kill him for you!, Wally doesn't sound like a very heroic name., So how did Wally kill Delrith?]
+[21:18:02] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Okay, where is he? I'll kill him for you!
+
+[21:18:04] DIALOGUE_OPTIONS: [How am I meant to fight a demon who can destroy cities?, Wally doesn't sound like a very heroic name., So how did Wally kill Delrith?]
+[21:18:07] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Wally doesn't sound like a very heroic name.
+
+[21:18:11] DIALOGUE_OPTIONS: [How am I meant to fight a demon who can destroy cities?, Okay, where is he? I'll kill him for you!, So how did Wally kill Delrith?]
+[21:18:14] ACTION: DIALOGUE_SELECTION
+    SCRIPT: So how did Wally kill Delrith?
+
+[21:18:42] Movement: Started significant journey from (13193, 3523, 0)
+[21:18:43] Position: Arrived at (13195, 3527, 0)
+[21:19:46] QUEST STEP 3: QUEST PROGRESS: DEMON_SLAYER step 0 → 1 - [STEP 1]
+    SCRIPT: // DEMON_SLAYER progressed to step 1
+
+[21:19:46] QUEST_VARBIT_CHANGE: DEMON_SLAYER varbit 2561 changed from 0 to 1
+[21:19:59] DIALOGUE_OPTIONS: [How am I meant to fight a demon who can destroy cities?, Okay, where is he? I'll kill him for you!, What is the magical incantation?, Where can I find Silverlight?]
+[21:19:59] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Where can I find Silverlight?
+
+[21:20:02] DIALOGUE_OPTIONS: [How am I meant to fight a demon who can destroy cities?, Okay, where is he? I'll kill him for you!, Wally doesn't sound like a very heroic name., What is the magical incantation?, Okay, thanks. I'll do my best to stop the demon.]
+[21:20:08] DIALOGUE_OPTIONS: [How am I meant to fight a demon who can destroy cities?, Okay, where is he? I'll kill him for you!, Wally doesn't sound like a very heroic name., What is the magical incantation?, Okay, thanks. I'll do my best to stop the demon.]
+[21:20:13] DIALOGUE_OPTIONS: [How am I meant to fight a demon who can destroy cities?, Okay, where is he? I'll kill him for you!, Wally doesn't sound like a very heroic name., What is the magical incantation?, Okay, thanks. I'll do my best to stop the demon.]
+[21:20:18] DIALOGUE_OPTIONS: [How am I meant to fight a demon who can destroy cities?, Okay, where is he? I'll kill him for you!, Wally doesn't sound like a very heroic name., What is the magical incantation?, Okay, thanks. I'll do my best to stop the demon.]
+[21:20:21] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [How am I meant to fight a demon who can destroy cities?, Okay, where is he? I'll kill him for you!, Wally doesn't sound like a very heroic name., What is the magical incantation?, Okay, thanks. I'll do my best to stop the demon.]
+
+[21:20:21] Movement: Started significant journey from (3205, 3424, 0)
+[21:20:23] Position: Arrived at (3208, 3425, 0)
+[21:20:56] Movement: Started significant journey from (3208, 3425, 0)
+[21:21:10] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[21:21:10] USER_ACTION: Open | Object_Tile: (3207, 3472, 0)
+[21:21:13] ACTION: Selected 'Talk-to' on Sir Prysin
+    SCRIPT: NPCs.closest("Sir Prysin").interact("Talk-to");
+
+[21:21:13] USER_ACTION: Talk-to | NPC_Tile: (3205, 3473, 0)
+[21:21:13] ACTION: Completed journey: 47 tiles
+    SCRIPT: Walking.walk(new Tile(3207, 3472, 0))
+
+[21:21:13] Journey: Walked 47 tiles in 17s | (3208, 3425, 0) → (3207, 3472, 0)
+[21:21:13] Position: Arrived at (3207, 3472, 0)
+[21:21:13] Movement: Started significant journey from (3207, 3472, 0)
+[21:21:15] DIALOGUE_OPTIONS: [I am a mighty adventurer. Who are you?, I'm not sure, I was hoping you could tell me., Aris said I should come and talk to you.]
+[21:21:20] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Aris said I should come and talk to you.
+
+[21:21:21] DIALOGUE_OPTIONS: [I need to find Silverlight., Yes, she is still alive.]
+[21:21:23] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I need to find Silverlight.
+
+[21:21:26] DIALOGUE_OPTIONS: [Well, Aris' crystal ball seems to think otherwise., He's back and unfortunately I've got to deal with him.]
+[21:21:29] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Well, Aris' crystal ball seems to think otherwise.
+
+[21:21:32] DIALOGUE_OPTIONS: [So give me the keys!, And why is this a problem?]
+[21:21:37] DIALOGUE_OPTIONS: [So give me the keys!, And why is this a problem?]
+[21:21:39] ACTION: DIALOGUE_SELECTION
+    SCRIPT: So give me the keys!
+
+[21:21:41] DIALOGUE_OPTIONS: [Can you give me your key?, Where can I find Captain Rovin?, Where does the wizard live?]
+[21:21:41] QUEST STEP 4: QUEST PROGRESS: DEMON_SLAYER step 1 → 2 - [STEP 2]
+    SCRIPT: // DEMON_SLAYER progressed to step 2
+
+[21:21:41] QUEST_VARBIT_CHANGE: DEMON_SLAYER varbit 2561 changed from 1 to 2
+[21:21:46] DIALOGUE_OPTIONS: [Can you give me your key?, Where can I find Captain Rovin?, Where does the wizard live?]
+[21:21:50] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Can you give me your key?, Where can I find Captain Rovin?, Where does the wizard live?]
+
+[21:21:50] Movement: Started significant journey from (3206, 3472, 0)
+[21:21:54] Position: Arrived at (3206, 3483, 0)
+[21:21:54] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[21:21:54] USER_ACTION: Open | Object_Tile: (3205, 3485, 0)
+[21:21:59] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[21:21:59] USER_ACTION: Climb-up | Object_Tile: (3202, 3497, 0)
+[21:22:01] Position: Arrived at (3203, 3496, 0)
+[21:22:07] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[21:22:07] USER_ACTION: Climb-up | Object_Tile: (3202, 3497, 1)
+[21:22:10] ACTION: Selected 'Talk-to' on Captain Rovin
+    SCRIPT: NPCs.closest("Captain Rovin").interact("Talk-to");
+
+[21:22:10] USER_ACTION: Talk-to | NPC_Tile: (3205, 3496, 2)
+[21:22:11] Movement: Started significant journey from (3204, 3497, 2)
+[21:22:11] Position: Arrived at (3204, 3496, 2)
+[21:22:12] DIALOGUE_OPTIONS: [I am one of the palace guards., What about the King?, Yes I know, but this is important.]
+[21:22:17] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [I am one of the palace guards., What about the King?, Yes I know, but this is important.]
+
+[21:22:18] DIALOGUE_OPTIONS: [There's a demon who wants to invade this city., Erm I forgot., The castle has just received its ale delivery.]
+[21:22:20] ACTION: DIALOGUE_SELECTION
+    SCRIPT: There's a demon who wants to invade this city.
+
+[21:22:21] DIALOGUE_OPTIONS: [Not really., Yes, very.]
+[21:22:23] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Yes, very.
+
+[21:22:24] DIALOGUE_OPTIONS: [Yeah, the palace guards are rubbish!, It's not them who are going to fight the demon, it's me.]
+[21:22:28] ACTION: DIALOGUE_SELECTION
+    SCRIPT: It's not them who are going to fight the demon, it's me.
+
+[21:22:32] DIALOGUE_OPTIONS: [Fortune-teller Aris said I was destined to kill the demon., Otherwise the demon will destroy the city!, Sir Prysin said you would give me the key.]
+[21:22:34] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Sir Prysin said you would give me the key.
+
+[21:22:37] DIALOGUE_OPTIONS: [Why did he give you one of the keys then?, Fortune-teller Aris said I was destined to kill the demon., Otherwise the demon will destroy the city!]
+[21:22:39] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Why did he give you one of the keys then?, Fortune-teller Aris said I was destined to kill the demon., Otherwise the demon will destroy the city!]
+
+[21:22:51] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[21:22:51] USER_ACTION: Climb-down | Object_Tile: (3202, 3497, 2)
+[21:22:51] Movement: Started significant journey from (3204, 3496, 2)
+[21:22:52] Position: Arrived at (3204, 3497, 2)
+[21:22:55] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[21:22:55] USER_ACTION: Climb-down | Object_Tile: (3202, 3497, 1)
+[21:22:58] Position: Arrived at (3203, 3496, 0)
+[21:23:01] Movement: Started significant journey from (3203, 3496, 0)
+[21:23:05] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[21:23:05] USER_ACTION: Open | Object_Tile: (3210, 3490, 0)
+[21:23:07] Position: Arrived at (3217, 3491, 0)
+[21:23:21] ACTION: Selected 'Wield' on Staff of fire
+    SCRIPT: Inventory.interact("Staff of fire", "Wield");
+
+[21:23:21] USER_ACTION: Wield | Target: Staff of fire
+[21:23:21] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Silverlight key, Water rune x98, Earth rune x1999, Coins x272226, Law rune x186, Air rune x2983, Staff of fire
+
+[21:23:33] ACTION: Selected 'Cast' on Varrock Teleport
+    SCRIPT: // Cast on Varrock Teleport
+
+[21:23:33] USER_ACTION: Cast | Target: Varrock Teleport
+[21:23:33] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[21:23:33] SPELLBOOK_OPENED: Player opened the magic spellbook
+[21:23:52] ACTION: Selected 'Bank' on Bank booth
+    SCRIPT: // Bank on Bank booth
+
+[21:23:52] USER_ACTION: Bank | Target: Bank booth
+[21:23:52] ACTION: Equipment changed: weapon: Gilded 2h sword → Staff of fire
+    SCRIPT: // Equipment slots updated: weapon: Gilded 2h sword → Staff of fire
+
+[21:23:52] EQUIPMENT_CHANGE: Equipment modified: weapon: Gilded 2h sword → Staff of fire
+[21:23:55] ACTION: Selected 'Withdraw-1' on Bucket of water
+    SCRIPT: // Withdraw-1 on Bucket of water
+
+[21:23:55] USER_ACTION: Withdraw-1 | Target: Bucket of water
+[21:24:48] ACTION: Selected 'Use' on Bucket of water
+    SCRIPT: Inventory.interact("Bucket of water", "Use");
+
+[21:24:48] USER_ACTION: Use | Target: Bucket of water
+[21:24:49] ACTION: Selected 'Use' on Bucket of water -> Drain
+    SCRIPT: // Item-on-item
+Inventory.use("Bucket of water", "Drain");
+
+[21:24:49] USER_ACTION: Use | Target: Bucket of water -> Drain
+[21:24:50] Movement: Started significant journey from (3226, 3495, 0)
+[21:24:51] Position: Arrived at (3225, 3496, 0)
+[21:25:05] Movement: Started significant journey from (3225, 3496, 0)
+[21:25:42] ACTION: Selected 'Open' on Manhole
+    SCRIPT: GameObjects.closest("Manhole").interact("Open");
+
+[21:25:42] USER_ACTION: Open | Object_Tile: (3237, 3458, 0)
+[21:25:43] ACTION: Completed journey: 40 tiles
+    SCRIPT: Walking.walk(new Tile(3236, 3458, 0))
+
+[21:25:43] Journey: Walked 40 tiles in 38s | (3225, 3496, 0) → (3236, 3458, 0)
+[21:25:43] Position: Arrived at (3236, 3458, 0)
+[21:25:47] ACTION: Selected 'Climb-down' on Manhole
+    SCRIPT: GameObjects.closest("Manhole").interact("Climb-down");
+
+[21:25:47] USER_ACTION: Climb-down | Object_Tile: (3237, 3458, 0)
+[21:25:57] Movement: Started significant journey from (3237, 9858, 0)
+[21:26:12] ACTION: Completed journey: 43 tiles
+    SCRIPT: Walking.walk(new Tile(3232, 9901, 0))
+
+[21:26:12] Journey: Walked 43 tiles in 15s | (3237, 9858, 0) → (3232, 9901, 0)
+[21:26:12] Position: Arrived at (3232, 9901, 0)
+[21:26:23] Movement: Started significant journey from (3232, 9901, 0)
+[21:26:25] Position: Arrived at (3228, 9900, 0)
+[21:27:13] Movement: Started significant journey from (3228, 9900, 0)
+[21:27:14] Position: Arrived at (3232, 9901, 0)
+[21:27:22] ACTION: Selected 'Take' on Rusty key
+    SCRIPT: // Take on Rusty key
+
+[21:27:22] USER_ACTION: Take | Target: Rusty key
+[21:27:23] Movement: Started significant journey from (3230, 9900, 0)
+[21:27:25] Position: Arrived at (3226, 9897, 0)
+[21:27:34] Movement: Started significant journey from (3226, 9897, 0)
+[21:27:35] Position: Arrived at (3229, 9899, 0)
+[21:28:03] ACTION: Selected 'Cast' on Varrock Teleport
+    SCRIPT: // Cast on Varrock Teleport
+
+[21:28:03] USER_ACTION: Cast | Target: Varrock Teleport
+[21:28:08] Movement: Started significant journey from (3211, 3422, 0)
+[21:28:13] Position: Arrived at (3196, 3432, 0)
+[21:28:18] ACTION: Selected 'Bank' on Bank booth
+    SCRIPT: // Bank on Bank booth
+
+[21:28:18] USER_ACTION: Bank | Target: Bank booth
+[21:28:18] ACTION: Inventory changed: Items lost/used
+    SCRIPT: // Current inventory: Silverlight key x2, Water rune x98, Earth rune x1999, Bucket, Coins x272226, Law rune x184, Gilded 2h sword, Air rune x2977
+
+[21:28:21] Position: Arrived at (3185, 3436, 0)
+[21:28:30] ACTION: Selected 'Withdraw-All' on Coins
+    SCRIPT: // Withdraw-All on Coins
+
+[21:28:30] USER_ACTION: Withdraw-All | Target: Coins
+[21:28:58] Movement: Started significant journey from (3185, 3436, 0)
+[21:29:15] ACTION: Selected 'Exchange' on Grand Exchange booth
+    SCRIPT: // Exchange on Grand Exchange booth
+
+[21:29:15] USER_ACTION: Exchange | Target: Grand Exchange booth
+[21:29:15] ACTION: Completed journey: 52 tiles
+    SCRIPT: Walking.walk(new Tile(3165, 3484, 0))
+
+[21:29:15] Journey: Walked 52 tiles in 16s | (3185, 3436, 0) → (3165, 3484, 0)
+[21:29:15] Position: Arrived at (3165, 3484, 0)
+[21:29:15] Movement: Started significant journey from (3165, 3484, 0)
+[21:29:16] ACTION: Grand Exchange accessed
+    SCRIPT: // GrandExchange.open() or similar interaction
+
+[21:29:16] GE_INTERACTION: Grand Exchange interface opened
+[21:29:16] ACTION: Opened Grand Exchange
+    SCRIPT: GrandExchange.open()
+
+[21:29:16] GE_OPENED: Grand Exchange interface opened
+[21:29:21] ACTION: Selected 'Select' on Bones
+    SCRIPT: // Select on Bones
+
+[21:29:21] USER_ACTION: Select | Target: Bones
+[21:29:21] ACTION: Grand Exchange accessed
+    SCRIPT: // GrandExchange.open() or similar interaction
+
+[21:29:21] GE_INTERACTION: Grand Exchange interface opened
+[21:29:26] ACTION: Grand Exchange accessed
+    SCRIPT: // GrandExchange.open() or similar interaction
+
+[21:29:26] GE_INTERACTION: Grand Exchange interface opened
+[21:29:31] ACTION: Grand Exchange accessed
+    SCRIPT: // GrandExchange.open() or similar interaction
+
+[21:29:31] GE_INTERACTION: Grand Exchange interface opened
+[21:29:36] ACTION: Grand Exchange accessed
+    SCRIPT: // GrandExchange.open() or similar interaction
+
+[21:29:36] GE_INTERACTION: Grand Exchange interface opened
+[21:29:40] ACTION: Closed Grand Exchange
+    SCRIPT: GrandExchange.close()
+
+[21:29:40] GE_CLOSED: Grand Exchange interface closed
+[21:29:41] ACTION: Selected 'Bank' on Grand Exchange booth
+    SCRIPT: // Bank on Grand Exchange booth
+
+[21:29:41] USER_ACTION: Bank | Target: Grand Exchange booth
+[21:29:42] Movement: Started significant journey from (3165, 3487, 0)
+[21:29:43] Position: Arrived at (3167, 3488, 0)
+[21:29:45] ACTION: Selected 'Deposit-All' on Bones
+    SCRIPT: // Deposit-All on Bones
+
+[21:29:45] USER_ACTION: Deposit-All | Target: Bones
+[21:29:46] ACTION: Selected 'Deposit-All' on Coins
+    SCRIPT: // Deposit-All on Coins
+
+[21:29:46] USER_ACTION: Deposit-All | Target: Coins
+[21:29:50] ACTION: Selected 'Withdraw-28' on Law rune
+    SCRIPT: // Withdraw-28 on Law rune
+
+[21:29:50] USER_ACTION: Withdraw-28 | Target: Law rune
+[21:29:50] ACTION: Selected 'Withdraw-28' on Law rune
+    SCRIPT: // Withdraw-28 on Law rune
+
+[21:29:50] USER_ACTION: Withdraw-28 | Target: Law rune
+[21:29:51] ACTION: Selected 'Withdraw-28' on Law rune
+    SCRIPT: // Withdraw-28 on Law rune
+
+[21:29:51] USER_ACTION: Withdraw-28 | Target: Law rune
+[21:29:51] ACTION: Selected 'Withdraw-28' on Law rune
+    SCRIPT: // Withdraw-28 on Law rune
+
+[21:29:51] USER_ACTION: Withdraw-28 | Target: Law rune
+[21:29:55] ACTION: Selected 'Withdraw-28' on Air rune
+    SCRIPT: // Withdraw-28 on Air rune
+
+[21:29:55] USER_ACTION: Withdraw-28 | Target: Air rune
+[21:29:56] ACTION: Selected 'Withdraw-28' on Air rune
+    SCRIPT: // Withdraw-28 on Air rune
+
+[21:29:56] USER_ACTION: Withdraw-28 | Target: Air rune
+[21:29:56] ACTION: Selected 'Withdraw-28' on Air rune
+    SCRIPT: // Withdraw-28 on Air rune
+
+[21:29:56] USER_ACTION: Withdraw-28 | Target: Air rune
+[21:29:57] ACTION: Selected 'Withdraw-28' on Air rune
+    SCRIPT: // Withdraw-28 on Air rune
+
+[21:29:57] USER_ACTION: Withdraw-28 | Target: Air rune
+[21:29:57] ACTION: Selected 'Withdraw-28' on Air rune
+    SCRIPT: // Withdraw-28 on Air rune
+
+[21:29:57] USER_ACTION: Withdraw-28 | Target: Air rune
+[21:30:01] ACTION: Selected 'Withdraw-All' on Bones
+    SCRIPT: // Withdraw-All on Bones
+
+[21:30:01] USER_ACTION: Withdraw-All | Target: Bones
+[21:30:03] ACTION: Selected 'Release' on Bones
+    SCRIPT: // Release on Bones
+
+[21:30:03] USER_ACTION: Release | Target: Bones
+[21:30:26] ACTION: Selected 'Bank' on Grand Exchange booth
+    SCRIPT: // Bank on Grand Exchange booth
+
+[21:30:26] USER_ACTION: Bank | Target: Grand Exchange booth
+[21:30:26] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Law rune x184, Bones x25, Air rune x336
+
+[21:30:30] ACTION: Selected 'Withdraw-All' on Earth rune
+    SCRIPT: // Withdraw-All on Earth rune
+
+[21:30:30] USER_ACTION: Withdraw-All | Target: Earth rune
+[21:30:32] ACTION: Selected 'Deposit-All' on Earth rune
+    SCRIPT: // Deposit-All on Earth rune
+
+[21:30:32] USER_ACTION: Deposit-All | Target: Earth rune
+[21:30:34] ACTION: Selected 'Withdraw-1' on Earth rune
+    SCRIPT: // Withdraw-1 on Earth rune
+
+[21:30:34] USER_ACTION: Withdraw-1 | Target: Earth rune
+[21:30:37] ACTION: Selected 'Cast' on Lumbridge Teleport
+    SCRIPT: // Cast on Lumbridge Teleport
+
+[21:30:37] USER_ACTION: Cast | Target: Lumbridge Teleport
+[21:30:37] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[21:30:37] SPELLBOOK_OPENED: Player opened the magic spellbook
+[21:30:46] Movement: Started significant journey from (3222, 3217, 0)
+[21:31:56] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[21:31:56] USER_ACTION: Climb-up | Object_Tile: (3103, 3159, 0)
+[21:32:00] ACTION: Completed journey: 131 tiles
+    SCRIPT: Walking.walk(new Tile(3104, 3161, 1))
+
+[21:32:00] Journey: Walked 131 tiles in 74s | (3222, 3217, 0) → (3104, 3161, 1)
+[21:32:00] Position: Arrived at (3104, 3161, 1)
+[21:32:06] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[21:32:06] USER_ACTION: Open | Object_Tile: (3108, 3158, 1)
+[21:32:06] Movement: Started significant journey from (3104, 3161, 1)
+[21:32:10] Position: Arrived at (3109, 3161, 1)
+[21:32:10] ACTION: Selected 'Talk-to' on Wizard Traiborn
+    SCRIPT: NPCs.closest("Wizard Traiborn").interact("Talk-to");
+
+[21:32:10] USER_ACTION: Talk-to | NPC_Tile: (3112, 3162, 1)
+[21:32:13] DIALOGUE_OPTIONS: [Talk about Demon Slayer., Talk about something else.]
+[21:32:15] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Talk about Demon Slayer., Talk about something else.]
+
+[21:32:16] DIALOGUE_OPTIONS: [He told me you were looking after it for him., He's one of the King's knights., Well, have you got any keys knocking around?]
+[21:32:18] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Well, have you got any keys knocking around?
+
+[21:32:23] DIALOGUE_OPTIONS: [Hmm, that's too bad. I really need that key., I'll get the bones for you.]
+[21:32:25] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Hmm, that's too bad. I really need that key., I'll get the bones for you.]
+
+[21:32:29] ACTION: Selected 'Talk-to' on Wizard Traiborn
+    SCRIPT: NPCs.closest("Wizard Traiborn").interact("Talk-to");
+
+[21:32:29] USER_ACTION: Talk-to | NPC_Tile: (3112, 3162, 1)
+[21:32:31] DIALOGUE_OPTIONS: [Talk about Demon Slayer., Talk about something else.]
+[21:32:32] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Talk about Demon Slayer., Talk about something else.]
+
+[21:32:59] ACTION: Selected 'Cast' on Varrock Teleport
+    SCRIPT: // Cast on Varrock Teleport
+
+[21:32:59] USER_ACTION: Cast | Target: Varrock Teleport
+[21:33:10] Movement: Started significant journey from (3213, 3423, 0)
+[21:33:21] ACTION: Selected 'Bank' on Bank booth
+    SCRIPT: // Bank on Bank booth
+
+[21:33:21] USER_ACTION: Bank | Target: Bank booth
+[21:33:23] ACTION: Completed journey: 31 tiles
+    SCRIPT: Walking.walk(new Tile(3185, 3436, 0))
+
+[21:33:23] Journey: Walked 31 tiles in 12s | (3213, 3423, 0) → (3185, 3436, 0)
+[21:33:23] Position: Arrived at (3185, 3436, 0)
+[21:33:27] ACTION: Selected 'Withdraw-28' on Earth rune
+    SCRIPT: // Withdraw-28 on Earth rune
+
+[21:33:27] USER_ACTION: Withdraw-28 | Target: Earth rune
+[21:33:28] ACTION: Selected 'Withdraw-28' on Earth rune
+    SCRIPT: // Withdraw-28 on Earth rune
+
+[21:33:28] USER_ACTION: Withdraw-28 | Target: Earth rune
+[21:33:28] ACTION: Selected 'Withdraw-28' on Earth rune
+    SCRIPT: // Withdraw-28 on Earth rune
+
+[21:33:28] USER_ACTION: Withdraw-28 | Target: Earth rune
+[21:33:33] ACTION: Selected 'Withdraw-28' on Staff of air
+    SCRIPT: // Withdraw-28 on Staff of air
+
+[21:33:33] USER_ACTION: Withdraw-28 | Target: Staff of air
+[21:33:36] ACTION: Selected 'Withdraw-28' on Silverlight key
+    SCRIPT: // Withdraw-28 on Silverlight key
+
+[21:33:36] USER_ACTION: Withdraw-28 | Target: Silverlight key
+[21:33:37] ACTION: Selected 'Release' on Silverlight key
+    SCRIPT: // Release on Silverlight key
+
+[21:33:37] USER_ACTION: Release | Target: Silverlight key
+[21:33:38] ACTION: Selected 'Withdraw-28' on Silverlight key
+    SCRIPT: // Withdraw-28 on Silverlight key
+
+[21:33:38] USER_ACTION: Withdraw-28 | Target: Silverlight key
+[21:33:40] ACTION: Selected 'Release' on Silverlight key
+    SCRIPT: // Release on Silverlight key
+
+[21:33:40] USER_ACTION: Release | Target: Silverlight key
+[21:33:44] ACTION: Selected 'View tab' on 4
+    SCRIPT: // View tab on 4
+
+[21:33:44] USER_ACTION: View tab | Target: 4
+[21:33:45] ACTION: Selected 'Release' on Research package
+    SCRIPT: // Release on Research package
+
+[21:33:45] USER_ACTION: Release | Target: Research package
+[21:33:51] ACTION: Selected 'Remove' on Ghostspeak amulet
+    SCRIPT: // Remove on Ghostspeak amulet
+
+[21:33:51] USER_ACTION: Remove | Target: Ghostspeak amulet
+[21:33:52] ACTION: Selected 'Bank' on Bank booth
+    SCRIPT: // Bank on Bank booth
+
+[21:33:52] USER_ACTION: Bank | Target: Bank booth
+[21:33:52] ACTION: Equipment changed: amulet: removed Ghostspeak amulet
+    SCRIPT: // Equipment slots updated: amulet: removed Ghostspeak amulet
+
+[21:33:52] EQUIPMENT_CHANGE: Equipment modified: amulet: removed Ghostspeak amulet
+[21:33:57] ACTION: Selected 'Withdraw-28' on Strength amulet (t)
+    SCRIPT: // Withdraw-28 on Strength amulet (t)
+
+[21:33:57] USER_ACTION: Withdraw-28 | Target: Strength amulet (t)
+[21:33:59] ACTION: Selected 'Deposit-28' on Ghostspeak amulet
+    SCRIPT: // Deposit-28 on Ghostspeak amulet
+
+[21:33:59] USER_ACTION: Deposit-28 | Target: Ghostspeak amulet
+[21:34:01] ACTION: Selected 'Wear' on Strength amulet (t)
+    SCRIPT: Inventory.interact("Strength amulet (t)", "Wear");
+
+[21:34:01] USER_ACTION: Wear | Target: Strength amulet (t)
+[21:34:04] ACTION: Selected 'Withdraw-5' on Energy potion(4)
+    SCRIPT: // Withdraw-5 on Energy potion(4)
+
+[21:34:04] USER_ACTION: Withdraw-5 | Target: Energy potion(4)
+[21:34:07] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[21:34:11] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[21:34:14] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[21:34:17] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[21:34:25] ACTION: Selected 'Deposit-5' on Vial
+    SCRIPT: // Deposit-5 on Vial
+
+[21:34:25] USER_ACTION: Deposit-5 | Target: Vial
+[21:34:35] ACTION: Selected 'Withdraw-5' on Salmon
+    SCRIPT: // Withdraw-5 on Salmon
+
+[21:34:35] USER_ACTION: Withdraw-5 | Target: Salmon
+[21:34:36] ACTION: Selected 'Withdraw-5' on Salmon
+    SCRIPT: // Withdraw-5 on Salmon
+
+[21:34:36] USER_ACTION: Withdraw-5 | Target: Salmon
+[21:34:59] ACTION: Selected 'Bank' on Bank booth
+    SCRIPT: // Bank on Bank booth
+
+[21:34:59] USER_ACTION: Bank | Target: Bank booth
+[21:34:59] ACTION: Equipment changed: amulet: equipped Strength amulet (t)
+    SCRIPT: // Equipment slots updated: amulet: equipped Strength amulet (t)
+
+[21:34:59] EQUIPMENT_CHANGE: Equipment modified: amulet: equipped Strength amulet (t)
+[21:35:05] ACTION: Selected 'Withdraw-5' on Mind rune
+    SCRIPT: // Withdraw-5 on Mind rune
+
+[21:35:05] USER_ACTION: Withdraw-5 | Target: Mind rune
+[21:35:05] ACTION: Selected 'Withdraw-28' on Mind rune
+    SCRIPT: // Withdraw-28 on Mind rune
+
+[21:35:05] USER_ACTION: Withdraw-28 | Target: Mind rune
+[21:35:05] ACTION: Selected 'Withdraw-28' on Mind rune
+    SCRIPT: // Withdraw-28 on Mind rune
+
+[21:35:05] USER_ACTION: Withdraw-28 | Target: Mind rune
+[21:35:06] ACTION: Selected 'Withdraw-28' on Mind rune
+    SCRIPT: // Withdraw-28 on Mind rune
+
+[21:35:06] USER_ACTION: Withdraw-28 | Target: Mind rune
+[21:35:08] ACTION: Selected 'Withdraw-28' on Water rune
+    SCRIPT: // Withdraw-28 on Water rune
+
+[21:35:08] USER_ACTION: Withdraw-28 | Target: Water rune
+[21:35:08] ACTION: Selected 'Withdraw-28' on Water rune
+    SCRIPT: // Withdraw-28 on Water rune
+
+[21:35:08] USER_ACTION: Withdraw-28 | Target: Water rune
+[21:35:09] ACTION: Selected 'Withdraw-28' on Water rune
+    SCRIPT: // Withdraw-28 on Water rune
+
+[21:35:09] USER_ACTION: Withdraw-28 | Target: Water rune
+[21:35:09] ACTION: Selected 'Withdraw-28' on Water rune
+    SCRIPT: // Withdraw-28 on Water rune
+
+[21:35:09] USER_ACTION: Withdraw-28 | Target: Water rune
+[21:35:10] ACTION: Selected 'Withdraw-28' on Water rune
+    SCRIPT: // Withdraw-28 on Water rune
+
+[21:35:10] USER_ACTION: Withdraw-28 | Target: Water rune
+[21:35:12] ACTION: Selected 'Withdraw-28' on Water rune
+    SCRIPT: // Withdraw-28 on Water rune
+
+[21:35:12] USER_ACTION: Withdraw-28 | Target: Water rune
+[21:35:30] Movement: Started significant journey from (3185, 3436, 0)
+[21:35:54] ACTION: Selected 'Talk-to' on Sir Prysin
+    SCRIPT: NPCs.closest("Sir Prysin").interact("Talk-to");
+
+[21:35:54] USER_ACTION: Talk-to | NPC_Tile: (3204, 3473, 0)
+[21:35:56] ACTION: Completed journey: 41 tiles
+    SCRIPT: Walking.walk(new Tile(3204, 3472, 0))
+
+[21:35:56] Journey: Walked 41 tiles in 26s | (3185, 3436, 0) → (3204, 3472, 0)
+[21:35:56] Position: Arrived at (3204, 3472, 0)
+[21:36:01] Movement: Started significant journey from (3204, 3472, 0)
+[21:36:02] Position: Arrived at (3204, 3470, 0)
+[21:36:23] ACTION: Selected 'Wield' on Silverlight
+    SCRIPT: Inventory.interact("Silverlight", "Wield");
+
+[21:36:23] USER_ACTION: Wield | Target: Silverlight
+[21:36:24] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[21:36:24] USER_ACTION: Open | Object_Tile: (3207, 3472, 0)
+[21:36:24] Movement: Started significant journey from (3204, 3470, 0)
+[21:36:25] Position: Arrived at (3206, 3472, 0)
+[21:36:46] ACTION: Completed journey: 38 tiles
+    SCRIPT: Walking.walk(new Tile(3213, 3435, 0))
+
+[21:36:46] Journey: Walked 38 tiles in 14s | (3206, 3472, 0) → (3213, 3435, 0)
+[21:36:46] Position: Arrived at (3213, 3435, 0)
+[21:36:49] Movement: Started significant journey from (3213, 3435, 0)
+[21:37:08] ACTION: Completed journey: 61 tiles
+    SCRIPT: Walking.walk(new Tile(3216, 3374, 0))
+
+[21:37:08] Journey: Walked 61 tiles in 19s | (3213, 3435, 0) → (3216, 3374, 0)
+[21:37:08] Position: Arrived at (3216, 3374, 0)
+[21:37:23] Movement: Started significant journey from (3216, 3374, 0)
+[21:37:25] ACTION: Teleport/Cutscene detected: 10192 tiles
+    SCRIPT: // Large distance moved - likely teleport or cutscene
+
+[21:37:25] Teleport: Moved 10192 tiles | (3216, 3374, 0) → (13382, 4108, 0)
+[21:37:25] Position: Arrived at (13382, 4108, 0)
+[21:37:48] Movement: Started significant journey from (13382, 4108, 0)
+[21:37:49] ACTION: Selected 'Attack' on Delrith
+    SCRIPT: NPCs.closest("Delrith").interact("Attack");
+
+[21:37:49] USER_ACTION: Attack | NPC_Tile: (13388, 4104, 0)
+[21:37:49] ACTION: Entered combat with Dark wizard
+    SCRIPT: NPCs.closest("Dark wizard").interact("Attack")
+
+[21:37:49] COMBAT_START: Combat started with: Dark wizard (Level 7)
+[21:37:49] Position: Arrived at (13385, 4107, 0)
+[21:37:52] ACTION: Selected 'Attack' on Delrith
+    SCRIPT: NPCs.closest("Delrith").interact("Attack");
+
+[21:37:52] USER_ACTION: Attack | NPC_Tile: (13388, 4104, 0)
+[21:37:52] ACTION: Combat ended
+    SCRIPT: // Combat finished
+
+[21:37:52] COMBAT_END: Combat ended
+[21:37:56] ACTION: Selected 'Attack' on Delrith
+    SCRIPT: NPCs.closest("Delrith").interact("Attack");
+
+[21:37:56] USER_ACTION: Attack | NPC_Tile: (13390, 4105, 0)
+[21:37:57] Position: Arrived at (13390, 4105, 0)
+[21:37:57] ACTION: Selected 'Attack' on Delrith
+    SCRIPT: NPCs.closest("Delrith").interact("Attack");
+
+[21:37:57] USER_ACTION: Attack | NPC_Tile: (13390, 4107, 0)
+[21:37:59] Movement: Started significant journey from (13390, 4105, 0)
+[21:38:00] ACTION: Selected 'Attack' on Dark wizard
+    SCRIPT: NPCs.closest("Dark wizard").interact("Attack");
+
+[21:38:00] USER_ACTION: Attack | NPC_Tile: (13388, 4107, 0)
+[21:38:01] ACTION: Selected 'Attack' on Dark wizard
+    SCRIPT: NPCs.closest("Dark wizard").interact("Attack");
+
+[21:38:01] USER_ACTION: Attack | NPC_Tile: (13388, 4107, 0)
+[21:38:01] ACTION: Entered combat with Dark wizard
+    SCRIPT: NPCs.closest("Dark wizard").interact("Attack")
+
+[21:38:01] COMBAT_START: Combat started with: Dark wizard (Level 7)
+[21:38:06] ACTION: Selected 'Attack' on Delrith
+    SCRIPT: NPCs.closest("Delrith").interact("Attack");
+
+[21:38:06] USER_ACTION: Attack | NPC_Tile: (13391, 4106, 0)
+[21:38:06] ACTION: Combat ended
+    SCRIPT: // Combat finished
+
+[21:38:06] COMBAT_END: Combat ended
+[21:38:06] Position: Arrived at (13390, 4105, 0)
+[21:38:07] ACTION: Selected 'Attack' on Delrith
+    SCRIPT: NPCs.closest("Delrith").interact("Attack");
+
+[21:38:07] USER_ACTION: Attack | NPC_Tile: (13391, 4106, 0)
+[21:38:07] ACTION: Selected 'Attack' on Delrith
+    SCRIPT: NPCs.closest("Delrith").interact("Attack");
+
+[21:38:07] USER_ACTION: Attack | NPC_Tile: (13390, 4106, 0)
+[21:38:08] ACTION: Selected 'Attack' on Dark wizard
+    SCRIPT: NPCs.closest("Dark wizard").interact("Attack");
+
+[21:38:08] USER_ACTION: Attack | NPC_Tile: (13389, 4107, 0)
+[21:38:12] ACTION: Selected 'Cast' on Earth Strike
+    SCRIPT: // Cast on Earth Strike
+
+[21:38:12] USER_ACTION: Cast | Target: Earth Strike
+[21:38:12] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[21:38:12] SPELLBOOK_OPENED: Player opened the magic spellbook
+[21:38:13] ACTION: Selected 'Cast' on Earth Strike -> Dark wizard
+    SCRIPT: // Cast on Earth Strike -> Dark wizard
+
+[21:38:13] USER_ACTION: Cast | Target: Earth Strike -> Dark wizard
+[21:38:13] ACTION: Entered combat with Delrith
+    SCRIPT: NPCs.closest("Delrith").interact("Attack")
+
+[21:38:13] COMBAT_START: Combat started with: Delrith (Level 27)
+[21:38:15] ACTION: Selected 'Cast' on Earth Strike
+    SCRIPT: // Cast on Earth Strike
+
+[21:38:15] USER_ACTION: Cast | Target: Earth Strike
+[21:38:15] ACTION: Combat ended
+    SCRIPT: // Combat finished
+
+[21:38:15] COMBAT_END: Combat ended
+[21:38:16] ACTION: Selected 'Cast' on Earth Strike -> Delrith
+    SCRIPT: // Cast on Earth Strike -> Delrith
+
+[21:38:16] USER_ACTION: Cast | Target: Earth Strike -> Delrith
+[21:38:17] Movement: Started significant journey from (13389, 4106, 0)
+[21:38:17] Position: Arrived at (13389, 4105, 0)
+[21:38:19] ACTION: Selected 'Cast' on Earth Strike
+    SCRIPT: // Cast on Earth Strike
+
+[21:38:19] USER_ACTION: Cast | Target: Earth Strike
+[21:38:20] ACTION: Selected 'Cast' on Earth Strike -> Delrith
+    SCRIPT: // Cast on Earth Strike -> Delrith
+
+[21:38:20] USER_ACTION: Cast | Target: Earth Strike -> Delrith
+[21:38:23] DIALOGUE_OPTIONS: [Carlem, Aber, Camerinthum, Purchai, Gabindo]
+[21:38:27] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Purchai
+
+[21:38:28] DIALOGUE_OPTIONS: [Carlem, Aber, Camerinthum, Purchai, Gabindo]
+[21:38:31] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Carlem
+
+[21:38:32] DIALOGUE_OPTIONS: [Carlem, Aber, Camerinthum, Purchai, Gabindo]
+[21:38:34] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Camerinthum
+
+[21:38:36] DIALOGUE_OPTIONS: [Carlem, Aber, Camerinthum, Purchai, Gabindo]
+[21:38:38] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Gabindo
+
+[21:38:40] DIALOGUE_OPTIONS: [Carlem, Aber, Camerinthum, Purchai, Gabindo]
+[21:38:41] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Gabindo
+
+[21:38:45] ACTION: Selected 'Attack' on Delrith
+    SCRIPT: NPCs.closest("Delrith").interact("Attack");
+
+[21:38:45] USER_ACTION: Attack | NPC_Tile: (13390, 4107, 0)
+[21:38:45] ACTION: Combat ended
+    SCRIPT: // Combat finished
+
+[21:38:45] COMBAT_END: Combat ended
+[21:38:47] ACTION: Selected 'Attack' on Delrith
+    SCRIPT: NPCs.closest("Delrith").interact("Attack");
+
+[21:38:47] USER_ACTION: Attack | NPC_Tile: (13390, 4107, 0)
+[21:38:54] DIALOGUE_OPTIONS: [Carlem, Aber, Camerinthum, Purchai, Gabindo]
+[21:38:55] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Purchai
+
+[21:38:57] DIALOGUE_OPTIONS: [Carlem, Aber, Camerinthum, Purchai, Gabindo]
+[21:38:58] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Carlem
+
+[21:39:00] DIALOGUE_OPTIONS: [Carlem, Aber, Camerinthum, Purchai, Gabindo]
+[21:39:03] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Camerinthum
+
+[21:39:05] DIALOGUE_OPTIONS: [Carlem, Aber, Camerinthum, Purchai, Gabindo]
+[21:39:07] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Carlem, Aber, Camerinthum, Purchai, Gabindo]
+
+[21:39:09] DIALOGUE_OPTIONS: [Carlem, Aber, Camerinthum, Purchai, Gabindo]
+[21:39:11] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Aber
+
+[21:39:25] QUEST STEP 5: CONFIG DISCOVERED: Unknown Quest config 101 changed from 29 to 32
+    SCRIPT: // DISCOVERED: Quest uses config 101 (value 29 → 32)
+
+[21:39:25] QUEST STEP 6: QUEST PROGRESS: DEMON_SLAYER step 2 → 3 - [STEP 3]
+    SCRIPT: // DEMON_SLAYER progressed to step 3
+
+[21:39:25] QUEST_VARBIT_CHANGE: DEMON_SLAYER varbit 2561 changed from 2 to 3
+[21:39:34] QUEST_END: === QUEST RECORDING ENDED ===

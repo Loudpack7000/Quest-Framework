@@ -1,6 +1,7 @@
 package quest.utils;
 
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.grandexchange.GrandExchange;
@@ -12,6 +13,8 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Logger;
 import java.util.Arrays;
+import quest.core.QuestExecutor;
+import quest.core.QuestExecutor.ExecutorState;
 
 /**
  * Grand Exchange Utility for automated trading
@@ -26,10 +29,11 @@ public class GrandExchangeUtil {
     
     // Price increase strategies
     public enum PriceStrategy {
-        CONSERVATIVE(5),    // 5% increases
-        MODERATE(10),       // 10% increases  
-        AGGRESSIVE(15),     // 15% increases
-        INSTANT(50);        // 50% over market price
+        CONSERVATIVE(5),     // 5% increases
+        MODERATE(10),        // 10% increases  
+        AGGRESSIVE(15),      // 15% increases
+        INSTANT(50),         // 50% over market price
+        FIXED_500_GP(0);     // Force 500 gp per item (instant buy for cheap items)
         
         private final int increasePercent;
         
@@ -60,6 +64,10 @@ public class GrandExchangeUtil {
      * Buy item with full control
      */
     public static boolean buyItem(String itemName, int quantity, PriceStrategy strategy, int timeoutMs) {
+        if (!isExecutionActive()) {
+            Logger.log("[ABORT] Execution paused/stopped - aborting GE buyItem");
+            return false;
+        }
         Logger.log("Attempting to buy " + quantity + "x " + itemName + " using " + strategy + " strategy");
         
         if (!navigateToGrandExchange()) {
@@ -99,6 +107,10 @@ public class GrandExchangeUtil {
      * Buy multiple items in sequence
      */
     public static boolean buyItems(ItemRequest... itemRequests) {
+        if (!isExecutionActive()) {
+            Logger.log("[ABORT] Execution paused/stopped - aborting GE buyItems");
+            return false;
+        }
         Logger.log("Buying " + itemRequests.length + " different items from Grand Exchange");
         
         if (!navigateToGrandExchange()) {
@@ -120,6 +132,7 @@ public class GrandExchangeUtil {
         
         boolean allSuccess = true;
         for (ItemRequest request : itemRequests) {
+            if (!isExecutionActive()) { allSuccess = false; break; }
             if (!executeBuyOrder(request.getItemName(), request.getQuantity(), 
                                request.getStrategy(), request.getTimeoutMs())) {
                 Logger.log("Failed to buy: " + request.getItemName());
@@ -149,6 +162,10 @@ public class GrandExchangeUtil {
      * Navigate to Grand Exchange - Simple and reliable method
      */
     private static boolean navigateToGrandExchange() {
+        if (!isExecutionActive()) {
+            Logger.log("[ABORT] Execution paused/stopped - aborting GE navigation");
+            return false;
+        }
         Logger.log("=== GRAND EXCHANGE NAVIGATION DEBUG ===");
         Logger.log("Current player location: " + Players.getLocal().getTile());
         Logger.log("Target GE_CENTER: " + GE_CENTER);
@@ -179,6 +196,10 @@ public class GrandExchangeUtil {
         
         // Try multiple times with movement detection
         for (int attempt = 1; attempt <= 3; attempt++) {
+            if (!isExecutionActive()) {
+                Logger.log("[ABORT] Execution paused/stopped during GE navigation");
+                return false;
+            }
             Logger.log("GE navigation attempt " + attempt + "/3");
             
             Tile target = (attempt == 1) ? GE_CENTER : GE_FALLBACK;
@@ -190,6 +211,7 @@ public class GrandExchangeUtil {
                 // Wait with movement detection and multiple checks
                 final int[] logCounter = {0}; // Counter for reduced logging
                 boolean arrived = Sleep.sleepUntil(() -> {
+                    if (!isExecutionActive()) return true; // end wait early
                     Tile currentPos = Players.getLocal().getTile();
                     boolean inArea = GE_AREA.contains(currentPos);
                     boolean isMoving = Players.getLocal().isMoving();
@@ -243,6 +265,7 @@ public class GrandExchangeUtil {
      * Open Grand Exchange interface
      */
     private static boolean openGrandExchange() {
+        if (!isExecutionActive()) return false;
         if (GrandExchange.isOpen()) {
             Logger.log("Grand Exchange interface already open");
             return true;
@@ -278,12 +301,14 @@ public class GrandExchangeUtil {
      * Execute the actual buy order with price management
      */
     private static boolean executeBuyOrder(String itemName, int quantity, PriceStrategy strategy, int timeoutMs) {
+        if (!isExecutionActive()) return false;
         long startTime = System.currentTimeMillis();
         int attempts = 0;
         final int maxAttempts = 5;
         int initialCount = Inventory.count(itemName); // Track initial count
         
         while (attempts < maxAttempts && (System.currentTimeMillis() - startTime) < timeoutMs) {
+            if (!isExecutionActive()) return false;
             attempts++;
             Logger.log("Buy attempt " + attempts + " for " + itemName);
             
@@ -343,6 +368,9 @@ public class GrandExchangeUtil {
      * Calculate offer price based on strategy and attempt number
      */
     private static int calculateOfferPrice(int marketPrice, PriceStrategy strategy, int attempt) {
+        if (strategy == PriceStrategy.FIXED_500_GP) {
+            return 500; // Always offer 500 gp per item
+        }
         // Base increase from strategy
         double multiplier = 1.0 + (strategy.getIncreasePercent() / 100.0);
         
@@ -435,6 +463,7 @@ public class GrandExchangeUtil {
      * Manual buy order placement using widget interactions
      */
     private static boolean placeBuyOrderManually(String itemName, int quantity, int price, int slotIndex) {
+        if (!isExecutionActive()) return false;
         Logger.log("Attempting manual buy order placement...");
         
         try {
@@ -475,6 +504,7 @@ public class GrandExchangeUtil {
         Logger.log("Initial inventory count: " + initialCount);
         
         while ((System.currentTimeMillis() - startTime) < timeoutMs) {
+            if (!isExecutionActive()) return false;
             checkCount++;
             
             // Log progress every 5 checks to avoid spam
@@ -529,6 +559,14 @@ public class GrandExchangeUtil {
         }
         
         return false;
+    }
+
+    private static boolean isExecutionActive() {
+        try {
+            return QuestExecutor.getInstance().getCurrentState() == ExecutorState.EXECUTING;
+        } catch (Exception e) {
+            return true; // fail-open to avoid NPE in static contexts
+        }
     }
     
     /**

@@ -1,0 +1,121 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-08-08 00:54:33
+Player: TereIsAChair
+Starting Location: (2957, 3511, 0)
+Starting Inventory: Goblin mail x3, Water rune x2998, Energy potion(4) x5, Earth rune x800, Mind rune x448, Salmon x5, Coins x79558, Law rune x597, Air rune x719, Orange dye, Blue dye
+=====================================
+
+[00:54:33] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:54:33] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:54:33] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:54:33] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[00:54:33] ACTIVE_QUEST_DETECTED: WITCHS_POTION is currently in progress
+[00:54:33] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 69 varbits (including 0-values)
+
+[00:54:33] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[00:54:37] ACTION: Selected 'Talk-to' on General Wartface
+    SCRIPT: NPCs.closest("General Wartface").interact("Talk-to");
+
+[00:54:37] USER_ACTION: Talk-to | NPC_Tile: (2956, 3512, 0)
+[00:54:38] Movement: Started significant journey from (2957, 3511, 0)
+[00:54:39] Position: Arrived at (2956, 3511, 0)
+[00:54:43] DIALOGUE_OPTIONS: [Why are you arguing about the colour of your armour?, Wouldn't you prefer peace?, Do you want me to pick an armour colour for you?, I'll leave you to it.]
+[00:54:47] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Why are you arguing about the colour of your armour?
+
+[00:54:49] DIALOGUE_OPTIONS: [What is the goblin new century?, Wouldn't you prefer peace?, Do you want me to pick an armour colour for you?, I'll leave you to it.]
+[00:54:52] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Do you want me to pick an armour colour for you?
+
+[00:54:54] DIALOGUE_OPTIONS: [You should wear red., You should wear green., What about a different colour?, I'll leave you to it.]
+[00:54:56] ACTION: DIALOGUE_SELECTION
+    SCRIPT: You should wear red.
+
+[00:54:58] DIALOGUE_OPTIONS: [What about a different colour?, I'll leave you to it.]
+[00:55:01] ACTION: DIALOGUE_SELECTION
+    SCRIPT: What about a different colour?
+
+[00:55:02] DIALOGUE_OPTIONS: [Yes., No.]
+[00:55:05] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes., No.]
+
+[00:55:09] DIALOGUE_OPTIONS: [Where do I get goblin armour?, Where do I get dye?, Okay, I'll be back soon.]
+[00:55:14] DIALOGUE_OPTIONS: [Where do I get goblin armour?, Where do I get dye?, Okay, I'll be back soon.]
+[00:55:19] DIALOGUE_OPTIONS: [Where do I get goblin armour?, Where do I get dye?, Okay, I'll be back soon.]
+[00:55:24] DIALOGUE_OPTIONS: [Where do I get goblin armour?, Where do I get dye?, Okay, I'll be back soon.]
+[00:55:25] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Where do I get goblin armour?, Where do I get dye?, Okay, I'll be back soon.]
+
+[00:55:25] Movement: Started significant journey from (2956, 3511, 0)
+[00:55:26] Position: Arrived at (2958, 3512, 0)
+[00:55:27] ACTION: Selected 'Use' on Orange dye
+    SCRIPT: Inventory.interact("Orange dye", "Use");
+
+[00:55:27] USER_ACTION: Use | Target: Orange dye
+[00:55:28] ACTION: Selected 'Use' on Orange dye -> Goblin mail
+    SCRIPT: // Item-on-item
+Inventory.use("Orange dye", "Goblin mail");
+
+[00:55:28] USER_ACTION: Use | Target: Orange dye -> Goblin mail
+[00:55:29] ACTION: Selected 'Use' on Blue dye
+    SCRIPT: Inventory.interact("Blue dye", "Use");
+
+[00:55:29] USER_ACTION: Use | Target: Blue dye
+[00:55:29] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Goblin mail x2, Water rune x2998, Energy potion(4) x5, Orange goblin mail, Earth rune x800, Mind rune x448, Salmon x5, Coins x79558, Law rune x597, Air rune x719, Blue dye
+
+[00:55:30] ACTION: Selected 'Use' on Blue dye -> Goblin mail
+    SCRIPT: // Item-on-item
+Inventory.use("Blue dye", "Goblin mail");
+
+[00:55:30] USER_ACTION: Use | Target: Blue dye -> Goblin mail
+[00:55:32] ACTION: Selected 'Talk-to' on General Wartface
+    SCRIPT: NPCs.closest("General Wartface").interact("Talk-to");
+
+[00:55:32] USER_ACTION: Talk-to | NPC_Tile: (2956, 3512, 0)
+[00:55:33] Position: Arrived at (2957, 3512, 0)
+[00:55:36] DIALOGUE_OPTIONS: [Yes, he looks fat., No, he doesn't look fat., I'll leave you to it.]
+[00:55:41] DIALOGUE_OPTIONS: [Yes, he looks fat., No, he doesn't look fat., I'll leave you to it.]
+[00:55:42] ACTION: DIALOGUE_SELECTION
+    SCRIPT: No, he doesn't look fat.
+
+[00:55:44] DIALOGUE_OPTIONS: [I have some orange armour here., Why are you arguing about the colour of your armour?, Wouldn't you prefer peace?, I'll leave you to it.]
+[00:55:45] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I have some orange armour here.
+
+[00:56:06] ACTION: Selected 'Talk-to' on General Wartface
+    SCRIPT: NPCs.closest("General Wartface").interact("Talk-to");
+
+[00:56:06] USER_ACTION: Talk-to | NPC_Tile: (2956, 3512, 0)
+[00:56:10] DIALOGUE_OPTIONS: [Yes, he looks fat., No, he doesn't look fat., I'll leave you to it.]
+[00:56:12] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes, he looks fat., No, he doesn't look fat., I'll leave you to it.]
+
+[00:56:13] DIALOGUE_OPTIONS: [I have some blue armour here., Why are you arguing about the colour of your armour?, Wouldn't you prefer peace?, I'll leave you to it.]
+[00:56:15] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I have some blue armour here.
+
+[00:56:38] ACTION: Selected 'Talk-to' on General Wartface
+    SCRIPT: NPCs.closest("General Wartface").interact("Talk-to");
+
+[00:56:38] USER_ACTION: Talk-to | NPC_Tile: (2956, 3512, 0)
+[00:56:45] DIALOGUE_OPTIONS: [Yes, he looks fat., No, he doesn't look fat., I'll leave you to it.]
+[00:56:47] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes, he looks fat., No, he doesn't look fat., I'll leave you to it.]
+
+[00:56:51] DIALOGUE_OPTIONS: [I have some brown armour here., Why are you arguing about the colour of your armour?, Wouldn't you prefer peace?, I'll leave you to it.]
+[00:56:54] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I have some brown armour here.
+
+[00:57:13] QUEST STEP 3: CONFIG DISCOVERED: Unknown Quest config 101 changed from 10 to 15
+    SCRIPT: // DISCOVERED: Quest uses config 101 (value 10 → 15)
+
+[00:59:19] QUEST_END: === QUEST RECORDING ENDED ===

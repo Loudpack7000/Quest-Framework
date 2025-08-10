@@ -1,0 +1,339 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-08-08 01:19:33
+Player: TereIsAChair
+Starting Location: (2962, 3339, 2)
+Starting Inventory: Water rune x2997, Energy potion(4) x5, Earth rune x800, Mind rune x438, Bronze med helm, Salmon x5, Coins x79558, Law rune x595, Air rune x693, Cabbage, Iron chainbody
+=====================================
+
+[01:19:33] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[01:19:33] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[01:19:33] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[01:19:33] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[01:19:33] ACTIVE_QUEST_DETECTED: WITCHS_POTION is currently in progress
+[01:19:33] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 69 varbits (including 0-values)
+
+[01:19:33] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[01:19:40] ACTION: Selected 'Talk-to' on Sir Amik Varze
+    SCRIPT: NPCs.closest("Sir Amik Varze").interact("Talk-to");
+
+[01:19:40] USER_ACTION: Talk-to | NPC_Tile: (2958, 3336, 2)
+[01:19:41] Movement: Started significant journey from (2962, 3338, 2)
+[01:19:42] Position: Arrived at (2959, 3336, 2)
+[01:19:43] DIALOGUE_OPTIONS: [I seek a quest!, I don't, I'm just looking around.]
+[01:19:44] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [I seek a quest!, I don't, I'm just looking around.]
+
+[01:19:45] DIALOGUE_OPTIONS: [I laugh in the face of danger!, I go and cower in a corner at the first sign of danger!]
+[01:19:50] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I laugh in the face of danger!
+
+[01:19:56] DIALOGUE_OPTIONS: [Yes., No.]
+[01:19:58] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes., No.]
+
+[01:20:04] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[01:20:04] USER_ACTION: Climb-down | Object_Tile: (2957, 3338, 2)
+[01:20:04] Movement: Started significant journey from (2959, 3336, 2)
+[01:20:06] Position: Arrived at (2959, 3339, 2)
+[01:20:11] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[01:20:11] USER_ACTION: Climb-down | Object_Tile: (2960, 3338, 1)
+[01:20:14] Position: Arrived at (2955, 3337, 0)
+[01:20:17] Movement: Started significant journey from (2955, 3337, 0)
+[01:20:25] ACTION: Selected 'Open' on Castle door
+    SCRIPT: GameObjects.closest("Castle door").interact("Open");
+
+[01:20:25] USER_ACTION: Open | Object_Tile: (2970, 3337, 0)
+[01:20:27] ACTION: Selected 'Attack' on Chicken
+    SCRIPT: NPCs.closest("Chicken").interact("Attack");
+
+[01:20:27] USER_ACTION: Attack | NPC_Tile: (2969, 3342, 0)
+[01:20:44] ACTION: Selected 'Focus on' on Your position
+    SCRIPT: // Focus on on Your position
+
+[01:20:44] USER_ACTION: Focus on | Target: Your position
+[01:20:48] ACTION: Completed journey: 64 tiles
+    SCRIPT: Walking.walk(new Tile(2966, 3400, 0))
+
+[01:20:48] Journey: Walked 64 tiles in 31s | (2955, 3337, 0) → (2966, 3400, 0)
+[01:20:48] Position: Arrived at (2966, 3400, 0)
+[01:20:50] Movement: Started significant journey from (2966, 3401, 0)
+[01:21:20] ACTION: Completed journey: 64 tiles
+    SCRIPT: Walking.walk(new Tile(2955, 3464, 0))
+
+[01:21:20] Journey: Walked 64 tiles in 29s | (2966, 3401, 0) → (2955, 3464, 0)
+[01:21:20] Position: Arrived at (2955, 3464, 0)
+[01:21:24] Movement: Started significant journey from (2955, 3464, 0)
+[01:21:48] ACTION: Completed journey: 35 tiles
+    SCRIPT: Walking.walk(new Tile(2975, 3435, 0))
+
+[01:21:48] Journey: Walked 35 tiles in 23s | (2955, 3464, 0) → (2975, 3435, 0)
+[01:21:48] Position: Arrived at (2975, 3435, 0)
+[01:21:50] Movement: Started significant journey from (2975, 3435, 0)
+[01:22:16] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[01:22:18] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[01:22:20] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[01:22:35] ACTION: Completed journey: 83 tiles
+    SCRIPT: Walking.walk(new Tile(3012, 3509, 0))
+
+[01:22:35] Journey: Walked 83 tiles in 45s | (2975, 3435, 0) → (3012, 3509, 0)
+[01:22:35] Position: Arrived at (3012, 3509, 0)
+[01:22:38] ACTION: Selected 'Wear' on Bronze med helm
+    SCRIPT: Inventory.interact("Bronze med helm", "Wear");
+
+[01:22:38] USER_ACTION: Wear | Target: Bronze med helm
+[01:22:38] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Water rune x2997, Energy potion(4) x4, Salmon x5, Coins x79558, Energy potion(1), Law rune x595, Air rune x693, Iron chainbody, Earth rune x800, Mind rune x438, Bronze med helm, Dossier, Cabbage
+
+[01:22:40] ACTION: Selected 'Wear' on Iron chainbody
+    SCRIPT: Inventory.interact("Iron chainbody", "Wear");
+
+[01:22:40] USER_ACTION: Wear | Target: Iron chainbody
+[01:22:40] ACTION: Inventory changed: Items lost/used
+    SCRIPT: // Current inventory: Water rune x2997, Energy potion(4) x4, Salmon x5, Coins x79558, Energy potion(1), Law rune x595, Wizard hat, Air rune x693, Iron chainbody, Earth rune x800, Mind rune x438, Dossier, Cabbage
+
+[01:22:40] ACTION: Equipment changed: hat: Wizard hat → Bronze med helm
+    SCRIPT: // Equipment slots updated: hat: Wizard hat → Bronze med helm
+
+[01:22:40] EQUIPMENT_CHANGE: Equipment modified: hat: Wizard hat → Bronze med helm
+[01:22:42] ACTION: Selected 'Open' on Sturdy door
+    SCRIPT: GameObjects.closest("Sturdy door").interact("Open");
+
+[01:22:42] USER_ACTION: Open | Object_Tile: (3016, 3514, 0)
+[01:22:43] Movement: Started significant journey from (3012, 3509, 0)
+[01:22:48] Position: Arrived at (3016, 3515, 0)
+[01:22:51] ACTION: Selected 'Push' on Wall
+    SCRIPT: // Push on Wall
+
+[01:22:51] USER_ACTION: Push | Target: Wall
+[01:22:53] Position: Arrived at (3016, 3517, 0)
+[01:22:55] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[01:22:55] USER_ACTION: Climb-up | Object_Tile: (3016, 3519, 0)
+[01:22:56] Movement: Started significant journey from (3016, 3517, 0)
+[01:22:58] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[01:22:58] USER_ACTION: Climb-up | Object_Tile: (3015, 3519, 1)
+[01:22:59] Position: Arrived at (3016, 3518, 1)
+[01:23:07] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[01:23:07] USER_ACTION: Climb-down | Object_Tile: (3016, 3519, 2)
+[01:23:07] Movement: Started significant journey from (3016, 3518, 2)
+[01:23:09] Position: Arrived at (3017, 3515, 1)
+[01:23:13] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[01:23:13] USER_ACTION: Open | Object_Tile: (3019, 3515, 1)
+[01:23:14] Position: Arrived at (3019, 3515, 1)
+[01:23:16] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[01:23:16] USER_ACTION: Climb-up | Object_Tile: (3023, 3513, 1)
+[01:23:27] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[01:23:27] USER_ACTION: Climb-down | Object_Tile: (3023, 3513, 2)
+[01:23:27] Movement: Started significant journey from (3023, 3514, 2)
+[01:23:28] Position: Arrived at (3025, 3514, 2)
+[01:23:36] ACTION: Selected 'Open' on Sturdy door
+    SCRIPT: GameObjects.closest("Sturdy door").interact("Open");
+
+[01:23:36] USER_ACTION: Open | Object_Tile: (3025, 3511, 1)
+[01:23:39] Position: Arrived at (3025, 3511, 1)
+[01:23:44] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[01:23:44] USER_ACTION: Climb-down | Object_Tile: (3025, 3513, 1)
+[01:23:45] Movement: Started significant journey from (3025, 3511, 1)
+[01:23:46] Position: Arrived at (3022, 3510, 1)
+[01:24:01] Movement: Started significant journey from (3022, 3510, 0)
+[01:24:03] Position: Arrived at (3026, 3507, 0)
+[01:24:04] ACTION: Selected 'Listen-at' on Grill
+    SCRIPT: // Listen-at on Grill
+
+[01:24:04] USER_ACTION: Listen-at | Target: Grill
+[01:24:21] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[01:24:21] USER_ACTION: Climb-up | Object_Tile: (3021, 3510, 0)
+[01:24:21] Movement: Started significant journey from (3026, 3507, 0)
+[01:24:24] Position: Arrived at (3022, 3510, 1)
+[01:24:27] ACTION: Selected 'Open' on Sturdy door
+    SCRIPT: GameObjects.closest("Sturdy door").interact("Open");
+
+[01:24:27] USER_ACTION: Open | Object_Tile: (3025, 3511, 1)
+[01:24:31] Position: Arrived at (3026, 3511, 1)
+[01:24:33] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[01:24:33] USER_ACTION: Climb-up | Object_Tile: (3025, 3513, 1)
+[01:24:37] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[01:24:37] USER_ACTION: Climb-down | Object_Tile: (3025, 3513, 2)
+[01:24:38] Movement: Started significant journey from (3025, 3514, 2)
+[01:24:39] Position: Arrived at (3023, 3514, 2)
+[01:24:45] Position: Arrived at (3018, 3516, 1)
+[01:24:45] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[01:24:45] USER_ACTION: Climb-up | Object_Tile: (3017, 3516, 1)
+[01:24:48] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[01:24:48] USER_ACTION: Climb-down | Object_Tile: (3017, 3516, 2)
+[01:24:48] Movement: Started significant journey from (3017, 3515, 2)
+[01:24:50] Position: Arrived at (3016, 3518, 2)
+[01:24:52] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[01:24:52] USER_ACTION: Climb-down | Object_Tile: (3016, 3519, 1)
+[01:24:56] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[01:24:56] USER_ACTION: Climb-up | Object_Tile: (3015, 3519, 0)
+[01:25:02] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[01:25:02] USER_ACTION: Climb-down | Object_Tile: (3015, 3519, 1)
+[01:25:12] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[01:25:12] USER_ACTION: Climb-up | Object_Tile: (3015, 3519, 0)
+[01:25:15] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[01:25:15] USER_ACTION: Climb-up | Object_Tile: (3015, 3519, 1)
+[01:25:16] Movement: Started significant journey from (3015, 3518, 1)
+[01:25:17] Position: Arrived at (3016, 3518, 1)
+[01:25:22] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[01:25:22] USER_ACTION: Climb-down | Object_Tile: (3016, 3519, 2)
+[01:25:25] Position: Arrived at (3017, 3515, 1)
+[01:25:31] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[01:25:31] USER_ACTION: Climb-up | Object_Tile: (3017, 3516, 1)
+[01:25:35] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[01:25:35] USER_ACTION: Climb-down | Object_Tile: (3017, 3516, 2)
+[01:25:35] Movement: Started significant journey from (3017, 3515, 2)
+[01:25:37] Position: Arrived at (3016, 3518, 1)
+[01:25:41] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[01:25:41] USER_ACTION: Climb-down | Object_Tile: (3016, 3519, 1)
+[01:25:42] Position: Arrived at (3015, 3518, 1)
+[01:25:44] ACTION: Selected 'Push' on Wall
+    SCRIPT: // Push on Wall
+
+[01:25:44] USER_ACTION: Push | Target: Wall
+[01:25:47] ACTION: Selected 'Open' on Sturdy door
+    SCRIPT: GameObjects.closest("Sturdy door").interact("Open");
+
+[01:25:47] USER_ACTION: Open | Object_Tile: (3016, 3514, 0)
+[01:25:47] Movement: Started significant journey from (3016, 3516, 0)
+[01:25:48] Position: Arrived at (3016, 3514, 0)
+[01:26:02] ACTION: Selected 'Open' on Sturdy door
+    SCRIPT: GameObjects.closest("Sturdy door").interact("Open");
+
+[01:26:02] USER_ACTION: Open | Object_Tile: (3016, 3514, 0)
+[01:26:02] Movement: Started significant journey from (3016, 3514, 0)
+[01:26:03] Position: Arrived at (3016, 3515, 0)
+[01:26:03] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[01:26:03] USER_ACTION: Open | Object_Tile: (3020, 3515, 0)
+[01:26:07] DIALOGUE_OPTIONS: [Okay, I won't., I don't care. I'm going in anyway.]
+[01:26:12] DIALOGUE_OPTIONS: [Okay, I won't., I don't care. I'm going in anyway.]
+[01:26:21] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[01:26:21] USER_ACTION: Open | Object_Tile: (3020, 3515, 0)
+[01:26:23] DIALOGUE_OPTIONS: [Okay, I won't., I don't care. I'm going in anyway.]
+[01:26:24] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I don't care. I'm going in anyway.
+
+[01:26:24] Movement: Started significant journey from (3019, 3515, 0)
+[01:26:25] Position: Arrived at (3020, 3515, 0)
+[01:26:29] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[01:26:29] USER_ACTION: Climb-up | Object_Tile: (3021, 3510, 0)
+[01:26:32] Position: Arrived at (3022, 3517, 1)
+[01:26:38] ACTION: Selected 'Push' on Wall
+    SCRIPT: // Push on Wall
+
+[01:26:38] USER_ACTION: Push | Target: Wall
+[01:26:40] Position: Arrived at (3030, 3509, 1)
+[01:26:46] ACTION: Selected 'Use' on Cabbage
+    SCRIPT: Inventory.interact("Cabbage", "Use");
+
+[01:26:46] USER_ACTION: Use | Target: Cabbage
+[01:26:47] ACTION: Selected 'Use' on Cabbage -> Hole
+    SCRIPT: // Item-on-item
+Inventory.use("Cabbage", "Hole");
+
+[01:26:47] USER_ACTION: Use | Target: Cabbage -> Hole
+[01:26:47] Movement: Started significant journey from (3030, 3509, 1)
+[01:26:48] Position: Arrived at (3031, 3508, 1)
+[01:27:25] ACTION: Selected 'Cast' on Falador Teleport
+    SCRIPT: // Cast on Falador Teleport
+
+[01:27:25] USER_ACTION: Cast | Target: Falador Teleport
+[01:27:25] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[01:27:25] SPELLBOOK_OPENED: Player opened the magic spellbook
+[01:27:36] Movement: Started significant journey from (2964, 3379, 0)
+[01:27:46] ACTION: Selected 'Open' on Castle door
+    SCRIPT: GameObjects.closest("Castle door").interact("Open");
+
+[01:27:46] USER_ACTION: Open | Object_Tile: (2965, 3339, 0)
+[01:27:49] ACTION: Completed journey: 39 tiles
+    SCRIPT: Walking.walk(new Tile(2965, 3340, 0))
+
+[01:27:49] Journey: Walked 39 tiles in 13s | (2964, 3379, 0) → (2965, 3340, 0)
+[01:27:49] Position: Arrived at (2965, 3340, 0)
+[01:27:49] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[01:27:49] USER_ACTION: Climb-up | Object_Tile: (2968, 3347, 0)
+[01:27:50] Movement: Started significant journey from (2965, 3339, 0)
+[01:27:55] Position: Arrived at (2956, 3338, 1)
+[01:27:57] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[01:27:57] USER_ACTION: Climb-up | Object_Tile: (2955, 3338, 1)
+[01:28:07] ACTION: Selected 'Talk-to' on Sir Amik Varze
+    SCRIPT: NPCs.closest("Sir Amik Varze").interact("Talk-to");
+
+[01:28:07] USER_ACTION: Talk-to | NPC_Tile: (2960, 3335, 2)
+[01:28:07] Movement: Started significant journey from (2959, 3338, 2)
+[01:28:08] Position: Arrived at (2960, 3336, 2)
+[01:28:11] QUEST STEP 3: CONFIG DISCOVERED: Unknown Quest config 101 changed from 15 to 18
+    SCRIPT: // DISCOVERED: Quest uses config 101 (value 15 → 18)
+
+[01:28:26] QUEST_END: === QUEST RECORDING ENDED ===

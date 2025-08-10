@@ -6,7 +6,6 @@ import quest.nodes.ActionNode;
 import quest.nodes.actions.TalkToNPCNode;
 import quest.nodes.actions.WalkToLocationNode;
 import quest.nodes.actions.InteractWithObjectNode;
-import quest.nodes.DecisionNode;
 import quest.utils.GrandExchangeUtil;
 import quest.utils.GrandExchangeUtil.PriceStrategy;
 import org.dreambot.api.methods.map.Tile;
@@ -49,11 +48,14 @@ public class WitchsPotionTree extends QuestTree {
     
     // Quest nodes
     private QuestNode smartDecisionNode;
+    private QuestNode walkToGrandExchange;
     private QuestNode purchaseItemsNode;
     private QuestNode walkToHetty;
     private QuestNode talkToHettyStart;
+    private QuestNode walkToHettyForCooking;
     private QuestNode makeFire;
     private QuestNode cookRawBeef;
+    private QuestNode walkToHettyForCompletion;
     private QuestNode talkToHettyComplete;
     private QuestNode drinkFromCauldron;
     private QuestNode questCompleteNode;
@@ -72,89 +74,10 @@ public class WitchsPotionTree extends QuestTree {
     }
     
     private void createNodes() {
-        // Smart decision node - determines next step based on quest state and inventory
-        smartDecisionNode = new DecisionNode("witchs_potion_decision", "Determine Witch's Potion next step") {
-            @Override
-            protected String makeDecision() {
-                int config = PlayerSettings.getConfig(QUEST_CONFIG);
-                log("Quest config " + QUEST_CONFIG + " = " + config);
-                
-                // Check if quest is complete
-                if (config >= QUEST_COMPLETE) {
-                    log("Quest is complete! Config=" + config);
-                    setQuestComplete();
-                    return "complete";
-                }
-                
-                // Check inventory state
-                boolean hasEyeOfNewt = Inventory.contains(EYE_OF_NEWT);
-                boolean hasOnion = Inventory.contains(ONION);
-                boolean hasBurntMeat = Inventory.contains(BURNT_MEAT);
-                boolean hasRawBeef = Inventory.contains(RAW_BEEF);
-                boolean hasTinderbox = Inventory.contains(TINDERBOX);
-                boolean hasLogs = Inventory.contains(LOGS);
-                
-                log("Inventory check - Eye of newt: " + hasEyeOfNewt + ", Onion: " + hasOnion + 
-                    ", Burnt meat: " + hasBurntMeat + ", Raw beef: " + hasRawBeef + 
-                    ", Tinderbox: " + hasTinderbox + ", Logs: " + hasLogs);
-                
-
-                
-                if (config >= QUEST_STARTED) {
-                    // Quest started - check what we need to do
-                    if (hasEyeOfNewt && hasOnion && hasBurntMeat) {
-                        // Check if we're at Hetty's house
-                        if (HETTY_HOUSE_AREA.contains(Players.getLocal())) {
-                            log("Have all final ingredients and at Hetty - completing quest");
-                            return "talk_to_complete";
-                        } else {
-                            log("Have all final ingredients - going to Hetty");
-                            return "ready_to_complete";
-                        }
-                    } else if (hasEyeOfNewt && hasOnion && hasRawBeef && hasTinderbox && hasLogs) {
-                        log("Have raw ingredients - need to cook beef");
-                        return "need_to_cook";
-                    } else {
-                        log("Quest started but missing items - going to GE");
-                        return "need_items";
-                    }
-                }
-                
-                if (config == QUEST_NOT_STARTED) {
-                    // Quest not started
-                    if (hasAllRequiredItems()) {
-                        // Check if we're at Hetty's house
-                        if (HETTY_HOUSE_AREA.contains(Players.getLocal())) {
-                            log("Quest not started, have all items, and at Hetty - starting quest");
-                            return "talk_to_start";
-                        } else {
-                            log("Quest not started but have all items - going to Hetty to start");
-                            return "ready_to_start";
-                        }
-                    } else {
-                        log("Quest not started and missing items - going to GE");
-                        return "need_items";
-                    }
-                }
-                
-                // Fallback logic
-                log("Unknown quest state: config=" + config);
-                return "need_items";
-            }
-        };
+        // Step 1: Walk to Grand Exchange
+        walkToGrandExchange = new WalkToLocationNode("walk_to_ge", GRAND_EXCHANGE_LOCATION, "Grand Exchange");
         
-        // Set up branches for the smart decision node
-        DecisionNode decisionNode = (DecisionNode) smartDecisionNode;
-        decisionNode.addBranch("complete", questCompleteNode);
-        decisionNode.addBranch("need_items", purchaseItemsNode);
-        decisionNode.addBranch("ready_to_start", walkToHetty);
-        decisionNode.addBranch("need_to_cook", makeFire);
-        decisionNode.addBranch("ready_to_complete", walkToHetty);
-        decisionNode.addBranch("talk_to_start", talkToHettyStart);
-        decisionNode.addBranch("talk_to_complete", talkToHettyComplete);
-        decisionNode.setDefaultBranch(purchaseItemsNode); // Default: get items
-        
-        // Step 1: Purchase required items from Grand Exchange
+        // Step 2: Purchase required items from Grand Exchange
         purchaseItemsNode = new ActionNode("purchase_items", "Purchase quest items from Grand Exchange") {
             @Override
             protected boolean performAction() {
@@ -170,22 +93,13 @@ public class WitchsPotionTree extends QuestTree {
                     
                     log("Missing items: " + String.join(", ", missingItems));
                     
-                    // Navigate to Grand Exchange if not there
+                    // Ensure we're at Grand Exchange
                     if (!GRAND_EXCHANGE_AREA.contains(Players.getLocal())) {
-                        log("Walking to Grand Exchange");
-                        if (!org.dreambot.api.methods.walking.impl.Walking.walk(GRAND_EXCHANGE_LOCATION)) {
-                            log("Failed to initiate walk to Grand Exchange");
-                            return false;
-                        }
-                        
-                        boolean arrived = Sleep.sleepUntil(() -> GRAND_EXCHANGE_AREA.contains(Players.getLocal()), 30000);
-                        if (!arrived) {
-                            log("Failed to reach Grand Exchange");
-                            return false;
-                        }
+                        log("Not at Grand Exchange, cannot purchase items");
+                        return false;
                     }
                     
-                    // Purchase missing items
+                    // Purchase missing items using GrandExchangeUtil
                     boolean success = true;
                     for (String item : missingItems) {
                         log("Purchasing: " + item);
@@ -211,10 +125,10 @@ public class WitchsPotionTree extends QuestTree {
             }
         };
         
-        // Step 2: Walk to Hetty's house
+        // Step 3: Walk to Hetty's house (fluid movement)
         walkToHetty = new WalkToLocationNode("walk_to_hetty", HETTY_LOCATION, "Hetty's house");
         
-        // Step 3: Talk to Hetty to start quest
+        // Step 4: Talk to Hetty to start quest
         talkToHettyStart = new TalkToNPCNode("talk_hetty_start", "Hetty", HETTY_LOCATION,
             new String[]{"I am in search of a quest.", "Yes."}, "I am in search of a quest.", null) {
             @Override
@@ -242,19 +156,19 @@ public class WitchsPotionTree extends QuestTree {
             }
         };
         
-        // Step 4: Make fire using tinderbox and logs
-        makeFire = new ActionNode("make_fire", "Make fire for cooking") {
+        // Step 5: Walk to Hetty's house for cooking (fluid movement)
+        walkToHettyForCooking = new WalkToLocationNode("walk_to_hetty_cooking", HETTY_LOCATION, "Hetty's house for cooking");
+        
+        // Step 6: Make fire using tinderbox and logs
+        makeFire = new ActionNode("make_fire", "Make fire with tinderbox and logs") {
             @Override
             protected boolean performAction() {
                 log("Making fire with tinderbox and logs");
                 
+                // Ensure we're at Hetty's house before making fire
                 if (!HETTY_HOUSE_AREA.contains(Players.getLocal())) {
-                    log("Not at Hetty's house, walking there first");
-                    if (!org.dreambot.api.methods.walking.impl.Walking.walk(HETTY_LOCATION)) {
-                        log("Failed to walk to Hetty's house");
-                        return false;
-                    }
-                    Sleep.sleepUntil(() -> HETTY_HOUSE_AREA.contains(Players.getLocal()), 15000);
+                    log("Not at Hetty's house, cannot make fire");
+                    return false;
                 }
                 
                 // Use tinderbox on logs to make fire
@@ -289,7 +203,7 @@ public class WitchsPotionTree extends QuestTree {
             }
         };
         
-        // Step 5: Cook raw beef on fire to make burnt meat
+        // Step 7: Cook raw beef on fire to make burnt meat
         cookRawBeef = new ActionNode("cook_raw_beef", "Cook raw beef on fire") {
             @Override
             protected boolean performAction() {
@@ -330,11 +244,14 @@ public class WitchsPotionTree extends QuestTree {
             }
         };
         
-        // Step 6: Talk to Hetty with all ingredients
+        // Step 8: Walk to Hetty's house for completion (fluid movement)
+        walkToHettyForCompletion = new WalkToLocationNode("walk_to_hetty_complete", HETTY_LOCATION, "Hetty's house for completion");
+        
+        // Step 9: Talk to Hetty with all ingredients
         talkToHettyComplete = new TalkToNPCNode("talk_hetty_complete", "Hetty", HETTY_LOCATION,
             new String[]{"I have the ingredients.", "Yes."}, "I have the ingredients.", null);
         
-        // Step 7: Drink from cauldron to complete quest
+        // Step 10: Drink from cauldron to complete quest
         drinkFromCauldron = new InteractWithObjectNode("drink_cauldron", "Cauldron", "Drink-from",
             HETTY_LOCATION, "Cauldron in Hetty's house") {
             @Override
@@ -373,9 +290,123 @@ public class WitchsPotionTree extends QuestTree {
             }
         };
         
-        // Chain action nodes together
+        // Smart decision node - determines next step based on quest state and inventory
+        smartDecisionNode = new QuestNode("witchs_potion_decision", "Determine Witch's Potion next step") {
+            @Override
+            public ExecutionResult execute() {
+                int config = PlayerSettings.getConfig(QUEST_CONFIG);
+                Tile currentTile = Players.getLocal().getTile();
+                log("Quest config " + QUEST_CONFIG + " = " + config + ", Location: " + currentTile);
+                
+                QuestNode nextStep = null;
+                
+                // Check if quest is complete
+                if (config >= QUEST_COMPLETE) {
+                    log("Quest is complete! Config=" + config);
+                    setQuestComplete();
+                    nextStep = questCompleteNode;
+                    log("-> Quest complete!");
+                }
+                // Check inventory state
+                boolean hasEyeOfNewt = Inventory.contains(EYE_OF_NEWT);
+                boolean hasOnion = Inventory.contains(ONION);
+                boolean hasBurntMeat = Inventory.contains(BURNT_MEAT);
+                boolean hasRawBeef = Inventory.contains(RAW_BEEF);
+                boolean hasTinderbox = Inventory.contains(TINDERBOX);
+                boolean hasLogs = Inventory.contains(LOGS);
+                
+                log("Inventory check - Eye of newt: " + hasEyeOfNewt + ", Onion: " + hasOnion + 
+                    ", Burnt meat: " + hasBurntMeat + ", Raw beef: " + hasRawBeef + 
+                    ", Tinderbox: " + hasTinderbox + ", Logs: " + hasLogs);
+                
+                // Handle any quest state (including unknown config values)
+                if (config >= QUEST_STARTED || config > 0) {
+                    // Quest started or in progress - check what we need to do
+                    if (hasEyeOfNewt && hasOnion && hasBurntMeat) {
+                        // Check if we're at Hetty's house
+                        if (HETTY_HOUSE_AREA.contains(Players.getLocal())) {
+                            log("Have all final ingredients and at Hetty - completing quest");
+                            nextStep = talkToHettyComplete;
+                            log("-> Talk to Hetty to complete quest");
+                        } else {
+                            log("Have all final ingredients - going to Hetty");
+                            nextStep = walkToHettyForCompletion;
+                            log("-> Walk to Hetty for completion");
+                        }
+                    } else if (hasEyeOfNewt && hasOnion && hasRawBeef && hasTinderbox && hasLogs) {
+                        // Have raw ingredients - need to cook beef
+                        if (HETTY_HOUSE_AREA.contains(Players.getLocal())) {
+                            log("Have raw ingredients and at Hetty - making fire");
+                            nextStep = makeFire;
+                            log("-> Make fire to cook beef");
+                        } else {
+                            log("Have raw ingredients - going to Hetty to cook");
+                            nextStep = walkToHettyForCooking;
+                            log("-> Walk to Hetty for cooking");
+                        }
+                    } else {
+                        log("Quest in progress but missing items - going to GE");
+                        // Check if we need to walk to Grand Exchange first
+                        if (!GRAND_EXCHANGE_AREA.contains(Players.getLocal())) {
+                            nextStep = walkToGrandExchange;
+                            log("-> Walk to Grand Exchange");
+                        } else {
+                            nextStep = purchaseItemsNode;
+                            log("-> Purchase missing items from GE");
+                        }
+                    }
+                } else if (config == QUEST_NOT_STARTED) {
+                    // Quest not started
+                    if (hasAllRequiredItems()) {
+                        // Check if we're at Hetty's house
+                        if (HETTY_HOUSE_AREA.contains(Players.getLocal())) {
+                            log("Quest not started, have all items, and at Hetty - starting quest");
+                            nextStep = talkToHettyStart;
+                            log("-> Talk to Hetty to start quest");
+                        } else {
+                            log("Quest not started but have all items - going to Hetty to start");
+                            nextStep = walkToHetty;
+                            log("-> Walk to Hetty to start quest");
+                        }
+                    } else {
+                        log("Quest not started and missing items - going to GE");
+                        // Check if we need to walk to Grand Exchange first
+                        if (!GRAND_EXCHANGE_AREA.contains(Players.getLocal())) {
+                            nextStep = walkToGrandExchange;
+                            log("-> Walk to Grand Exchange");
+                        } else {
+                            nextStep = purchaseItemsNode;
+                            log("-> Purchase missing items from GE");
+                        }
+                    }
+                } else {
+                    // Fallback logic for any unknown config values
+                    log("Unknown quest state: config=" + config + " - treating as quest in progress");
+                    
+                    // Check if we need to walk to Grand Exchange first
+                    if (!GRAND_EXCHANGE_AREA.contains(Players.getLocal())) {
+                        nextStep = walkToGrandExchange;
+                        log("-> Walk to Grand Exchange (fallback)");
+                    } else {
+                        nextStep = purchaseItemsNode;
+                        log("-> Purchase missing items from GE (fallback)");
+                    }
+                }
+                
+                if (nextStep != null) {
+                    return ExecutionResult.success(nextStep, "Moving to next step");
+                } else {
+                    return ExecutionResult.failure("No next step determined");
+                }
+            }
+        };
+        
+        // Chain action nodes together for fluid movement
+        ((ActionNode)walkToGrandExchange).setNextNode(purchaseItemsNode);
         ((ActionNode)purchaseItemsNode).setNextNode(null); // Return to decision node
         ((ActionNode)walkToHetty).setNextNode(null); // Decision node will determine next step
+        ((ActionNode)walkToHettyForCooking).setNextNode(null); // Decision node will determine next step
+        ((ActionNode)walkToHettyForCompletion).setNextNode(null); // Decision node will determine next step
         ((ActionNode)makeFire).setNextNode(cookRawBeef);
         ((ActionNode)cookRawBeef).setNextNode(null); // Return to decision node
         ((ActionNode)talkToHettyStart).setNextNode(null); // Return to decision node

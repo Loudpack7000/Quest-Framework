@@ -181,7 +181,7 @@ public class TalkToNPCNode extends ActionNode {
     }
     
     /**
-     * Continue through dialogue by clicking continue
+     * Continue through dialogue by clicking continue or using spacebar
      */
     private boolean continueDialogue() {
         try {
@@ -189,7 +189,10 @@ public class TalkToNPCNode extends ActionNode {
             
             while (Dialogues.inDialogue()) {
                 if (Dialogues.canContinue()) {
-                    Dialogues.continueDialogue();
+                    // Try spacebar first (more natural), then fallback to click
+                    if (!Dialogues.spaceToContinue()) {
+                        Dialogues.continueDialogue();
+                    }
                     Sleep.sleep(1000, 2000);
                 } else if (Dialogues.areOptionsAvailable()) {
                     // If options are available but we don't have specific handling,

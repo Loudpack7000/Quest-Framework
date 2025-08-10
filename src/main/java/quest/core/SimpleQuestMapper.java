@@ -16,7 +16,11 @@ public class SimpleQuestMapper {
         // Initialize quest mappings
         addMapping("COOKS_ASSISTANT", "Cook's Assistant");
         addMapping("VAMPIRE_SLAYER", "Vampire Slayer");
+        addMapping("DEMON_SLAYER", "Demon Slayer");
         addMapping("IMP_CATCHER", "Imp Catcher");
+    addMapping("GOBLIN_DIPLOMACY", "Goblin Diplomacy");
+    addMapping("BLACK_KNIGHTS_FORTRESS", "Black Knights' Fortress");
+    addMapping("THE_CORSAIR_CURSE", "The Corsair Curse");
     }
     
     /**

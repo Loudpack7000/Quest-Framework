@@ -100,16 +100,7 @@ if not exist "src\main\java\quest\gui\QuestSelectionGUI.java" (
     exit /b 1
 )
 
-if not exist "src\main\java\quest\quests\LemonTutQuest.java" (
-    echo [ERROR] LemonTutQuest.java not found!
-    pause
-    exit /b 1
-)
-if not exist "src\main\java\quest\quests\VampireSlayerScript.java" (
-    echo [ERROR] VampireSlayerScript.java not found!
-    pause
-    exit /b 1
-)
+
 
 if not exist "src\main\java\quest\SimpleQuestBot.java" (
     echo [ERROR] SimpleQuestBot.java not found!
@@ -163,18 +154,6 @@ javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\core\Q
 if %errorlevel% neq 0 goto :compile_error
 
 echo - Compiling quest implementations...
-javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\LemonTutQuest.java"
-if %errorlevel% neq 0 goto :compile_error
-
-
-
-javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\VampireSlayerScript.java"
-if %errorlevel% neq 0 goto :compile_error
-
-
-
-javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\quests\ImpCatcherScript.java"
-if %errorlevel% neq 0 goto :compile_error
 
 
 
@@ -203,6 +182,16 @@ if %errorlevel% neq 0 goto :compile_error
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\actions\InteractWithObjectNode.java"
 if %errorlevel% neq 0 goto :compile_error
 
+rem New action nodes
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\actions\EquipItemsNode.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\actions\UseItemOnObjectNode.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\actions\SelectDialogueOptionNode.java"
+if %errorlevel% neq 0 goto :compile_error
+
 echo   - Compiling decision nodes...
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\decisions\QuestProgressDecisionNode.java"
 if %errorlevel% neq 0 goto :compile_error
@@ -227,10 +216,40 @@ if %errorlevel% neq 0 goto :compile_error
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\SheepShearerTree.java"
 if %errorlevel% neq 0 goto :compile_error
 
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\VampyreSlayerTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\DoricsQuestTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\PiratesTreasureTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\DemonSlayerTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\GoblinDiplomacyTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\XMarksTheSpotTree.java"
 if %errorlevel% neq 0 goto :compile_error
 
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\RestlessGhostTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\BlackKnightsFortressTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+rem New quest tree: The Corsair Curse
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\CorsairCurseTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+rem New quest tree: Imp Catcher
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\ImpCatcherTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+rem New quest tree: The Knight's Sword
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\KnightsSwordTree.java"
 if %errorlevel% neq 0 goto :compile_error
 
 echo   - Compiling tree wrapper...

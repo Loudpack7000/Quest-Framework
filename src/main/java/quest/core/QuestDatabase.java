@@ -41,6 +41,36 @@ public class QuestDatabase {
             new ArrayList<>(), // skill requirements
             Arrays.asList("Hammer", "Garlic", "Stake") // required items
         ));
+
+        // Demon Slayer
+        questInfo.put("DEMON_SLAYER", new QuestInfo(
+            "DEMON_SLAYER",
+            "Demon Slayer",
+            2, // difficulty
+            20, // estimated duration minutes
+            new ArrayList<>(),
+            Arrays.asList("Bucket of water", "Bones x25")
+        ));
+        
+        // Doric's Quest
+        questInfo.put("DORICS_QUEST", new QuestInfo(
+            "DORICS_QUEST",
+            "Doric's Quest",
+            1, // difficulty (very easy)
+            5, // estimated duration minutes
+            new ArrayList<>(), // skill requirements
+            Arrays.asList("Copper ore", "Clay", "Iron ore") // required items
+        ));
+        
+        // Pirate's Treasure
+        questInfo.put("PIRATES_TREASURE", new QuestInfo(
+            "PIRATES_TREASURE",
+            "Pirate's Treasure",
+            3, // difficulty (intermediate)
+            20, // estimated duration minutes
+            new ArrayList<>(), // skill requirements
+            Arrays.asList("Karamjan rum", "White apron", "Spade", "30 gp") // required items
+        ));
         
         // Imp Catcher
         questInfo.put("IMP_CATCHER", new QuestInfo(
@@ -50,6 +80,16 @@ public class QuestDatabase {
             10, // estimated duration minutes
             new ArrayList<>(), // skill requirements
             Arrays.asList("Red bead", "Yellow bead", "Black bead", "White bead") // required items
+        ));
+
+        // The Knight's Sword
+        questInfo.put("THE_KNIGHTS_SWORD", new QuestInfo(
+            "THE_KNIGHTS_SWORD",
+            "The Knight's Sword",
+            2, // difficulty
+            20, // estimated duration minutes
+            new ArrayList<>(),
+            Arrays.asList("Redberry pie", "Iron bar x2", "Any pickaxe")
         ));
         
         // Rune Mysteries
@@ -110,6 +150,36 @@ public class QuestDatabase {
             8, // estimated duration minutes
             new ArrayList<>(), // skill requirements
             Arrays.asList("Spade") // required items - need a spade to dig
+        ));
+
+        // Goblin Diplomacy
+        questInfo.put("GOBLIN_DIPLOMACY", new QuestInfo(
+            "GOBLIN_DIPLOMACY",
+            "Goblin Diplomacy",
+            1, // difficulty
+            8, // estimated duration minutes
+            new ArrayList<>(), // skill requirements
+            Arrays.asList("Orange dye", "Blue dye", "Goblin mail x3") // purchased via GE
+        ));
+
+        // Black Knights' Fortress
+        questInfo.put("BLACK_KNIGHTS_FORTRESS", new QuestInfo(
+            "BLACK_KNIGHTS_FORTRESS",
+            "Black Knights' Fortress",
+            2,
+            12,
+            new ArrayList<>(),
+            Arrays.asList("Iron chainbody", "Bronze med helm", "Cabbage")
+        ));
+
+        // The Corsair Curse
+        questInfo.put("THE_CORSAIR_CURSE", new QuestInfo(
+            "THE_CORSAIR_CURSE",
+            "The Corsair Curse",
+            1, // difficulty
+            12, // estimated duration minutes
+            new ArrayList<>(),
+            Arrays.asList("Spade") // based on log: used spade to dig
         ));
     }
     

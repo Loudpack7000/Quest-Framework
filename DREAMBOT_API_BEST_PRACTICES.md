@@ -208,8 +208,211 @@ Logger.log("[SUCCESS] Ready for operations");
 
 ---
 
-*Last Updated: 2025-07-28*  
+## Quest Status API ⭐
+
+### `Quests.isFinished()` & `Quests.isStarted()` - Proper Quest Detection
+
+**What they do:**
+- `Quests.isFinished(Quest quest)` - Checks if a quest is completely finished
+- `Quests.isStarted(Quest quest)` - Checks if a quest is in progress (started but not finished)
+
+**Why use them:**
+- ✅ **Reliable** - DreamBot's official quest detection methods
+- ✅ **Accurate** - Handles edge cases and special quest states
+- ✅ **Future-proof** - Won't break if Jagex changes config values
+- ✅ **Clear Intent** - Code is self-documenting
+
+**How to use them:**
+```java
+import org.dreambot.api.methods.quest.Quests;
+import org.dreambot.api.methods.quest.book.Quest;
+
+// Check if quest is finished
+if (Quests.isFinished(Quest.PIRATES_TREASURE)) {
+    Logger.log("Pirate's Treasure is already completed!");
+    return true;
+}
+
+// Check if quest is started but not finished
+if (Quests.isStarted(Quest.PIRATES_TREASURE)) {
+    Logger.log("Pirate's Treasure is in progress");
+    // Continue with quest logic
+} else {
+    Logger.log("Pirate's Treasure not started yet");
+    // Start the quest
+}
+```
+
+**❌ DON'T do this (unreliable):**
+```java
+// Raw config values - can break if Jagex changes them!
+int config = PlayerSettings.getConfig(101);
+if (config >= 17) {
+    return true; // Might be wrong!
+}
+```
+
+**✅ DO this (best practice):**
+```java
+// Use official DreamBot Quest API
+if (Quests.isFinished(Quest.PIRATES_TREASURE)) {
+    return true;
+}
+```
+
+**Available Quest Constants:**
+- `Quest.PIRATES_TREASURE`
+- `Quest.RESTLESS_GHOST`
+- `Quest.DORICS_QUEST`
+- `Quest.COOKS_ASSISTANT`
+- `Quest.SHEEP_SHEARER`
+- `Quest.ROMEO_AND_JULIET`
+- And many more...
+
+**Key Benefits:**
+- **Reliability**: Official DreamBot methods handle all edge cases
+- **Maintainability**: No need to track config IDs manually
+- **Accuracy**: Properly detects quest states even after Jagex updates
+
+---
+
+*Last Updated: 2025-08-06*  
 *Next: Document GrandExchange.open() and other navigation APIs* 
 
+================================
+. Here is a compiled list of the most useful DreamBot methods for those tasks, organized by category.
+
+Dialogue Handling (Dialogues class)
+These methods are essential for navigating conversations with NPCs.
+
+Dialogues.inDialogue()
+
+Use: Checks if a dialogue window is currently open.
+
+Example: if (Dialogues.inDialogue()) { ... }
+
+Dialogues.canContinue()
+
+Use: Checks if a "Click here to continue" prompt is visible.
+
+Example: if (Dialogues.canContinue()) { Dialogues.continueDialogue(); }
+
+Dialogues.getOptions()
+
+Use: Returns an array of strings containing the text of all available dialogue choices.
+
+Example: String[] choices = Dialogues.getOptions();
+
+Dialogues.chooseOption(String text)
+
+Use: Selects a dialogue option that contains the specified text.
+
+Example: Dialogues.chooseOption("I'm looking for a quest!");
+
+Dialogues.getNPCDialogue()
+
+Use: Gets the text the NPC is currently saying.
+
+Example: String npcText = Dialogues.getNPCDialogue();
+
+Movement & Travel (Walking class)
+Walking.walk(Tile destination)
+
+Use: The primary method to walk to a specific tile or location.
+
+Example: Walking.walk(new Tile(3222, 3218, 0));
+
+Walking.getRunEnergy()
+
+Use: Returns the player's current run energy as an integer (0-100).
+
+Example: if (Walking.getRunEnergy() > 30) { Walking.setRun(true); }
+
+Walking.setRun(boolean enabled)
+
+Use: Toggles the run setting on or off.
+
+Example: Walking.setRun(true);
+
+Interacting with the World (NPCs & GameObjects classes)
+These are used to find and interact with anything in the game world.
+
+NPCs.closest(String name)
+
+Use: Finds the nearest NPC with the given name.
+
+Example: NPC fatherAereck = NPCs.closest("Father Aereck");
+
+GameObjects.closest(String name)
+
+Use: Finds the nearest object (door, ladder, chest, etc.) with the given name.
+
+Example: GameObject ladder = GameObjects.closest("Ladder");
+
+.interact(String action)
+
+Use: This is the universal interaction method for any object or NPC.
+
+Example: fatherAereck.interact("Talk-to"); or ladder.interact("Climb-down");
+
+Inventory & Item Management (Inventory & Equipment classes)
+Inventory.contains(String... itemNames)
+
+Use: Checks if your inventory contains one or more specified items.
+
+Example: if (Inventory.contains("Ghostspeak amulet")) { ... }
+
+Inventory.interact(String itemName, String action)
+
+Use: A quick way to interact with an item in your inventory.
+
+Example: Inventory.interact("Energy potion(4)", "Drink");
+
+.useOn(GameObject | NPC | Item)
+
+Use: Performs an item-on-object/NPC interaction. This is often a two-step process.
+
+Example: Item skull = Inventory.get("Ghost's skull"); skull.useOn(GameObjects.closest("Coffin"));
+
+Equipment.contains(String itemName)
+
+Use: Checks if an item is currently equipped.
+
+Example: if (!Equipment.contains("Ghostspeak amulet")) { ... }
+
+Player & Game State (Players & Configs classes)
+These are crucial for knowing what to do next.
+
+Players.getLocal()
+
+Use: Gets the local player object, which you can use to find your own tile, animation, etc.
+
+Example: Tile myPosition = Players.getLocal().getTile();
+
+Configs.get(int id)
+
+Use: This is the most important method for questing. It retrieves a game state value.
+
+Example: Config questConfig = Configs.get(107);
+
+.getValue()
+
+Use: Gets the numerical value from a Config object, which tells you the exact stage of a quest.
+
+Example: int questStep = Configs.get(107).getValue();
+
+Utility & Control Flow (Sleep class)
+Sleep.sleepUntil(BooleanSupplier condition, long timeout)
+
+Use: Pauses the script until a specific condition is met or a timeout occurs. This is much more reliable than a fixed sleep.
 
 
+
+
+=================selecting dialouges
+
+static boolean	chooseFirstOptionContaining​(@NonNull java.lang.String... options)	
+This will go through the provided options in order, and will choose the first available option that contains one of your provided options.
+
+static boolean	inDialogue()	
+Checks if you're currently in a dialogue screen.

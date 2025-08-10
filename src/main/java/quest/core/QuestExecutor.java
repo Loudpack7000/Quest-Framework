@@ -1,9 +1,5 @@
 package quest.core;
 
-import quest.quests.VampireSlayerScript;
-import quest.quests.ImpCatcherScript;
-import quest.quests.LemonTutQuest;
-
 import quest.trees.RomeoAndJulietTree;
 import quest.trees.RuneMysteriesTree;
 import quest.trees.CooksAssistantTree;
@@ -11,6 +7,15 @@ import quest.trees.WitchsPotionTree;
 import quest.trees.SheepShearerTree;
 import quest.trees.XMarksTheSpotTree;
 import quest.trees.RestlessGhostTree;
+import quest.trees.VampyreSlayerTree;
+import quest.trees.DoricsQuestTree;
+import quest.trees.PiratesTreasureTree;
+import quest.trees.DemonSlayerTree;
+import quest.trees.GoblinDiplomacyTree;
+import quest.trees.BlackKnightsFortressTree;
+import quest.trees.ImpCatcherTree;
+import quest.trees.CorsairCurseTree;
+import quest.trees.KnightsSwordTree;
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.utilities.Timer;
@@ -85,37 +90,47 @@ public class QuestExecutor {
     }
     
     /**
-     * Start executing a quest by quest ID
+     * Start a quest by ID
      */
     public boolean startQuest(String questId) {
-        if (currentState != ExecutorState.IDLE) {
-            log("Cannot start quest - executor is not idle. Current state: " + currentState);
+        log("=== Starting Quest: " + questId + " ===");
+        
+        // Check if a quest is already running
+        if (isActive()) {
+            log("ERROR: Cannot start quest - another quest is already running: " + activeQuestId);
             return false;
         }
         
-        // Validate quest exists in database
+        // Get quest info from database
         QuestDatabase.QuestInfo questInfo = QuestDatabase.getQuestInfo(questId);
         if (questInfo == null) {
             log("ERROR: Quest not found in database: " + questId);
             return false;
         }
+        log("DEBUG: Found quest in database: " + questInfo.getDisplayName());
         
         // Check if quest is already complete
         if (QuestDatabase.isQuestComplete(questId)) {
             log("Quest already completed: " + questInfo.getDisplayName());
             return false;
         }
+        log("DEBUG: Quest not yet complete, proceeding...");
         
         // Try to load quest script
+        log("DEBUG: Loading quest script for: " + questId);
         QuestScript questScript = loadQuestScript(questId);
         if (questScript == null) {
             log("ERROR: No quest script available for: " + questInfo.getDisplayName());
             return false;
         }
+        log("DEBUG: Quest script loaded successfully: " + questScript.getClass().getSimpleName());
         
         // Initialize the quest script with dependencies
         if (scriptReference != null) {
+            log("DEBUG: Initializing quest script with script reference");
             questScript.initialize(scriptReference, null); // QuestDatabase is static, no instance needed
+        } else {
+            log("WARNING: Script reference is null during quest initialization");
         }
         
         // Initialize quest execution
@@ -132,10 +147,11 @@ public class QuestExecutor {
         log("Estimated duration: " + questInfo.getEstimatedDurationMinutes() + " minutes");
         
         // Prepare quest
-        return prepareQuest();
-    }
-    
-    /**
+        log("DEBUG: Calling prepareQuest()...");
+        boolean result = prepareQuest();
+        log("DEBUG: prepareQuest() returned: " + result);
+        return result;
+    }    /**
      * Prepare quest before execution
      */
     private boolean prepareQuest() {
@@ -337,6 +353,13 @@ public class QuestExecutor {
         emergencyStop = false;
         currentRetries = 0;
         stepsCompleted = 0;
+
+        // Ensure logger/discovery are fully stopped
+        try {
+            if (scriptReference instanceof quest.SimpleQuestBot) {
+                ((quest.SimpleQuestBot) scriptReference).stopRecording();
+            }
+        } catch (Exception ignored) {}
     }
     
     /**
@@ -345,16 +368,31 @@ public class QuestExecutor {
      */
     private QuestScript loadQuestScript(String questId) {
         switch (questId) {
-            case "TUTORIAL_ISLAND":
-                return new LemonTutQuest();
+            case "THE_KNIGHTS_SWORD":
+                log("Starting The Knight's Sword quest tree...");
+                return new TreeQuestWrapper(new KnightsSwordTree(), questId, "The Knight's Sword");
+            case "IMP_CATCHER":
+                log("Starting Imp Catcher quest tree...");
+                return new TreeQuestWrapper(new ImpCatcherTree(), questId, "Imp Catcher");
+            case "THE_CORSAIR_CURSE":
+                log("Starting The Corsair Curse tree...");
+                return new TreeQuestWrapper(new CorsairCurseTree(), questId, "The Corsair Curse");
             case "VAMPIRE_SLAYER":
-                return new VampireSlayerScript();
+                log("Starting Vampyre Slayer quest tree...");
+                return new TreeQuestWrapper(new VampyreSlayerTree(), questId, "Vampyre Slayer");
+            case "DEMON_SLAYER":
+                log("Starting Demon Slayer quest tree...");
+                return new TreeQuestWrapper(new DemonSlayerTree(), questId, "Demon Slayer");
+            case "DORICS_QUEST":
+                log("Starting Doric's Quest tree...");
+                return new TreeQuestWrapper(new DoricsQuestTree(), questId, "Doric's Quest");
+            case "PIRATES_TREASURE":
+                log("Starting Pirate's Treasure tree...");
+                return new TreeQuestWrapper(new PiratesTreasureTree(), questId, "Pirate's Treasure");
             case "COOKS_ASSISTANT":
                 return new TreeQuestWrapper(new CooksAssistantTree(), questId, "Cook's Assistant");
             case "RUNE_MYSTERIES":
                 return new TreeQuestWrapper(new RuneMysteriesTree(), questId, "Rune Mysteries");
-            case "IMP_CATCHER":
-                return new ImpCatcherScript();
             case "WITCHS_POTION":
                 return new TreeQuestWrapper(new WitchsPotionTree(), questId, "Witch's Potion");
             case "ROMEO_AND_JULIET":
@@ -365,6 +403,10 @@ public class QuestExecutor {
                 return new TreeQuestWrapper(new XMarksTheSpotTree(), questId, "X Marks the Spot");  
             case "THE_RESTLESS_GHOST":
                 return new TreeQuestWrapper(new RestlessGhostTree(), questId, "The Restless Ghost");
+            case "GOBLIN_DIPLOMACY":
+                return new TreeQuestWrapper(new GoblinDiplomacyTree(), questId, "Goblin Diplomacy");
+            case "BLACK_KNIGHTS_FORTRESS":
+                return new TreeQuestWrapper(new BlackKnightsFortressTree(), questId, "Black Knights' Fortress");
             case "RESTLESS_GHOST": 
                 // TODO: Implement Restless Ghost script
                 log("Restless Ghost script not yet implemented");

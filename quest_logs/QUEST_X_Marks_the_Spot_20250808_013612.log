@@ -1,0 +1,54 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: X Marks the Spot
+Started: 2025-08-08 01:36:12
+Player: TereIsAChair
+Starting Location: (3225, 3239, 0)
+Starting Inventory: Water rune x2996, Energy potion(4) x4, Earth rune x799, Mind rune x432, Spade, Salmon x5, Coins x82055, Energy potion(1), Law rune x593, Air rune x675
+=====================================
+
+[01:36:12] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[01:36:12] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[01:36:12] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[01:36:12] ACTION: Quest recording started
+    SCRIPT: // Quest: X Marks the Spot
+
+[01:36:12] ACTIVE_QUEST_DETECTED: WITCHS_POTION is currently in progress
+[01:36:15] ACTION: Selected 'Talk-to' on Veos
+    SCRIPT: NPCs.closest("Veos").interact("Talk-to");
+
+[01:36:15] USER_ACTION: Talk-to | NPC_Tile: (3228, 3242, 0)
+[01:37:29] ACTION: Selected 'Dig' on Spade
+    SCRIPT: // Dig on Spade
+
+[01:37:29] USER_ACTION: Dig | Target: Spade
+[01:38:00] ACTION: Selected 'Dig' on Spade
+    SCRIPT: // Dig on Spade
+
+[01:38:00] USER_ACTION: Dig | Target: Spade
+[01:39:01] ACTION: Selected 'Dig' on Spade
+    SCRIPT: // Dig on Spade
+
+[01:39:01] USER_ACTION: Dig | Target: Spade
+[01:39:28] ACTION: Selected 'Open' on Gate
+    SCRIPT: GameObjects.closest("Gate").interact("Open");
+
+[01:39:28] USER_ACTION: Open | Object_Tile: (3078, 3258, 0)
+[01:39:38] ACTION: Selected 'Dig' on Spade
+    SCRIPT: // Dig on Spade
+
+[01:39:38] USER_ACTION: Dig | Target: Spade
+[01:40:09] ACTION: Selected 'Talk-to' on Veos
+    SCRIPT: NPCs.closest("Veos").interact("Talk-to");
+
+[01:40:09] USER_ACTION: Talk-to | NPC_Tile: (3054, 3245, 0)
+[01:40:43] ACTION: Selected 'Cast' on Lumbridge Teleport
+    SCRIPT: // Cast on Lumbridge Teleport
+
+[01:40:43] USER_ACTION: Cast | Target: Lumbridge Teleport
+[01:40:43] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[01:40:43] SPELLBOOK_OPENED: Player opened the magic spellbook
+[01:40:44] QUEST_END: === QUEST RECORDING ENDED ===

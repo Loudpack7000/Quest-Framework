@@ -53,28 +53,80 @@ public class WalkToLocationNode extends ActionNode {
                 return true;
             }
             
-            // Initiate walking with no-timeout logic
+            // ROBUST WALKING LOOP - like GrandExchangeUtil pattern
             log("Walking to " + locationDescription + "...");
-            int failedAttempts = 0;
+            
+            int walkAttempts = 0;
+            long startTime = System.currentTimeMillis();
+            long timeoutMs = 60000; // 60 seconds total timeout
+            
             while (Players.getLocal().getTile().distance(targetLocation) > acceptableDistance) {
-                double distanceToTarget = Players.getLocal().getTile().distance(targetLocation);
-                log("Current distance to target: " + String.format("%.1f", distanceToTarget) + " tiles");
-                
-                if (!Walking.walk(targetLocation)) {
-                    failedAttempts++;
-                    log("Walking.walk() failed (attempt " + failedAttempts + ")");
-                    if (failedAttempts > 15) { // Max consecutive failures before giving up
-                        log("Failed to walk to target location after 15 failed attempts - pathfinder may be stuck");
-                        return false;
-                    }
-                } else {
-                    failedAttempts = 0; // Reset on successful walk initiation
-                    log("Walk initiated successfully, waiting for movement...");
+                // Check overall timeout
+                if (System.currentTimeMillis() - startTime > timeoutMs) {
+                    log("Failed to reach " + locationDescription + " within 60 seconds");
+                    return false;
                 }
-                Sleep.sleep(1500, 2500); // Wait a bit before trying again
+                
+                walkAttempts++;
+                currentLocation = Players.getLocal().getTile();
+                currentDistance = currentLocation.distance(targetLocation);
+                
+                log("Walk attempt " + walkAttempts + " - Distance: " + String.format("%.1f", currentDistance) + " tiles");
+                
+                // Initiate walking
+                if (!Walking.walk(targetLocation)) {
+                    log("Walking.walk() failed on attempt " + walkAttempts);
+                    Sleep.sleep(1000, 1500); // Brief pause before retry
+                    continue;
+                }
+                
+                // Wait for movement to start or arrival
+                boolean movementStarted = Sleep.sleepUntil(() -> {
+                    return Players.getLocal().isMoving() || 
+                           Players.getLocal().getTile().distance(targetLocation) <= acceptableDistance;
+                }, 5000);
+                
+                if (!movementStarted) {
+                    log("No movement detected after walk command, retrying...");
+                    continue;
+                }
+                
+                // Wait for either arrival OR movement to stop (need to re-walk)
+                Sleep.sleepUntil(() -> {
+                    boolean arrived = Players.getLocal().getTile().distance(targetLocation) <= acceptableDistance;
+                    boolean stoppedMoving = !Players.getLocal().isMoving() && Walking.getDestination() == null;
+                    
+                    if (arrived) {
+                        log("Arrived at destination!");
+                        return true;
+                    }
+                    
+                    if (stoppedMoving) {
+                        log("Stopped moving before reaching destination, will re-walk...");
+                        return true;
+                    }
+                    
+                    return false; // Keep waiting
+                }, 15000); // 15 second timeout per walk segment
+                
+                // Check if we arrived
+                if (Players.getLocal().getTile().distance(targetLocation) <= acceptableDistance) {
+                    log("Successfully reached " + locationDescription + ": " + Players.getLocal().getTile());
+                    return true;
+                }
+                
+                // Brief pause before next attempt
+                Sleep.sleep(500, 1000);
             }
-            log("Successfully reached " + locationDescription + ": " + Players.getLocal().getTile());
-            return true;
+            
+            // Final check
+            if (Players.getLocal().getTile().distance(targetLocation) <= acceptableDistance) {
+                log("Successfully reached " + locationDescription + ": " + Players.getLocal().getTile());
+                return true;
+            }
+            
+            log("Failed to reach " + locationDescription + " after " + walkAttempts + " attempts");
+            return false;
             
         } catch (Exception e) {
             log("Exception in WalkToLocationNode: " + e.getMessage());

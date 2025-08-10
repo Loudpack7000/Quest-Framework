@@ -76,6 +76,10 @@ public class QuestEventLogger implements ActionListener {
     private String lastActionLogged = "";
     private long lastActionLogTime = 0;
     private static final long ACTION_LOG_COOLDOWN = 3000; // 3 seconds between similar action logs
+    // NEW: Duplicate action suppression (rapid duplicate menu events)
+    private String lastActionEventSig = "";
+    private long lastActionEventTime = 0;
+    private static final long ACTION_EVENT_DEDUP_WINDOW = 400; // ms
     
     // Removed unused movement logging variables after refactoring
     
@@ -270,6 +274,15 @@ public class QuestEventLogger implements ActionListener {
                 return;
             }
             
+            // De-duplicate identical rapid events (DreamBot can fire twice)
+            String eventSig = action + "|" + targetName;
+            long nowTs = System.currentTimeMillis();
+            if (eventSig.equals(lastActionEventSig) && (nowTs - lastActionEventTime) < ACTION_EVENT_DEDUP_WINDOW) {
+                return; // Skip duplicate
+            }
+            lastActionEventSig = eventSig;
+            lastActionEventTime = nowTs;
+
             // NEW: Consolidate consumable actions (Drink, Eat) to prevent spam
             if (action.equals("Drink") || action.equals("Eat")) {
                 String actionKey = action + ":" + targetName;
@@ -373,6 +386,9 @@ public class QuestEventLogger implements ActionListener {
     private String[] lastDialogueOptions = null;
     private long lastDialogueOptionsTime = 0;
     private static final long DIALOGUE_OPTION_TIMEOUT = 5000; // 5 seconds to detect option selection
+    private String[] lastLoggedDialogueOptions = null;
+    private long lastDialogueOptionsLogTime = 0;
+    private static final long DIALOGUE_OPTIONS_LOG_COOLDOWN = 2000; // 2s per prompt
     
     /**
      * Detect dialogue option selection by monitoring dialogue state changes
@@ -403,18 +419,47 @@ public class QuestEventLogger implements ActionListener {
             if (selectedOption != null) {
                 logSelectedDialogueOption(selectedOption);
             } else {
+                // Try inferring selection from UI state changes (e.g., Bank opened)
+                String inferred = inferSelectionFromUI(lastDialogueOptions);
+                if (inferred != null) {
+                    logSelectedDialogueOption(inferred);
+                } else {
                 // Fallback: log all available options
                 logAction("DIALOGUE_OPTION_SELECTED", "// User selected one of: " + Arrays.toString(lastDialogueOptions));
+                }
             }
             
             // Clear the stored options
             lastDialogueOptions = null;
+            lastLoggedDialogueOptions = null;
         }
         
         // Clear old options if timeout exceeded
         if (currentTime - lastDialogueOptionsTime > DIALOGUE_OPTION_TIMEOUT) {
             lastDialogueOptions = null;
+            lastLoggedDialogueOptions = null;
         }
+    }
+
+    // Infer which dialogue option was chosen based on immediate UI state
+    private String inferSelectionFromUI(String[] options) {
+        try {
+            // Example: Banker dialogue → Bank interface opens
+            if (Bank.isOpen()) {
+                for (String opt : options) {
+                    if (opt != null && opt.toLowerCase().contains("access my bank")) {
+                        return opt;
+                    }
+                }
+                // Fallback: return the first option if it clearly references bank
+                for (String opt : options) {
+                    if (opt != null && opt.toLowerCase().contains("bank")) {
+                        return opt;
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
+        return null;
     }
     
     /**
@@ -554,35 +599,53 @@ public class QuestEventLogger implements ActionListener {
     private String generateScriptCode(String action, String target, MenuRow menuRow) {
         // Clean target name for script generation
         String cleanTarget = target.replaceAll("<[^>]*>", "").trim(); // Remove HTML tags
-        
+
+        // Item-on-item shorthand like "Knife -> Bread"
+        if ("Use".equals(action) && cleanTarget.contains("->")) {
+            String[] parts = cleanTarget.split("->");
+            String left = parts[0].trim();
+            String right = parts.length > 1 ? parts[1].trim() : "";
+            return "// Item-on-item\nInventory.use(\"" + left + "\", \"" + right + "\");";
+        }
+
+        // Inventory 'Use' (or other item actions)
+        boolean isInventoryItem = false;
+        try {
+            isInventoryItem = Inventory.contains(cleanTarget);
+        } catch (Exception ignored) {}
+
+        if ("Use".equals(action) && isInventoryItem) {
+            return "Inventory.interact(\"" + cleanTarget + "\", \"Use\");";
+        }
+
         // GameObject interactions
         if (action.equals("Climb-up") || action.equals("Climb-down") || action.equals("Climb")) {
             return "GameObjects.closest(\"" + cleanTarget + "\").interact(\"" + action + "\");";
         }
-        
+
         if (action.equals("Open") || action.equals("Close")) {
             return "GameObjects.closest(\"" + cleanTarget + "\").interact(\"" + action + "\");";
         }
-        
+
         if (action.equals("Search") || action.equals("Use")) {
             return "GameObjects.closest(\"" + cleanTarget + "\").interact(\"" + action + "\");";
         }
-        
+
         // NPC interactions
         if (action.equals("Talk-to") || action.equals("Attack") || action.equals("Trade")) {
             return "NPCs.closest(\"" + cleanTarget + "\").interact(\"" + action + "\");";
         }
-        
+
         // Item interactions
         if (action.equals("Drop") || action.equals("Eat") || action.equals("Drink") || action.equals("Wield") || action.equals("Wear")) {
             return "Inventory.interact(\"" + cleanTarget + "\", \"" + action + "\");";
         }
-        
+
         // Banking actions
         if (action.equals("Deposit") || action.equals("Withdraw")) {
             return "// Bank." + action.toLowerCase() + "(\"" + cleanTarget + "\");";
         }
-        
+
         // Generic fallback
         return "// " + action + " on " + cleanTarget;
     }
@@ -926,7 +989,7 @@ public class QuestEventLogger implements ActionListener {
     // 2 & 3. NPC Interactions and Dialogue - State-based option detection
     private void checkDialogue() {
         boolean currentDialogueState = Dialogues.inDialogue();
-        
+
         // Track dialogue state changes for quest progression
         if (currentDialogueState != lastDialogueState) {
             if (!currentDialogueState) {
@@ -935,13 +998,20 @@ public class QuestEventLogger implements ActionListener {
             }
             lastDialogueState = currentDialogueState;
         }
-        
+
         // Direct dialogue option detection using DreamBot API
         if (currentDialogueState && Dialogues.areOptionsAvailable()) {
             String[] options = Dialogues.getOptions();
             if (options != null && options.length > 0) {
-                // Store options for detection
+                // Store options for later selection detection
                 detectDialogueOptionSelection(options);
+
+                // Log visible options once per prompt
+                if (lastLoggedDialogueOptions == null || !Arrays.equals(lastLoggedDialogueOptions, options)) {
+                    logDetail("DIALOGUE_OPTIONS", Arrays.toString(options));
+                    lastLoggedDialogueOptions = options.clone();
+                    lastDialogueOptionsLogTime = System.currentTimeMillis();
+                }
             }
         }
     }
@@ -1024,7 +1094,10 @@ public class QuestEventLogger implements ActionListener {
         if (currentBankState != lastBankState) {
             // Only log if it's been long enough since the last logged state change
             if (currentTime - lastBankActionLogTime > BANK_ACTION_LOG_COOLDOWN) {
-                if (!currentBankState) {
+                if (currentBankState) {
+                    logAction("Opened bank (state changed)", "Bank.open()");
+                    logDetail("Banking", "Bank interface opened");
+                } else {
                     logAction("Closed bank (state changed)", "Bank.close()");
                     logDetail("Banking", "Bank interface closed");
                 }
@@ -1397,7 +1470,7 @@ public class QuestEventLogger implements ActionListener {
     // 8. Quest Progress Tracking - Enhanced with Real-Time Varbit Monitoring
     private void checkQuestProgress() {
         long currentTime = System.currentTimeMillis();
-        
+
         // Only check quest states every second to avoid spam
         if (currentTime - lastQuestCheckTime < QUEST_CHECK_INTERVAL) {
             return;
@@ -1405,15 +1478,45 @@ public class QuestEventLogger implements ActionListener {
         lastQuestCheckTime = currentTime;
 
         try {
-            // PRIORITY: Real-time varbit monitoring for quest steps
+            // Refresh active quest detection (in case it changes). This method logs only on changes.
+            detectCurrentActiveQuest();
+            // PRIORITY: Prefer active quest progress via Quest API, then generic known varbits
+            checkActiveQuestProgress();
             checkQuestVarbits();
-            
-            // NOTE: Config and varbit discovery now handled by smart triggers
-            // No more constant polling - only check when quest events occur
-            
+            // Also poll discovery systems once per second while active
+            if (discoveryModeActive) {
+                checkVarbitChanges();
+            }
+            if (configDiscoveryActive) {
+                checkConfigChanges();
+            }
         } catch (Exception e) {
             // Silent catch to prevent breaking the main loop
         }
+    }
+
+    // Track last seen varbit per active quest to avoid spam
+    private final Map<Quest, Integer> lastActiveQuestVarbitValues = new HashMap<>();
+
+    // Prefer DreamBot Quest API for the currently active quest's varbit when possible
+    private void checkActiveQuestProgress() {
+        try {
+            if (currentActiveQuest == null) return;
+            Integer activeVarbit = tryGetQuestVarbitId(currentActiveQuest);
+            if (activeVarbit == null || activeVarbit <= 0) return;
+            int value = PlayerSettings.getBitValue(activeVarbit);
+            Integer last = lastActiveQuestVarbitValues.get(currentActiveQuest);
+            if (last == null) {
+                lastActiveQuestVarbitValues.put(currentActiveQuest, value);
+                if (value > 0) {
+                    logDetail("ACTIVE_QUEST_VARBIT", currentActiveQuest + " varbit " + activeVarbit + " = " + value);
+                }
+            } else if (value != last) {
+                lastActiveQuestVarbitValues.put(currentActiveQuest, value);
+                logStep("ACTIVE QUEST PROGRESS: " + currentActiveQuest + " " + last + " → " + value,
+                        "// Active quest varbit " + activeVarbit + " now " + value);
+            }
+        } catch (Exception ignored) {}
     }
     
     /**
@@ -1426,6 +1529,13 @@ public class QuestEventLogger implements ActionListener {
             int varbitId = questEntry.getValue();
             
             try {
+                // If we're already tracking the active quest via Quest API, skip the same varbit ID to prevent duplicate logs
+                if (currentActiveQuest != null) {
+                    Integer activeVarbit = tryGetQuestVarbitId(currentActiveQuest);
+                    if (activeVarbit != null && activeVarbit == varbitId) {
+                        continue;
+                    }
+                }
                 // Get current varbit value using DreamBot API
                 int currentValue = PlayerSettings.getBitValue(varbitId);
                 Integer lastValue = questVarbitStates.get(varbitId);
@@ -1469,34 +1579,53 @@ public class QuestEventLogger implements ActionListener {
     private Map<Integer, Integer> baselineConfigs = new HashMap<>();
     private boolean configDiscoveryActive = false;
     
+    // Some configs are global/non-quest specific (e.g., 101 = Quest Points).
+    // Treat them as noise for discovery to avoid generic/false positives.
+    private static boolean isNoiseConfig(int configId) {
+        return configId == 101; // 101 = Quest Points total (global)
+    }
+    
     public void startVarbitDiscovery() {
         script.log("VARBIT DISCOVERY: Starting quest varbit discovery scan...");
         discoveryModeActive = true;
         baselineVarbits.clear();
-        
-        // Scan common quest varbit ranges and record baseline values
-        int[] commonRanges = {
-            // F2P Quest varbits (most common range)
-            10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-            29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-            60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72,
-            100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
-            140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150,
-            175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185
+
+        // First, prefer DreamBot Quest API if we can get an authoritative varbit ID for the active quest
+        try {
+            if (currentActiveQuest == null) {
+                detectCurrentActiveQuest();
+            }
+            Integer questVarbit = tryGetQuestVarbitId(currentActiveQuest);
+            if (questVarbit != null && questVarbit > 0) {
+                int value = PlayerSettings.getBitValue(questVarbit);
+                baselineVarbits.put(questVarbit, value);
+                logStep("VARBIT_DISCOVERY_STARTED (Quest API)", "// Using Quest API varbit " + questVarbit + " baseline=" + value);
+                script.log("CONFIG: Using Quest API varbit " + questVarbit + " for discovery");
+                return; // Using authoritative ID; no need to broad-scan
+            }
+        } catch (Exception ignored) { /* Fallback to broad scan */ }
+
+        int[][] varbitRanges = new int[][]{
+            {10, 20}, {29, 40}, {60, 72}, {100, 110}, {140, 150}, {175, 185},
+            {250, 300}, {300, 350}, {400, 450}, {500, 600},
+            {1000, 1100}, {1500, 1600}, {2000, 2100}, {2500, 2600},
+            {3000, 3100}, {3200, 3300}, {3300, 3400}, {4000, 4100},
+            {5000, 5100}, {6000, 6100}, {6200, 6300}, {6400, 6500}, {6600, 6700}
         };
-        
+
         int scannedVarbits = 0;
-        for (int varbitId : commonRanges) {
-            try {
-                int value = PlayerSettings.getBitValue(varbitId);
-                // Record ALL varbits (including 0 values) to detect changes from 0->1, 1->2, etc.
-                baselineVarbits.put(varbitId, value);
-                scannedVarbits++;
-            } catch (Exception e) {
-                // Skip invalid varbits
+        for (int[] range : varbitRanges) {
+            for (int varbitId = range[0]; varbitId <= range[1]; varbitId++) {
+                try {
+                    int value = PlayerSettings.getBitValue(varbitId);
+                    baselineVarbits.put(varbitId, value);
+                    scannedVarbits++;
+                } catch (Exception e) {
+                    // ignore invalid
+                }
             }
         }
-        
+
         logStep("VARBIT_DISCOVERY_STARTED", "// Quest varbit discovery initiated - monitoring " + scannedVarbits + " varbits (including 0-values)");
         script.log("DISCOVERY: Recorded " + scannedVarbits + " baseline varbits. Start quest actions now!");
     }
@@ -1509,6 +1638,21 @@ public class QuestEventLogger implements ActionListener {
         configDiscoveryActive = true;
         baselineConfigs.clear();
         
+        // Prefer Quest API for authoritative config ID when available
+        try {
+            if (currentActiveQuest == null) {
+                detectCurrentActiveQuest();
+            }
+            Integer questConfig = tryGetQuestConfigId(currentActiveQuest);
+            if (questConfig != null && questConfig > 0) {
+                int value = PlayerSettings.getConfig(questConfig);
+                baselineConfigs.put(questConfig, value);
+                logStep("CONFIG_DISCOVERY_STARTED (Quest API)", "// Using Quest API config " + questConfig + " baseline=" + value);
+                script.log("CONFIG: Using Quest API config " + questConfig + " for discovery");
+                return; // Using authoritative ID; no need to broad-scan
+            }
+        } catch (Exception ignored) { /* Fallback to predefined ranges */ }
+
         // Scan common quest config ranges based on OSRS quest system
         int[] commonConfigRanges = {
             // Known quest configs from OSRS research
@@ -1547,12 +1691,8 @@ public class QuestEventLogger implements ActionListener {
             }
             return;
         }
-        
-        // Add periodic diagnostic (every 30 checks = ~30 seconds)
-        if (checkCount % 30 == 0) {
-            int configCount = configDiscoveryActive ? baselineConfigs.size() : 0;
-            script.log("DIAGNOSTIC: Checking " + baselineVarbits.size() + " varbits + " + configCount + " configs for changes (check #" + checkCount + ")");
-        }
+
+        // Silent polling: no periodic diagnostics, only log on actual changes
         checkCount++;
         
         // Check all previously recorded varbits for changes
@@ -1599,42 +1739,72 @@ public class QuestEventLogger implements ActionListener {
      */
     public void checkConfigChanges() {
         if (!configDiscoveryActive || baselineConfigs.isEmpty()) {
-            if (!configDiscoveryActive) {
-                // Silent return - config discovery mode not active
-                return;
-            }
+            if (!configDiscoveryActive) return;
             if (baselineConfigs.isEmpty()) {
                 script.log("DEBUG: No baseline configs recorded for comparison");
-                return;
             }
             return;
         }
         
-        // Check all previously recorded configs for changes
         for (Map.Entry<Integer, Integer> entry : baselineConfigs.entrySet()) {
             int configId = entry.getKey();
             int oldValue = entry.getValue();
-            
             try {
                 int newValue = PlayerSettings.getConfig(configId);
                 if (newValue != oldValue) {
-                    // Found a changing config - this could be quest progress!
+                    // Filter known global/noise configs (e.g., 101 = Quest Points)
+                    if (isNoiseConfig(configId)) {
+                        script.log("CONFIG DISCOVERY NOISE: Ignoring config " + configId + " change " + oldValue + " → " + newValue + " (global)");
+                        baselineConfigs.put(configId, newValue);
+                        continue;
+                    }
                     String questName = findQuestNameByConfig(configId);
-                    
-                    logStep("CONFIG DISCOVERED: " + (questName != null ? questName : "Unknown Quest") + 
-                           " config " + configId + " changed from " + oldValue + " to " + newValue, 
-                           "// DISCOVERED: Quest uses config " + configId + " (value " + oldValue + " → " + newValue + ")");
-                    
-                    script.log("CONFIG DISCOVERY HIT: Config " + configId + " = " + oldValue + " → " + newValue + 
-                              (questName != null ? " (" + questName + " PROGRESS!)" : " (QUEST PROGRESS DETECTED!)"));
-                    
-                    // Update baseline for continued tracking
+                    logStep("CONFIG DISCOVERED: " + (questName != null ? questName : "Unknown Quest") +
+                            " config " + configId + " changed from " + oldValue + " to " + newValue,
+                            "// DISCOVERED: Quest uses config " + configId + " (value " + oldValue + " → " + newValue + ")");
+                    script.log("CONFIG DISCOVERY HIT: Config " + configId + " = " + oldValue + " → " + newValue +
+                            (questName != null ? " (" + questName + " PROGRESS!)" : " (QUEST PROGRESS DETECTED!)"));
                     baselineConfigs.put(configId, newValue);
                 }
             } catch (Exception e) {
-                // Skip this config
+                // ignore
             }
         }
+    }
+
+    // Attempt to read quest varbit/config IDs via Quest API using reflection to avoid compile-time coupling
+    private Integer tryGetQuestVarbitId(Quest quest) {
+        if (quest == null) return null;
+        try {
+            java.lang.reflect.Method m;
+            try {
+                m = quest.getClass().getMethod("getVarBitId");
+            } catch (NoSuchMethodException e1) {
+                m = quest.getClass().getMethod("getVarBitID");
+            }
+            Object result = m.invoke(quest);
+            if (result instanceof Integer) {
+                return (Integer) result;
+            }
+        } catch (Throwable ignored) {}
+        return null;
+    }
+
+    private Integer tryGetQuestConfigId(Quest quest) {
+        if (quest == null) return null;
+        try {
+            java.lang.reflect.Method m;
+            try {
+                m = quest.getClass().getMethod("getConfigId");
+            } catch (NoSuchMethodException e1) {
+                m = quest.getClass().getMethod("getConfigID");
+            }
+            Object result = m.invoke(quest);
+            if (result instanceof Integer) {
+                return (Integer) result;
+            }
+        } catch (Throwable ignored) {}
+        return null;
     }
     
     /**
@@ -1661,34 +1831,46 @@ public class QuestEventLogger implements ActionListener {
     // Removed: checkHighLevelQuestStates() - unused after varbit-based tracking implementation
     
     // Helper method to detect which quest is currently active
+    // Logs only when the active quest CHANGES (prevents spam)
     private void detectCurrentActiveQuest() {
         try {
-            // Look for any quest that's currently started
-            FreeQuest[] freeQuests = FreeQuest.values();
-            
-            for (FreeQuest quest : freeQuests) {
+            Quest detected = null;
+
+            // Prefer any started free quest
+            for (FreeQuest quest : FreeQuest.values()) {
                 if (Quests.isStarted(quest)) {
-                    currentActiveQuest = quest;
-                    script.log("[QUEST] ACTIVE QUEST DETECTED: " + quest.toString());
-                    logDetail("ACTIVE_QUEST_DETECTED", quest.toString() + " is currently in progress");
-                    return;
+                    detected = quest;
+                    break;
                 }
             }
-            
-            // If no F2P quest is active, check paid quests
-            PaidQuest[] paidQuests = PaidQuest.values();
-            for (PaidQuest quest : paidQuests) {
-                if (Quests.isStarted(quest)) {
-                    currentActiveQuest = quest;
-                    script.log("[QUEST] ACTIVE QUEST DETECTED: " + quest.toString() + " (Members)");
-                    logDetail("ACTIVE_QUEST_DETECTED", quest.toString() + " is currently in progress (Members)");
-                    return;
+
+            // If no free quest, check paid quests
+            if (detected == null) {
+                for (PaidQuest quest : PaidQuest.values()) {
+                    if (Quests.isStarted(quest)) {
+                        detected = quest;
+                        break;
+                    }
                 }
             }
-            
-            // No active quest found
-            currentActiveQuest = null;
-            
+
+            // If unchanged, do nothing (no spam)
+            if ((detected == null && currentActiveQuest == null) ||
+                (detected != null && detected.equals(currentActiveQuest))) {
+                return;
+            }
+
+            // Update and log once on change
+            currentActiveQuest = detected;
+            if (currentActiveQuest != null) {
+                boolean isMembers = (currentActiveQuest instanceof PaidQuest);
+                script.log("[QUEST] ACTIVE QUEST DETECTED: " + currentActiveQuest.toString() + (isMembers ? " (Members)" : ""));
+                logDetail("ACTIVE_QUEST_DETECTED", currentActiveQuest.toString() + " is currently in progress" + (isMembers ? " (Members)" : ""));
+            } else {
+                // Optionally log when no quest is active (commented to reduce noise)
+                // script.log("[QUEST] No active quest detected");
+            }
+
         } catch (Exception e) {
             script.log("Error detecting active quest: " + e.getMessage());
         }
@@ -2101,6 +2283,15 @@ public class QuestEventLogger implements ActionListener {
     
     public void close() {
         try {
+            // Disable all background discovery and polling flags
+            discoveryModeActive = false;
+            configDiscoveryActive = false;
+            initialized = false;
+            lastDialogueOptions = null;
+            baselineVarbits.clear();
+            baselineConfigs.clear();
+            lastActiveQuestVarbitValues.clear();
+
             if (logWriter != null) {
                 logDetail("QUEST_END", "=== QUEST RECORDING ENDED ===");
                 logWriter.close();
