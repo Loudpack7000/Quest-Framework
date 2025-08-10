@@ -19,6 +19,10 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.utilities.Sleep;
+// Avoid compile-time dependency on Shop by using reflection helpers below
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Pirate's Treasure Quest Tree Implementation
@@ -83,6 +87,10 @@ public class PiratesTreasureTree extends QuestTree {
     private ActionNode getPirateMessageNode;
     private ActionNode digForTreasureNode;
     private QuestNode smartDecisionNode;  // UPDATED: Now uses QuestNode instead of DecisionNode
+    // Session flag to ensure we explicitly start the quest with Redbeard Frank
+    private boolean hasDialogStartedQuest = false;
+    // Track how many bananas were picked from each tree (limit 4 per tree)
+    private final Map<String, Integer> bananaTreePickCounts = new HashMap<>();
     
     public PiratesTreasureTree() {
         super("Pirate's Treasure");
@@ -109,6 +117,11 @@ public class PiratesTreasureTree extends QuestTree {
             public ExecutionResult execute() {
                 int config = PlayerSettings.getConfig(QUEST_CONFIG_ID);
                 logCurrentState(config, Players.getLocal().getTile());
+
+                // Sync the session flag with real quest state if the quest is already started
+                if (!hasDialogStartedQuest && config >= QUEST_STARTED) {
+                    hasDialogStartedQuest = true;
+                }
                 
                 QuestNode nextStep = null;
                 String reason = "";
@@ -119,8 +132,8 @@ public class PiratesTreasureTree extends QuestTree {
                     log("Quest already completed, but force restart enabled - continuing execution");
                 }
                 
-                // PRIORITY 1: Start quest if not started yet
-                if (config < QUEST_STARTED) {
+                // PRIORITY 1: Always ensure we explicitly start with Redbeard Frank before any travel
+                if (config < QUEST_STARTED || !hasDialogStartedQuest) {
                     log("Quest not started yet - need to talk to Redbeard Frank first");
                     log("Config " + QUEST_CONFIG_ID + " = " + config + " (< " + QUEST_STARTED + ")");
                     nextStep = startQuestNode;
@@ -256,6 +269,7 @@ public class PiratesTreasureTree extends QuestTree {
                     
                     log("✅ Dialogue with Redbeard Frank completed - quest should be started!");
                     log("Using dialogue completion as trigger to move to next step");
+                    hasDialogStartedQuest = true;
                     return true; // Quest started successfully based on dialogue completion
                     
                 } catch (Exception e) {
@@ -350,20 +364,31 @@ public class PiratesTreasureTree extends QuestTree {
                     NPC zembo = NPCs.closest("Zembo");
                     if (zembo != null) {
                         log("Trading with Zembo for rum...");
-                        if (zembo.interact("Trade")) {
-                            Sleep.sleepUntil(() -> Dialogues.inDialogue(), 5000);
-                            
-                            // Handle shop interface - buy rum
-                            // Note: This is simplified - in practice you'd need to handle the shop interface
-                            Sleep.sleep(3000); // Wait for shop to open
-                            
-                            // For now, just wait and assume rum was bought
-                            // TODO: Implement proper shop interface handling
-                            log("Assuming rum was purchased from Zembo");
-                        } else {
+                        if (!zembo.interact("Trade")) {
                             log("Failed to interact with Zembo");
                             return false;
                         }
+                        // Wait for shop to open, then purchase rum properly
+                        if (!Sleep.sleepUntil(() -> isShopOpen(), 5000)) {
+                            log("ERROR: Shop did not open when trading with Zembo");
+                            return false;
+                        }
+                        log("Shop opened, attempting to purchase Karamjan rum...");
+                        boolean purchased = purchaseFromShop(KARAMJAN_RUM, 1);
+                        if (!purchased) {
+                            // Sometimes the item may be out of stock or needs a retry
+                            Sleep.sleep(500, 800);
+                            purchased = purchaseFromShop(KARAMJAN_RUM, 1);
+                        }
+                        if (!purchased) {
+                            log("ERROR: Failed to purchase Karamjan rum from shop");
+                            return false;
+                        }
+                        if (!Sleep.sleepUntil(() -> Inventory.contains(KARAMJAN_RUM), 4000)) {
+                            log("ERROR: Rum not found in inventory after purchasing");
+                            return false;
+                        }
+                        log("✅ Successfully purchased Karamjan rum from Zembo");
                     } else {
                         log("Could not find Zembo");
                         return false;
@@ -374,7 +399,7 @@ public class PiratesTreasureTree extends QuestTree {
                 int bananasNeeded = 10 - Inventory.count(BANANA);
                 if (bananasNeeded > 0) {
                     log("Need to pick " + bananasNeeded + " bananas...");
-                    
+
                     // Walk to banana plantation area if not close
                     if (Players.getLocal().getTile().distance(BANANA_TREES_AREA) > 20) {
                         log("Walking to banana plantation at " + BANANA_TREES_AREA);
@@ -384,27 +409,54 @@ public class PiratesTreasureTree extends QuestTree {
                             return false;
                         }
                     }
-                    
-                    // Pick bananas
-                    int attempts = 0;
-                    while (Inventory.count(BANANA) < 10 && attempts < 20 && Inventory.getEmptySlots() > 0) {
-                        GameObject bananaTree = GameObjects.closest("Banana tree");
-                        if (bananaTree != null) {
-                            log("Picking banana from tree...");
-                            if (bananaTree.interact("Pick")) {
-                                Sleep.sleep(1000, 2000);
-                                attempts++;
-                            } else {
-                                log("Failed to interact with banana tree");
-                                attempts++;
-                                Sleep.sleep(1000);
-                            }
-                        } else {
-                            log("No banana trees found nearby");
+
+                    // Attempt to pick with a limit of 4 bananas per tree before moving to the next
+                    int safety = 0;
+                    while (Inventory.count(BANANA) < 10 && Inventory.getEmptySlots() > 0 && safety < 200) {
+                        GameObject tree = GameObjects.closest(go ->
+                            go != null && "Banana tree".equals(go.getName()) &&
+                            go.getTile().distance(BANANA_TREES_AREA) <= 25 &&
+                            getPickedCountForTree(go) < 4
+                        );
+
+                        if (tree == null) {
+                            // If no eligible tree found, reset counts to allow another rotation
+                            bananaTreePickCounts.clear();
+                            tree = GameObjects.closest(go ->
+                                go != null && "Banana tree".equals(go.getName()) &&
+                                go.getTile().distance(BANANA_TREES_AREA) <= 25
+                            );
+                        }
+
+                        if (tree == null) {
+                            log("No banana trees found in plantation area");
                             return false;
                         }
+
+                        // Move closer if needed
+                        if (Players.getLocal().getTile().distance(tree.getTile()) > 5) {
+                            Walking.walk(tree);
+                            Sleep.sleep(600, 1000);
+                        }
+
+                        String key = getTreeKey(tree);
+                        int pickedFromThisTree = bananaTreePickCounts.getOrDefault(key, 0);
+                        if (pickedFromThisTree >= 4) {
+                            safety++;
+                            continue;
+                        }
+
+                        if (tree.interact("Pick")) {
+                            int before = Inventory.count(BANANA);
+                            if (Sleep.sleepUntil(() -> Inventory.count(BANANA) > before, 3000)) {
+                                bananaTreePickCounts.put(key, pickedFromThisTree + 1);
+                            }
+                        } else {
+                            Sleep.sleep(300, 600);
+                        }
+                        safety++;
                     }
-                    
+
                     if (Inventory.count(BANANA) < 10) {
                         log("Failed to pick enough bananas. Have: " + Inventory.count(BANANA) + ", Need: 10");
                         return false;
@@ -870,13 +922,45 @@ public class PiratesTreasureTree extends QuestTree {
     }
     
     private boolean needToTravelToKaramja() {
-        // Only travel to Karamja AFTER quest is started
+        // Only travel to Karamja AFTER quest is started via dialogue with Redbeard Frank
         int config = PlayerSettings.getConfig(QUEST_CONFIG_ID);
-        return config >= QUEST_STARTED &&  // Quest is started
-               !Inventory.contains(KARAMJAN_RUM) && 
+        boolean questStarted = config >= QUEST_STARTED || hasDialogStartedQuest;
+        return questStarted &&
+               !Inventory.contains(KARAMJAN_RUM) &&
                !Inventory.contains(CHEST_KEY) &&
                Players.getLocal().getTile().distance(KARAMJA_DOCK) > 100;
-        // Removed: config < QUEST_COMPLETE check to handle accounts with unusual config values
+    }
+
+    // ----- Helper methods for Shop reflection to avoid API import issues -----
+    private boolean isShopOpen() {
+        try {
+            Class<?> shopClass = Class.forName("org.dreambot.api.methods.container.impl.shop.Shop");
+            java.lang.reflect.Method isOpen = shopClass.getMethod("isOpen");
+            Object result = isOpen.invoke(null);
+            return result instanceof Boolean && (Boolean) result;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
+    private boolean purchaseFromShop(String itemName, int quantity) {
+        try {
+            Class<?> shopClass = Class.forName("org.dreambot.api.methods.container.impl.shop.Shop");
+            java.lang.reflect.Method purchase = shopClass.getMethod("purchase", String.class, int.class);
+            Object result = purchase.invoke(null, itemName, quantity);
+            return result instanceof Boolean && (Boolean) result;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
+    // ----- Helpers for banana trees limiting per tree -----
+    private String getTreeKey(GameObject tree) {
+        return tree.getTile().getX() + "," + tree.getTile().getY() + "," + tree.getTile().getZ();
+    }
+
+    private int getPickedCountForTree(GameObject tree) {
+        return bananaTreePickCounts.getOrDefault(getTreeKey(tree), 0);
     }
     
     // Helper methods
