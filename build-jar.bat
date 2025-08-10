@@ -8,6 +8,13 @@ echo Version: 7.6 (Tree-Based Quest System + Romeo and Juliet + GE Integration)
 echo Category: UTILITY
 echo ========================================
 
+REM Enable non-interactive mode when NONINTERACTIVE=1 is set in environment
+if /i "%NONINTERACTIVE%"=="1" (
+    set "SKIP_PAUSE=1"
+    set "DEFAULT_CLEANUP_CHOICE=N"
+echo [INFO] Non-interactive mode enabled (pauses suppressed)
+)
+
 echo [1/7] Cleaning old builds and removing old versions...
 REM Clean local build files
 if exist "target" rmdir /s /q "target"
@@ -51,52 +58,52 @@ if not exist "C:\Users\Leone\DreamBot\Scripts" (
 echo [2.5/7] Validating source files...
 if not exist "src\main\java\quest\utils\DialogueUtil.java" (
     echo [ERROR] DialogueUtil.java not found!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 if not exist "src\main\java\quest\utils\GrandExchangeUtil.java" (
     echo [ERROR] GrandExchangeUtil.java not found!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 if not exist "src\main\java\quest\utils\QuestData.java" (
     echo [ERROR] QuestData.java not found!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 if not exist "src\main\java\quest\utils\QuestLogger.java" (
     echo [ERROR] QuestLogger.java not found!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 if not exist "src\main\java\quest\utils\ItemGatheringUtil.java" (
     echo [ERROR] ItemGatheringUtil.java not found!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 if not exist "src\main\java\quest\core\QuestDatabase.java" (
     echo [ERROR] QuestDatabase.java not found!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 if not exist "src\main\java\quest\core\QuestScript.java" (
     echo [ERROR] QuestScript.java not found!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 if not exist "src\main\java\quest\core\QuestExecutor.java" (
     echo [ERROR] QuestExecutor.java not found!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 if not exist "src\main\java\quest\core\QuestEventLogger.java" (
     echo [ERROR] QuestEventLogger.java not found!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 if not exist "src\main\java\quest\gui\QuestSelectionGUI.java" (
     echo [ERROR] QuestSelectionGUI.java not found!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 
@@ -104,7 +111,7 @@ if not exist "src\main\java\quest\gui\QuestSelectionGUI.java" (
 
 if not exist "src\main\java\quest\SimpleQuestBot.java" (
     echo [ERROR] SimpleQuestBot.java not found!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 echo [SUCCESS] All source files found
@@ -112,12 +119,12 @@ echo [SUCCESS] All source files found
 echo [3/7] Checking dependencies...
 if not exist "lib\client.jar" (
     echo [ERROR] lib\client.jar not found!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 if not exist "lib\json.jar" (
     echo [ERROR] lib\json.jar not found!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 echo [SUCCESS] All dependencies found
@@ -279,7 +286,7 @@ cd ..\..
 
 if not exist "target\AI_Quest_Framework_v7.6.jar" (
     echo [ERROR] JAR file creation failed!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 echo [SUCCESS] JAR file created: AI_Quest_Framework_v7.6.jar
@@ -289,7 +296,7 @@ copy "target\AI_Quest_Framework_v7.6.jar" "C:\Users\Leone\DreamBot\Scripts\AI_Qu
 if %errorlevel% neq 0 (
     echo [ERROR] Failed to copy JAR to DreamBot Scripts directory!
     echo Please check if DreamBot directory exists: C:\Users\Leone\DreamBot\Scripts\
-    pause
+    call :maybe_pause
     exit /b 1
 )
 echo [SUCCESS] New version installed to DreamBot!
@@ -299,7 +306,7 @@ if exist "C:\Users\Leone\DreamBot\Scripts\AI_Quest_Framework_v7.6.jar" (
     echo [SUCCESS] AI Quest Framework v7.6 is ready!
 ) else (
     echo [ERROR] Installation verification failed!
-    pause
+    call :maybe_pause
     exit /b 1
 )
 
@@ -335,8 +342,13 @@ echo Ready to test! The tree-based system includes Romeo and Juliet quest.
 echo [CLEANUP] Cleaning up build artifacts...
 echo JAR file location: target\AI_Quest_Framework_v7.6.jar
 echo.
-echo Do you want to remove the target folder? (Y/N)
-set /p cleanup_choice=
+if defined SKIP_PAUSE (
+    set "cleanup_choice=%DEFAULT_CLEANUP_CHOICE%"
+    echo Do you want to remove the target folder? ^(Y/N^) [AUTO=%cleanup_choice%]
+) else (
+    echo Do you want to remove the target folder? ^(Y/N^)
+    set /p cleanup_choice=
+)
 if /i "%cleanup_choice%"=="Y" (
     echo Removing target folder...
     rmdir /s /q "target"
@@ -345,7 +357,7 @@ if /i "%cleanup_choice%"=="Y" (
     echo Target folder preserved at: target\
 )
 
-pause
+call :maybe_pause
 goto :end
 
 :compile_error
@@ -353,7 +365,17 @@ echo [ERROR] Compilation failed!
 echo Check the Java source files for syntax errors.
 echo Make sure DreamBot client.jar is compatible with your code.
 echo Check console output above for specific compilation errors.
-pause
+call :maybe_pause
 exit /b 1
 
 :end
+
+goto :eof
+
+:maybe_pause
+if not defined SKIP_PAUSE (
+    pause
+) else (
+    REM Skipping pause in non-interactive mode
+)
+goto :eof

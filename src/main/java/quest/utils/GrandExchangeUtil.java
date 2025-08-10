@@ -13,8 +13,6 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Logger;
 import java.util.Arrays;
-import quest.core.QuestExecutor;
-import quest.core.QuestExecutor.ExecutorState;
 
 /**
  * Grand Exchange Utility for automated trading
@@ -563,10 +561,28 @@ public class GrandExchangeUtil {
 
     private static boolean isExecutionActive() {
         try {
-            return QuestExecutor.getInstance().getCurrentState() == ExecutorState.EXECUTING;
-        } catch (Exception e) {
-            return true; // fail-open to avoid NPE in static contexts
+            // Avoid compile-time dependency on QuestExecutor by using reflection
+            Class<?> executorClass = Class.forName("quest.core.QuestExecutor");
+            java.lang.reflect.Method getInstanceMethod = executorClass.getMethod("getInstance");
+            Object executorInstance = getInstanceMethod.invoke(null);
+            // Prefer the simple boolean helper if available
+            try {
+                java.lang.reflect.Method isActiveMethod = executorClass.getMethod("isActive");
+                Object result = isActiveMethod.invoke(executorInstance);
+                if (result instanceof Boolean) {
+                    return (Boolean) result;
+                }
+            } catch (NoSuchMethodException ignored) {
+                // Fall back to checking state enum if helper is missing
+                java.lang.reflect.Method getCurrentStateMethod = executorClass.getMethod("getCurrentState");
+                Object state = getCurrentStateMethod.invoke(executorInstance);
+                return state != null && state.toString().equals("EXECUTING");
+            }
+        } catch (Throwable t) {
+            // Fail-open to avoid blocking GE utilities in non-executor contexts
+            return true;
         }
+        return true;
     }
     
     /**

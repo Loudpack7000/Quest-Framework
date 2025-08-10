@@ -354,10 +354,18 @@ public class QuestExecutor {
         currentRetries = 0;
         stepsCompleted = 0;
 
-        // Ensure logger/discovery are fully stopped
+        // Ensure logger/discovery are fully stopped without compile-time dependency on SimpleQuestBot
         try {
-            if (scriptReference instanceof quest.SimpleQuestBot) {
-                ((quest.SimpleQuestBot) scriptReference).stopRecording();
+            if (scriptReference != null) {
+                Class<?> scriptClass = scriptReference.getClass();
+                if ("quest.SimpleQuestBot".equals(scriptClass.getName())) {
+                    try {
+                        java.lang.reflect.Method stopRecording = scriptClass.getMethod("stopRecording");
+                        stopRecording.invoke(scriptReference);
+                    } catch (NoSuchMethodException ignored) {
+                        // Method not present; ignore
+                    }
+                }
             }
         } catch (Exception ignored) {}
     }
