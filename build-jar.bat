@@ -199,6 +199,10 @@ if %errorlevel% neq 0 goto :compile_error
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\actions\SelectDialogueOptionNode.java"
 if %errorlevel% neq 0 goto :compile_error
 
+rem New action node: UseItemOnNPCNode
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\actions\UseItemOnNPCNode.java"
+if %errorlevel% neq 0 goto :compile_error
+
 echo   - Compiling decision nodes...
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\decisions\QuestProgressDecisionNode.java"
 if %errorlevel% neq 0 goto :compile_error
@@ -257,6 +261,10 @@ if %errorlevel% neq 0 goto :compile_error
 
 rem New quest tree: The Knight's Sword
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\KnightsSwordTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+rem New quest tree: Prince Ali Rescue
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\PrinceAliRescueTree.java"
 if %errorlevel% neq 0 goto :compile_error
 
 echo   - Compiling tree wrapper...

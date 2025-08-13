@@ -155,26 +155,36 @@ public class RuneMysteriesTree extends QuestTree {
         // Step 2: Walk to Wizards' Tower
         walkToWizardsTower = new WalkToLocationNode("walk_wizards_tower", WIZARDS_TOWER_ENTRANCE, "Wizards' Tower");
         
-        // Step 3: Go down to basement via ladder
+        // Step 3: Go down to basement via ladder (simple, reliable)
         goDownToBasement = new InteractWithObjectNode("go_down_basement", "Ladder", "Climb-down",
             WIZARDS_TOWER_ENTRANCE, "Ladder to basement") {
             @Override
             protected boolean performAction() {
-                log("Going down to basement via ladder");
-                boolean success = super.performAction();
-                if (success) {
-                    // Wait for basement transition (Y coordinate > 9000)
-                    boolean inBasement = org.dreambot.api.utilities.Sleep.sleepUntil(() -> 
-                        Players.getLocal().getTile().getY() > 9000, 15000);
-                    if (inBasement) {
-                        log("Successfully transitioned to basement");
-                        return true;
-                    } else {
-                        log("Failed to transition to basement within 15 seconds");
-                        return false;
-                    }
+                log("Going down to basement via ladder (simple)");
+                // Already in basement?
+                if (Players.getLocal().getTile().getY() > 9000) return true;
+
+                // Walk to the tower entrance/ladder area
+                new quest.nodes.actions.WalkToLocationNode(
+                    "walk_to_basement_ladder",
+                    WIZARDS_TOWER_ENTRANCE,
+                    6,
+                    "Wizards' Tower ladder area"
+                ).execute();
+
+                // Interact with the ladder directly and wait for basement Y plane
+                org.dreambot.api.wrappers.interactive.GameObject ladder =
+                    org.dreambot.api.methods.interactive.GameObjects.closest("Ladder");
+                if (ladder == null || !ladder.interact("Climb-down")) {
+                    log("Could not interact with Ladder");
+                    return false;
                 }
-                return success;
+                boolean inBasement = org.dreambot.api.utilities.Sleep.sleepUntil(
+                    () -> Players.getLocal().getTile().getY() > 9000,
+                    15000
+                );
+                if (!inBasement) log("Basement transition timed out");
+                return inBasement;
             }
         };
         
@@ -209,80 +219,135 @@ public class RuneMysteriesTree extends QuestTree {
             @Override
             protected boolean performAction() {
                 log("Exchanging research package for notes with Aubury");
-                
-                // First, interact with Aubury to start dialogue
-                if (!org.dreambot.api.methods.interactive.NPCs.closest("Aubury").interact("Talk-to")) {
+
+                // Ensure Aubury NPC is present
+                org.dreambot.api.wrappers.interactive.NPC aubury = org.dreambot.api.methods.interactive.NPCs.closest("Aubury");
+                if (aubury == null) {
+                    log("Could not find Aubury nearby");
+                    return false;
+                }
+
+                // Interact to start dialogue
+                if (!aubury.interact("Talk-to")) {
                     log("Failed to interact with Aubury");
                     return false;
                 }
-                
+
                 // Wait for dialogue to start
-                boolean dialogueStarted = org.dreambot.api.utilities.Sleep.sleepUntil(() -> 
-                    org.dreambot.api.methods.dialogues.Dialogues.inDialogue(), 5000);
+                boolean dialogueStarted = org.dreambot.api.utilities.Sleep.sleepUntil(
+                    org.dreambot.api.methods.dialogues.Dialogues::inDialogue, 7000);
                 if (!dialogueStarted) {
                     log("Failed to start dialogue with Aubury");
                     return false;
                 }
-                
-                // Use space to continue until we see the target text
-                boolean foundTargetText = org.dreambot.api.utilities.Sleep.sleepUntil(() -> {
-                    String dialogueText = org.dreambot.api.methods.dialogues.Dialogues.getNPCDialogue();
-                    if (dialogueText != null && dialogueText.contains("I've been sent here with a package for you.")) {
-                        log("Found target dialogue text: " + dialogueText);
-                        return true;
+
+                // Actively select the option to hand over the package
+                long start = System.currentTimeMillis();
+                boolean optionChosen = false;
+                while (org.dreambot.api.methods.dialogues.Dialogues.inDialogue()
+                        && System.currentTimeMillis() - start < 20000) {
+                    if (org.dreambot.api.methods.dialogues.Dialogues.areOptionsAvailable()) {
+                        String[] options = org.dreambot.api.methods.dialogues.Dialogues.getOptions();
+                        int chosenIdx = -1;
+                        if (options != null) {
+                            for (int i = 0; i < options.length; i++) {
+                                String opt = options[i] == null ? "" : options[i].toLowerCase();
+                                if (opt.contains("package") || opt.contains("sedridor") || opt.contains("research")) {
+                                    chosenIdx = i;
+                                    break;
+                                }
+                            }
+                        }
+                        if (chosenIdx == -1) {
+                            // Default to first option to progress
+                            chosenIdx = 0;
+                        }
+                        org.dreambot.api.methods.dialogues.Dialogues.chooseOption(chosenIdx + 1);
+                        optionChosen = true;
+                        org.dreambot.api.utilities.Sleep.sleep(400, 700);
+                    } else if (org.dreambot.api.methods.dialogues.Dialogues.canContinue()) {
+                        if (!org.dreambot.api.methods.dialogues.Dialogues.spaceToContinue()) {
+                            org.dreambot.api.methods.dialogues.Dialogues.continueDialogue();
+                        }
+                        org.dreambot.api.utilities.Sleep.sleep(350, 650);
+                    } else {
+                        org.dreambot.api.utilities.Sleep.sleep(250, 450);
                     }
-                    org.dreambot.api.methods.dialogues.Dialogues.spaceToContinue();
-                    return false;
-                }, 15000);
-                
-                if (!foundTargetText) {
-                    log("Failed to find target dialogue text within 15 seconds");
-                    return false;
+
+                    // Early exit if we already received the notes
+                    if (Inventory.contains(RESEARCH_NOTES)) break;
                 }
-                
-                // Continue with space until we have research notes
-                boolean receivedNotes = org.dreambot.api.utilities.Sleep.sleepUntil(() -> {
-                    if (Inventory.contains(RESEARCH_NOTES)) {
-                        log("Successfully received research notes from Aubury");
-                        return true;
-                    }
-                    org.dreambot.api.methods.dialogues.Dialogues.spaceToContinue();
-                    return false;
-                }, 15000);
-                
-                if (receivedNotes) {
-                    log("Successfully completed dialogue with Aubury and received research notes");
+
+                // Wait up to 10s for notes to appear after dialogue interaction
+                boolean receivedNotes = org.dreambot.api.utilities.Sleep.sleepUntil(
+                    () -> Inventory.contains(RESEARCH_NOTES)
+                        || org.dreambot.api.methods.settings.PlayerSettings.getConfig(QUEST_CONFIG) >= QUEST_GOT_NOTES,
+                    10000);
+
+                if (receivedNotes || Inventory.contains(RESEARCH_NOTES)) {
+                    log("Successfully received research notes from Aubury");
                     return true;
-                } else {
-                    log("Failed to receive research notes within 15 seconds");
-                    return false;
                 }
+
+                // If we didn't receive notes but we did choose an option, allow fallback continue for a short time
+                if (optionChosen) {
+                    long fallbackStart = System.currentTimeMillis();
+                    while (org.dreambot.api.methods.dialogues.Dialogues.inDialogue()
+                            && System.currentTimeMillis() - fallbackStart < 5000) {
+                        if (org.dreambot.api.methods.dialogues.Dialogues.canContinue()) {
+                            if (!org.dreambot.api.methods.dialogues.Dialogues.spaceToContinue()) {
+                                org.dreambot.api.methods.dialogues.Dialogues.continueDialogue();
+                            }
+                        } else if (org.dreambot.api.methods.dialogues.Dialogues.areOptionsAvailable()) {
+                            org.dreambot.api.methods.dialogues.Dialogues.chooseOption(1);
+                        }
+                        org.dreambot.api.utilities.Sleep.sleep(300, 500);
+                        if (Inventory.contains(RESEARCH_NOTES)) break;
+                    }
+                }
+
+                boolean finalCheck = Inventory.contains(RESEARCH_NOTES)
+                    || org.dreambot.api.methods.settings.PlayerSettings.getConfig(QUEST_CONFIG) >= QUEST_GOT_NOTES;
+                if (!finalCheck) {
+                    log("Failed to receive research notes from Aubury");
+                }
+                return finalCheck;
             }
         };
         
         // Step 7: Return to Wizards' Tower
         returnToWizardsTower = new WalkToLocationNode("return_wizards_tower", WIZARDS_TOWER_ENTRANCE, "Wizards' Tower (return)");
         
-        // Step 8: Go down to basement again
+        // Step 8: Go down to basement again (simple, reliable)
         goDownToBasementFinal = new InteractWithObjectNode("go_down_basement_final", "Ladder", "Climb-down",
             WIZARDS_TOWER_ENTRANCE, "Ladder to basement (final)") {
             @Override
             protected boolean performAction() {
-                log("Going down to basement via ladder for quest completion");
-                boolean success = super.performAction();
-                if (success) {
-                    // Wait for basement transition (Y coordinate > 9000)
-                    boolean inBasement = org.dreambot.api.utilities.Sleep.sleepUntil(() -> 
-                        Players.getLocal().getTile().getY() > 9000, 15000);
-                    if (inBasement) {
-                        log("Successfully transitioned to basement for quest completion");
-                        return true;
-                    } else {
-                        log("Failed to transition to basement within 15 seconds");
-                        return false;
-                    }
+                log("Climbing down to basement to turn in notes (simple)");
+                // Already in basement?
+                if (Players.getLocal().getTile().getY() > 9000) return true;
+
+                // Walk to the ladder area
+                new quest.nodes.actions.WalkToLocationNode(
+                    "walk_to_basement_ladder_final",
+                    WIZARDS_TOWER_ENTRANCE,
+                    6,
+                    "Wizards' Tower ladder area"
+                ).execute();
+
+                // Interact with the ladder and wait for basement plane
+                org.dreambot.api.wrappers.interactive.GameObject ladder =
+                    org.dreambot.api.methods.interactive.GameObjects.closest("Ladder");
+                if (ladder == null || !ladder.interact("Climb-down")) {
+                    log("Could not interact with Ladder for final descent");
+                    return false;
                 }
-                return success;
+                boolean inBasement = org.dreambot.api.utilities.Sleep.sleepUntil(
+                    () -> Players.getLocal().getTile().getY() > 9000,
+                    15000
+                );
+                if (!inBasement) log("Final basement transition timed out");
+                return inBasement;
             }
         };
         

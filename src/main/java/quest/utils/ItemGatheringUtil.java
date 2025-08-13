@@ -269,4 +269,43 @@ public class ItemGatheringUtil {
     public static ItemRequirement requirementNoGE(String itemName, int quantity) {
         return new ItemRequirement(itemName, quantity, PriceStrategy.MODERATE, false, ItemRequirement.ItemSource.NO_GE);
     }
+    
+    /**
+     * Ensure a specific quantity of an item is unnoted in inventory using the bank.
+     * Steps:
+     * - Open bank
+     * - Deposit all of the item (clears noted/unnoted copies)
+     * - Withdraw the requested quantity as items (unnoted)
+     */
+    public static boolean ensureUnnotedInInventory(String itemName, int quantity) {
+        Logger.log("Ensuring unnoted in inventory: " + quantity + "x " + itemName);
+        if (quantity <= 0) return true;
+
+        // If enough and unnoted copy exists, we’re fine
+        if (Inventory.count(itemName) >= quantity) {
+            org.dreambot.api.wrappers.items.Item sample = Inventory.get(itemName);
+            if (sample != null && !sample.isNoted()) return true;
+        }
+
+        if (!org.dreambot.api.methods.container.impl.bank.Bank.open()) {
+            Logger.log("Failed to open bank for unnoting: " + itemName);
+            return false;
+        }
+        if (!Sleep.sleepUntil(() -> org.dreambot.api.methods.container.impl.bank.Bank.isOpen(), 15000)) {
+            Logger.log("Bank did not open in time for unnoting: " + itemName);
+            return false;
+        }
+
+        // Deposit all copies first
+        org.dreambot.api.methods.container.impl.bank.Bank.depositAll(itemName);
+        Sleep.sleep(300, 600);
+
+    // Ensure withdraw mode is unnoted (items) and withdraw
+    org.dreambot.api.methods.container.impl.bank.Bank.setWithdrawMode(BankMode.ITEM);
+        int before = Inventory.count(itemName);
+        boolean ok = org.dreambot.api.methods.container.impl.bank.Bank.withdraw(itemName, quantity);
+        if (!ok) return false;
+        Sleep.sleepUntil(() -> Inventory.count(itemName) >= before + 1, 4000);
+        return Inventory.count(itemName) >= quantity;
+    }
 }

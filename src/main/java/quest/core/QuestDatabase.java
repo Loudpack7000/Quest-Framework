@@ -181,6 +181,24 @@ public class QuestDatabase {
             new ArrayList<>(),
             Arrays.asList("Spade") // based on log: used spade to dig
         ));
+
+        // Prince Ali Rescue
+        questInfo.put("PRINCE_ALI_RESCUE", new QuestInfo(
+            "PRINCE_ALI_RESCUE",
+            "Prince Ali Rescue",
+            1, // difficulty
+            15, // estimated duration minutes
+            new ArrayList<>(),
+            Arrays.asList(
+                "Wig or 3x Ball of wool",
+                "Yellow dye",
+                "Paste",
+                "Rope",
+                "Pink skirt",
+                "Beer",
+                "Soft clay"
+            )
+        ));
     }
     
     public static QuestInfo getQuestInfo(String questId) {

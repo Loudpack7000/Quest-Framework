@@ -16,6 +16,7 @@ import quest.trees.BlackKnightsFortressTree;
 import quest.trees.ImpCatcherTree;
 import quest.trees.CorsairCurseTree;
 import quest.trees.KnightsSwordTree;
+import quest.trees.PrinceAliRescueTree;
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.utilities.Timer;
@@ -376,6 +377,9 @@ public class QuestExecutor {
      */
     private QuestScript loadQuestScript(String questId) {
         switch (questId) {
+            case "PRINCE_ALI_RESCUE":
+                log("Starting Prince Ali Rescue quest tree...");
+                return new TreeQuestWrapper(new PrinceAliRescueTree(), questId, "Prince Ali Rescue");
             case "THE_KNIGHTS_SWORD":
                 log("Starting The Knight's Sword quest tree...");
                 return new TreeQuestWrapper(new KnightsSwordTree(), questId, "The Knight's Sword");

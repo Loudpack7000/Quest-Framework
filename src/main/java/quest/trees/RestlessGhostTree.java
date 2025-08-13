@@ -71,16 +71,70 @@ public class RestlessGhostTree extends QuestTree {
     }
     
     private void createNodes() {
-        // Step 1: Talk to Father Aereck (config 0 -> 1)
-        talkToFatherAereck = new TalkToNPCNode("talk_father_aereck", "Father Aereck", FATHER_AERECK_LOCATION,
-            new String[]{"I'm looking for a quest!", "Nothing."}, "I'm looking for a quest!", null);
+        // Step 1: Talk to Father Aereck (config 0 -> 1) with robust option selection
+        talkToFatherAereck = new TalkToNPCNode("talk_father_aereck", "Father Aereck", FATHER_AERECK_LOCATION) {
+            @Override
+            protected boolean performAction() {
+                log("Starting Father Aereck dialogue to start quest...");
+
+                // Walk to and talk to Father Aereck
+                NPC npc = NPCs.closest("Father Aereck");
+                if (npc == null || Players.getLocal().getTile().distance(FATHER_AERECK_LOCATION) > 6) {
+                    new WalkToLocationNode("walk_aereck", FATHER_AERECK_LOCATION, "Father Aereck").execute();
+                    npc = NPCs.closest("Father Aereck");
+                }
+                if (npc == null || !npc.interact("Talk-to")) return false;
+                if (!Sleep.sleepUntil(org.dreambot.api.methods.dialogues.Dialogues::inDialogue, 7000)) return false;
+
+                long start = System.currentTimeMillis();
+                int guard = 0;
+                while (org.dreambot.api.methods.dialogues.Dialogues.inDialogue() && System.currentTimeMillis() - start < 20000 && guard++ < 50) {
+                    if (org.dreambot.api.methods.dialogues.Dialogues.areOptionsAvailable()) {
+                        String[] opts = org.dreambot.api.methods.dialogues.Dialogues.getOptions();
+                        // Prefer options that start/accept the quest
+                        int idx = indexOfOption(opts,
+                                "I'm looking for a quest",
+                                "looking for a quest",
+                                "I want to help",
+                                "I'll help",
+                                "Ok, I will help",
+                                "Yes",
+                                "yes");
+                        if (idx == -1) idx = 0;
+                        org.dreambot.api.methods.dialogues.Dialogues.chooseOption(idx + 1);
+                    } else if (org.dreambot.api.methods.dialogues.Dialogues.canContinue()) {
+                        if (!org.dreambot.api.methods.dialogues.Dialogues.spaceToContinue()) org.dreambot.api.methods.dialogues.Dialogues.continueDialogue();
+                    }
+                    Sleep.sleep(300, 600);
+                }
+
+                // Wait briefly for quest config to move to stage 1
+                boolean started = Sleep.sleepUntil(() -> PlayerSettings.getConfig(QUEST_CONFIG) >= 1, 8000);
+                if (!started) {
+                    // Final check after a short delay
+                    Sleep.sleep(1000, 1500);
+                }
+                return PlayerSettings.getConfig(QUEST_CONFIG) >= 1;
+            }
+
+            private int indexOfOption(String[] options, String... needles) {
+                if (options == null) return -1;
+                for (int i = 0; i < options.length; i++) {
+                    String opt = options[i] == null ? "" : options[i].toLowerCase();
+                    for (String n : needles) {
+                        if (n != null && opt.contains(n.toLowerCase())) return i;
+                    }
+                }
+                return -1;
+            }
+        };
         
         // Step 2: Go to Father Urhney (config 1 -> 2)
         walkToSwamp = new WalkToLocationNode("walk_to_swamp", URHNEY_DOOR_LOCATION, "Father Urhney's house");
         openUrhneysHouse = new InteractWithObjectNode("open_urhney_door", "Door", "Open", 
             URHNEY_DOOR_LOCATION, "Door to Father Urhney's house");
         
-        // Custom TalkToNPCNode for Father Urhney with multi-step dialogue
+        // Custom TalkToNPCNode for Father Urhney with robust multi-step dialogue to obtain Ghostspeak amulet
         talkToFatherUrhney = new TalkToNPCNode("talk_father_urhney", "Father Urhney", FATHER_URHNEY_LOCATION) {
             @Override
             protected boolean performAction() {
@@ -92,63 +146,29 @@ public class RestlessGhostTree extends QuestTree {
                 }
                 
                 try {
-                    // First dialogue step: "Father Aereck sent me to talk to you."
-                    log("Waiting for first dialogue options...");
-                    if (!Sleep.sleepUntil(() -> org.dreambot.api.methods.dialogues.Dialogues.areOptionsAvailable(), 10000)) {
-                        log("No dialogue options available for first step");
-                        return false;
-                    }
-                    
-                    String[] options = org.dreambot.api.methods.dialogues.Dialogues.getOptions();
-                    log("First dialogue options: " + java.util.Arrays.toString(options));
-                    
-                    // Select "Father Aereck sent me to talk to you."
-                    boolean foundFirstOption = false;
-                    for (int i = 0; i < options.length; i++) {
-                        if (options[i].contains("Father Aereck sent me to talk to you")) {
-                            log("Selecting first option: " + options[i]);
-                            org.dreambot.api.methods.dialogues.Dialogues.chooseOption(i + 1);
-                            foundFirstOption = true;
-                            break;
+                    long start = System.currentTimeMillis();
+                    int guard = 0;
+                    while (org.dreambot.api.methods.dialogues.Dialogues.inDialogue() && System.currentTimeMillis() - start < 25000 && guard++ < 60) {
+                        if (org.dreambot.api.methods.dialogues.Dialogues.areOptionsAvailable()) {
+                            String[] options = org.dreambot.api.methods.dialogues.Dialogues.getOptions();
+                            log("Urhney options: " + java.util.Arrays.toString(options));
+                            // Prefer the two-step path to amulet
+                            int idx = indexOfOption(options,
+                                    "Father Aereck sent me to talk to you",
+                                    "Aereck sent me",
+                                    "He's got a ghost haunting his graveyard",
+                                    "ghost haunting",
+                                    "ghost",
+                                    "graveyard");
+                            if (idx == -1) idx = 0;
+                            org.dreambot.api.methods.dialogues.Dialogues.chooseOption(idx + 1);
+                        } else if (org.dreambot.api.methods.dialogues.Dialogues.canContinue()) {
+                            if (!org.dreambot.api.methods.dialogues.Dialogues.spaceToContinue()) org.dreambot.api.methods.dialogues.Dialogues.continueDialogue();
                         }
+                        Sleep.sleep(350, 650);
+                        // Early exit if we already have the amulet
+                        if (Inventory.contains("Ghostspeak amulet")) break;
                     }
-                    
-                    if (!foundFirstOption) {
-                        log("Could not find 'Father Aereck sent me to talk to you' option, selecting option 1 as fallback");
-                        org.dreambot.api.methods.dialogues.Dialogues.chooseOption(1);
-                    }
-                    
-                    Sleep.sleep(2000, 3000);
-                    
-                    // Second dialogue step: "He's got a ghost haunting his graveyard."
-                    log("Waiting for second dialogue options...");
-                    if (!Sleep.sleepUntil(() -> org.dreambot.api.methods.dialogues.Dialogues.areOptionsAvailable(), 10000)) {
-                        log("No dialogue options available for second step");
-                        return false;
-                    }
-                    
-                    options = org.dreambot.api.methods.dialogues.Dialogues.getOptions();
-                    log("Second dialogue options: " + java.util.Arrays.toString(options));
-                    
-                    // Select "He's got a ghost haunting his graveyard."
-                    boolean foundSecondOption = false;
-                    for (int i = 0; i < options.length; i++) {
-                        if (options[i].contains("He's got a ghost haunting his graveyard") || 
-                            options[i].contains("ghost haunting")) {
-                            log("Selecting second option: " + options[i]);
-                            org.dreambot.api.methods.dialogues.Dialogues.chooseOption(i + 1);
-                            foundSecondOption = true;
-                            break;
-                        }
-                    }
-                    
-                    if (!foundSecondOption) {
-                        log("Could not find 'ghost haunting' option, selecting option 1 as fallback");
-                        org.dreambot.api.methods.dialogues.Dialogues.chooseOption(1);
-                    }
-                    
-                    Sleep.sleep(2000, 3000);
-                    
                 } catch (Exception e) {
                     log("Error in Father Urhney dialogue: " + e.getMessage());
                     return false;
@@ -180,8 +200,8 @@ public class RestlessGhostTree extends QuestTree {
                     log("Father Urhney dialogue completed");
                     
                     // Check if we received the Ghostspeak amulet
-                    Sleep.sleep(2000, 3000);
-                    if (org.dreambot.api.methods.container.impl.Inventory.contains("Ghostspeak amulet")) {
+                    boolean gotAmulet = Sleep.sleepUntil(() -> Inventory.contains("Ghostspeak amulet"), 8000);
+                    if (gotAmulet || Inventory.contains("Ghostspeak amulet")) {
                         log("Successfully obtained Ghostspeak amulet from Father Urhney");
                         return true;
                     } else {
@@ -232,6 +252,17 @@ public class RestlessGhostTree extends QuestTree {
                     log("Error walking to and talking to NPC: " + e.getMessage());
                     return false;
                 }
+            }
+
+            private int indexOfOption(String[] options, String... needles) {
+                if (options == null) return -1;
+                for (int i = 0; i < options.length; i++) {
+                    String opt = options[i] == null ? "" : options[i].toLowerCase();
+                    for (String n : needles) {
+                        if (n != null && opt.contains(n.toLowerCase())) return i;
+                    }
+                }
+                return -1;
             }
         };
         
@@ -594,45 +625,32 @@ public class RestlessGhostTree extends QuestTree {
                     }
                     
                 } else if (config == 3) {
-                    // Check if we need to talk to ghost first, or if we can proceed to Wizard Tower
-                    NPC ghost = NPCs.closest("Restless ghost");
-                    if (ghost != null && ghost.exists() && currentTile.distance(RESTLESS_GHOST_LOCATION) <= 10) {
-                        // Ghost is visible and we're close - talk to it
-                        nextStep = talkToRestlessGhost;
-                        log("-> Talk to Restless ghost (ghost is visible)");
-                    } else if (Inventory.contains("Ghost's skull")) {
+                    // After talking to the ghost, proceed to Wizard Tower to get the skull
+                    if (Inventory.contains("Ghost's skull")) {
                         // Already have the skull, go back to graveyard
                         if (currentTile.getY() >= 9500) {
-                            // We're in the basement (Y >= 9500) - climb up
                             nextStep = climbUpLadder;
                             log("-> Climb up from basement (have skull)");
+                        } else if (currentTile.distance(GRAVEYARD_COFFIN_LOCATION) > 5) {
+                            nextStep = returnToGraveyard;
+                            log("-> Return to graveyard (have skull, on surface)");
                         } else {
-                            // We're on the surface (Y < 9500) - go to graveyard
-                            if (currentTile.distance(GRAVEYARD_COFFIN_LOCATION) > 5) {
-                                nextStep = returnToGraveyard;
-                                log("-> Return to graveyard (have skull, on surface)");
-                            } else {
-                                nextStep = useSkullOnCoffin;
-                                log("-> Use Ghost's skull on coffin");
-                            }
+                            nextStep = useSkullOnCoffin;
+                            log("-> Use Ghost's skull on coffin");
                         }
                     } else if (currentTile.getY() >= 9500) {
-                        // We're in the basement - check if we're near altar or need to walk to it
+                        // In basement, navigate to altar and search
                         if (currentTile.distance(ALTAR_LOCATION) <= 5) {
-                            // Close to altar - search it
                             nextStep = searchAltar;
                             log("-> Search altar for skull (close to altar)");
                         } else {
-                            // In basement but not close to altar - walk to altar first
                             nextStep = walkToAltar;
                             log("-> Walk to altar in basement (distance: " + currentTile.distance(ALTAR_LOCATION) + ")");
                         }
                     } else if (currentTile.distance(WIZARD_TOWER_ENTRANCE) > 5) {
-                        // Need to walk to Wizard Tower
                         nextStep = walkToWizardTower;
                         log("-> Walk to Wizard Tower");
                     } else {
-                        // At Wizard Tower entrance - climb down to basement
                         nextStep = climbDownLadder;
                         log("-> Climb down to basement");
                     }

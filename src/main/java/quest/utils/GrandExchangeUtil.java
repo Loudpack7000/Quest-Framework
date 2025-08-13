@@ -31,6 +31,7 @@ public class GrandExchangeUtil {
         MODERATE(10),        // 10% increases  
         AGGRESSIVE(15),      // 15% increases
         INSTANT(50),         // 50% over market price
+        EXTREME(200),        // 200% over market price (for stuck offers)
         FIXED_500_GP(0);     // Force 500 gp per item (instant buy for cheap items)
         
         private final int increasePercent;

@@ -9,6 +9,7 @@ import quest.nodes.actions.InteractWithObjectNode;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.GameObjects;
@@ -91,6 +92,8 @@ public class PiratesTreasureTree extends QuestTree {
     private boolean hasDialogStartedQuest = false;
     // Track how many bananas were picked from each tree (limit 4 per tree)
     private final Map<String, Integer> bananaTreePickCounts = new HashMap<>();
+    // Session flag to indicate we've successfully smuggled rum into the crate
+    private boolean hasSmuggledRum = false;
     
     public PiratesTreasureTree() {
         super("Pirate's Treasure");
@@ -152,6 +155,11 @@ public class PiratesTreasureTree extends QuestTree {
                     log("Have chest key - need to get pirate message");
                     nextStep = getPirateMessageNode;
                     reason = "Get pirate message from Blue Moon Inn";
+                } else if (hasSmuggledRum && !Equipment.contains(WHITE_APRON) && !Inventory.contains(WHITE_APRON) && Players.getLocal().getTile().distance(KARAMJA_DOCK) > 100) {
+                    // After smuggling, prioritize getting apron and job at Port Sarim before retrieving rum
+                    log("Smuggling done and no apron - need to get White apron and job at food shop");
+                    nextStep = getApronAndJobNode;
+                    reason = "Get White apron and job before retrieving rum";
                 } else if (hasRumAndNeedToExchange()) {
                     log("Have rum - need to exchange for key");
                     nextStep = exchangeRumForKeyNode;
@@ -571,6 +579,8 @@ public class PiratesTreasureTree extends QuestTree {
                     log("Filling crate with bananas...");
                     if (crate.interact("Fill")) {
                         Sleep.sleep(3000);
+                        hasSmuggledRum = true;
+                        log("✅ Crate filled with bananas. Marked smuggling as complete.");
                     }
                 }
                 
@@ -583,27 +593,47 @@ public class PiratesTreasureTree extends QuestTree {
             @Override
             protected boolean performAction() {
                 log("Returning to Port Sarim...");
-                
-                // Talk to Customs officer
+
+                // Prefer paying fare or talking to customs officer with option handling
                 NPC customs = NPCs.closest("Customs officer");
                 if (customs != null) {
-                    log("Talking to Customs officer...");
-                    if (customs.interact("Talk-to")) {
-                        Sleep.sleepUntil(() -> Dialogues.inDialogue(), 5000);
-                        // Handle customs dialogue
-                        Sleep.sleep(3000);
+                    log("Interacting with Customs officer to sail back...");
+                    boolean interacted = customs.interact("Pay-fare") || customs.interact("Talk-to");
+                    if (interacted) {
+                        Sleep.sleepUntil(() -> Dialogues.inDialogue() || !Players.getLocal().isMoving(), 4000);
+                        long end = System.currentTimeMillis() + 8000;
+                        while (System.currentTimeMillis() < end && Dialogues.inDialogue()) {
+                            if (Dialogues.areOptionsAvailable()) {
+                                String[] options = Dialogues.getOptions();
+                                for (int i = 0; i < options.length; i++) {
+                                    String opt = options[i];
+                                    if (opt.contains("Yes") || opt.contains("Okay") || opt.contains("Can I travel") || opt.contains("fare") || opt.contains("Pay")) {
+                                        Dialogues.chooseOption(i + 1);
+                                        break;
+                                    }
+                                }
+                            } else if (Dialogues.canContinue()) {
+                                if (!Dialogues.spaceToContinue()) Dialogues.continueDialogue();
+                            } else {
+                                Sleep.sleep(350, 600);
+                            }
+                        }
                     }
                 }
-                
-                // Cross gangplank back
+
+                // Fallback: try crossing gangplank
                 GameObject gangplank = GameObjects.closest("Gangplank");
                 if (gangplank != null) {
-                    log("Crossing gangplank back to Port Sarim...");
+                    log("Trying gangplank to return to Port Sarim...");
                     gangplank.interact("Cross");
-                    Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(new Tile(3029, 3217, 0)) < 10, 10000);
                 }
-                
-                return true;
+
+                // Wait for arrival at Port Sarim
+                boolean arrived = Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(new Tile(3029, 3217, 0)) < 12, 12000);
+                if (!arrived) {
+                    log("WARN: Did not detect arrival to Port Sarim within timeout");
+                }
+                return arrived;
             }
         };
         
@@ -804,15 +834,34 @@ public class PiratesTreasureTree extends QuestTree {
             protected boolean performAction() {
                 log("Getting pirate message from Blue Moon Inn chest...");
                 
-                // Travel to Varrock Blue Moon Inn upstairs
-                if (Players.getLocal().getTile().distance(BLUE_MOON_INN_UPSTAIRS) > 20) {
-                    log("Traveling to Blue Moon Inn...");
-                    // Walk to the Blue Moon Inn location
-                    Walking.walk(BLUE_MOON_INN_UPSTAIRS);
-                    if (!Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(BLUE_MOON_INN_UPSTAIRS) <= 5, 15000)) {
-                        log("ERROR: Failed to walk to Blue Moon Inn!");
+                // Travel near Blue Moon Inn (ground floor) first
+                Tile innGround = new Tile(BLUE_MOON_INN_UPSTAIRS.getX(), BLUE_MOON_INN_UPSTAIRS.getY(), 0);
+                if (Players.getLocal().getTile().distance(innGround) > 20) {
+                    log("Traveling to Blue Moon Inn (ground floor)...");
+                    Walking.walk(innGround);
+                    if (!Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(innGround) <= 8, 15000)) {
+                        log("ERROR: Failed to walk to Blue Moon Inn (ground)");
                         return false;
                     }
+                }
+
+                // If we are not upstairs yet, try to climb up
+                if (Players.getLocal().getZ() != 1) {
+                    GameObject stairs = GameObjects.closest(go -> go != null && ("Stairs".equals(go.getName()) || "Staircase".equals(go.getName()) || "Ladder".equals(go.getName())) && go.hasAction("Climb-up"));
+                    if (stairs != null) {
+                        log("Climbing upstairs in Blue Moon Inn...");
+                        if (stairs.interact("Climb-up")) {
+                            Sleep.sleepUntil(() -> Players.getLocal().getZ() == 1, 6000);
+                        }
+                    } else {
+                        log("WARN: Could not find stairs to go upstairs; attempting direct pathing");
+                    }
+                }
+
+                // Ensure we are close to the upstairs chest
+                if (Players.getLocal().getTile().distance(BLUE_MOON_INN_UPSTAIRS) > 6) {
+                    Walking.walk(BLUE_MOON_INN_UPSTAIRS);
+                    Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(BLUE_MOON_INN_UPSTAIRS) <= 4, 8000);
                 }
                 
                 // Use key on the specific chest (ID: 2070)
@@ -867,9 +916,39 @@ public class PiratesTreasureTree extends QuestTree {
                 
                 // Get spade if needed
                 if (!Inventory.contains(SPADE)) {
-                    log("Need to get a spade first...");
-                    // Would need to get spade from bank or somewhere
-                    return false;
+                    log("No spade found - attempting to withdraw from nearest bank...");
+                    boolean bankOpen = Bank.isOpen() || Bank.open();
+                    if (!bankOpen) {
+                        // Fallback: try interacting with a nearby banker or bank booth
+                        NPC banker = NPCs.closest("Banker");
+                        if (banker != null && banker.interact("Bank")) {
+                            Sleep.sleepUntil(Bank::isOpen, 5000);
+                        } else {
+                            GameObject bankBooth = GameObjects.closest(go -> go != null && ("Bank booth".equals(go.getName()) || "Bank".equals(go.getName())) && go.hasAction("Bank"));
+                            if (bankBooth != null) {
+                                bankBooth.interact("Bank");
+                                Sleep.sleepUntil(Bank::isOpen, 5000);
+                            }
+                        }
+                    }
+
+                    if (!Bank.isOpen()) {
+                        log("ERROR: Could not open bank to get a Spade");
+                        return false;
+                    }
+
+                    if (!Bank.contains(SPADE)) {
+                        log("ERROR: Bank does not contain a Spade");
+                        Bank.close();
+                        return false;
+                    }
+                    if (!Bank.withdraw(SPADE, 1)) {
+                        log("ERROR: Failed to withdraw Spade from bank");
+                        Bank.close();
+                        return false;
+                    }
+                    Sleep.sleepUntil(() -> Inventory.contains(SPADE), 4000);
+                    Bank.close();
                 }
                 
                 // Dig at the treasure location
@@ -912,12 +991,13 @@ public class PiratesTreasureTree extends QuestTree {
     }
     
     private boolean needToSmuggleRum() {
-        return Inventory.contains(KARAMJAN_RUM) && Inventory.count(BANANA) >= 10 &&
+        return !hasSmuggledRum && Inventory.contains(KARAMJAN_RUM) && Inventory.count(BANANA) >= 10 &&
                Players.getLocal().getTile().distance(KARAMJA_DOCK) < 100;
     }
     
     private boolean needToGetRumAndBananas() {
-        return (!Inventory.contains(KARAMJAN_RUM) || Inventory.count(BANANA) < 10) &&
+        // Only collect bananas if we haven't smuggled yet
+        return !hasSmuggledRum && (!Inventory.contains(KARAMJAN_RUM) || Inventory.count(BANANA) < 10) &&
                Players.getLocal().getTile().distance(KARAMJA_DOCK) < 100;
     }
     
@@ -925,7 +1005,8 @@ public class PiratesTreasureTree extends QuestTree {
         // Only travel to Karamja AFTER quest is started via dialogue with Redbeard Frank
         int config = PlayerSettings.getConfig(QUEST_CONFIG_ID);
         boolean questStarted = config >= QUEST_STARTED || hasDialogStartedQuest;
-        return questStarted &&
+        // Only travel to Karamja if we haven't already smuggled rum
+        return questStarted && !hasSmuggledRum &&
                !Inventory.contains(KARAMJAN_RUM) &&
                !Inventory.contains(CHEST_KEY) &&
                Players.getLocal().getTile().distance(KARAMJA_DOCK) > 100;
