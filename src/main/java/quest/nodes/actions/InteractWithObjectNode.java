@@ -121,12 +121,26 @@ public class InteractWithObjectNode extends ActionNode {
             // Wait for the interaction to complete
             boolean interactionSuccess = false;
             switch (action.toLowerCase()) {
-                case "climb-up":
-                    interactionSuccess = Sleep.sleepUntil(() -> Players.getLocal().getTile().getZ() > beforeZ, 7000);
+                case "climb-up": {
+                    interactionSuccess = Sleep.sleepUntil(() -> {
+                        Tile after = Players.getLocal().getTile();
+                        boolean zChangedUp = after.getZ() > beforeZ;
+                        boolean surfacedFromDungeon = after.getY() < 9500 && beforeInteraction.getY() >= 9500;
+                        boolean movedFar = after.distance(beforeInteraction) > 20;
+                        return zChangedUp || surfacedFromDungeon || movedFar;
+                    }, 7000);
                     break;
-                case "climb-down":
-                    interactionSuccess = Sleep.sleepUntil(() -> Players.getLocal().getTile().getZ() < beforeZ, 7000);
+                }
+                case "climb-down": {
+                    interactionSuccess = Sleep.sleepUntil(() -> {
+                        Tile after = Players.getLocal().getTile();
+                        boolean zChangedDown = after.getZ() < beforeZ;
+                        boolean enteredDungeon = after.getY() >= 9500 && beforeInteraction.getY() < 9500;
+                        boolean movedFar = after.distance(beforeInteraction) > 20;
+                        return zChangedDown || enteredDungeon || movedFar;
+                    }, 7000);
                     break;
+                }
                 case "open":
                     interactionSuccess = Sleep.sleepUntil(() -> !Players.getLocal().getTile().equals(beforeInteraction), 5000);
                     break;

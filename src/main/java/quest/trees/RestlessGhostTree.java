@@ -42,6 +42,7 @@ public class RestlessGhostTree extends QuestTree {
     private QuestNode talkToFatherAereck;
     private QuestNode walkToSwamp;
     private QuestNode openUrhneysHouse;
+	    private QuestNode walkInsideUrhneysHouse;
     private QuestNode talkToFatherUrhney;
     private QuestNode equipGhostspeakAmulet;
     private QuestNode walkToGraveyard;
@@ -131,8 +132,15 @@ public class RestlessGhostTree extends QuestTree {
         
         // Step 2: Go to Father Urhney (config 1 -> 2)
         walkToSwamp = new WalkToLocationNode("walk_to_swamp", URHNEY_DOOR_LOCATION, "Father Urhney's house");
-        openUrhneysHouse = new InteractWithObjectNode("open_urhney_door", "Door", "Open", 
-            URHNEY_DOOR_LOCATION, "Door to Father Urhney's house");
+	        openUrhneysHouse = new InteractWithObjectNode("open_urhney_door", "Door", "Open", 
+	            URHNEY_DOOR_LOCATION, "Door to Father Urhney's house");
+
+	        // After opening the door, walk inside to Father Urhney
+	        walkInsideUrhneysHouse = new WalkToLocationNode(
+	            "walk_inside_urhney_house",
+	            FATHER_URHNEY_LOCATION,
+	            "Inside Father Urhney's house"
+	        );
         
         // Custom TalkToNPCNode for Father Urhney with robust multi-step dialogue to obtain Ghostspeak amulet
         talkToFatherUrhney = new TalkToNPCNode("talk_father_urhney", "Father Urhney", FATHER_URHNEY_LOCATION) {
@@ -595,10 +603,22 @@ public class RestlessGhostTree extends QuestTree {
                     if (currentTile.distance(URHNEY_DOOR_LOCATION) > 5) {
                         nextStep = walkToSwamp;
                         log("-> Walk to Father Urhney's house");
-                    } else if (currentTile.distance(FATHER_URHNEY_LOCATION) > 3) {
-                        nextStep = openUrhneysHouse;
-                        log("-> Open door to Father Urhney's house");
-                    } else {
+	            } else if (currentTile.distance(FATHER_URHNEY_LOCATION) > 3) {
+	                // If the door can be opened, open it; otherwise walk inside to Father Urhney
+	                GameObject door = GameObjects.closest(obj ->
+	                    obj != null &&
+	                    "Door".equals(obj.getName()) &&
+	                    obj.getTile().equals(URHNEY_DOOR_LOCATION) &&
+	                    obj.hasAction("Open")
+	                );
+	                if (door != null) {
+	                    nextStep = openUrhneysHouse;
+	                    log("-> Open door to Father Urhney's house");
+	                } else {
+	                    nextStep = walkInsideUrhneysHouse;
+	                    log("-> Walk inside to Father Urhney");
+	                }
+	            } else {
                         nextStep = talkToFatherUrhney;
                         log("-> Talk to Father Urhney");
                     }
