@@ -13,6 +13,9 @@ import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.dreambot.api.methods.container.impl.bank.Bank;
+import org.dreambot.api.methods.container.impl.bank.BankMode;
+import org.dreambot.api.wrappers.items.Item;
 
 import quest.core.QuestNode;
 import quest.core.QuestTree;
@@ -57,6 +60,7 @@ public class KnightsSwordTree extends QuestTree {
     private static final Tile ICE_DUNGEON_LADDER = new Tile(3008, 9550, 0);
 
     private QuestNode smart;
+    private QuestNode ensureIronBarsNode;
     private boolean reldoAskedImcando = false;
     private boolean thurgoPieDelivered = false;
 
@@ -66,9 +70,52 @@ public class KnightsSwordTree extends QuestTree {
 
     @Override
     protected void buildTree() {
+        // Early prep: ensure we have 2x unnoted Iron bars before anything else
+        ensureIronBarsNode = new ActionNode("ensure_iron_bars", "Buy and prepare 2x Iron bar (unnoted)") {
+            @Override
+            protected boolean performAction() {
+                // Step 1: If we already have 2 unnoted bars, done
+                if (countUnnotedIronBars() >= 2) return true;
+
+                // Step 2: Ensure total bars >= 2 by buying missing at GE
+                int totalBars = Inventory.count(IRON_BAR);
+                int needed = Math.max(0, 2 - totalBars);
+                if (needed > 0) {
+                    GrandExchangeUtil.buyItem(IRON_BAR, needed, GrandExchangeUtil.PriceStrategy.CONSERVATIVE);
+                    Sleep.sleepUntil(() -> Inventory.count(IRON_BAR) >= totalBars + needed, 30000);
+                }
+
+                // Step 3: If unnoted still < 2, use bank to unnote (deposit then withdraw as item)
+                if (countUnnotedIronBars() < 2 && Inventory.count(IRON_BAR) >= 2) {
+                    if (!Bank.open()) return false;
+                    Sleep.sleepUntil(Bank::isOpen, 8000);
+                    if (!Bank.isOpen()) return false;
+                    // Deposit all Iron bars first to normalize state
+                    Bank.depositAll(IRON_BAR);
+                    Sleep.sleep(600, 900);
+                    // Ensure withdraw mode is ITEM (not noted)
+                    if (Bank.getWithdrawMode() != BankMode.ITEM) {
+                        Bank.setWithdrawMode(BankMode.ITEM);
+                        Sleep.sleep(300, 500);
+                    }
+                    // Withdraw exactly 2 unnoted Iron bars
+                    Bank.withdraw(IRON_BAR, 2);
+                    Sleep.sleepUntil(() -> countUnnotedIronBars() >= 2, 5000);
+                    Bank.close();
+                    Sleep.sleep(400, 700);
+                }
+
+                return countUnnotedIronBars() >= 2;
+            }
+        };
+
         smart = new QuestNode("smart_decision", "Decide next step for The Knight's Sword") {
             @Override
             public ExecutionResult execute() {
+                // Ensure we have 2x unnoted Iron bars at the very start to save time later
+                if (countUnnotedIronBars() < 2) {
+                    return ExecutionResult.success(ensureIronBarsNode, "Buy and unnote 2x Iron bar early");
+                }
                 // Completion check first
                 if (Quests.isFinished(FreeQuest.THE_KNIGHTS_SWORD) || PlayerSettings.getConfig(CONFIG_ID) >= COMPLETE_VALUE) {
                     return ExecutionResult.success(new ActionNode("finish", "Mark quest complete") {
@@ -140,9 +187,8 @@ public class KnightsSwordTree extends QuestTree {
                 }
                 if (cfg == 6 && Inventory.contains(BLURITE_ORE)) {
                     // Ensure we have 2 iron bars before forging
-                    if (Inventory.count(IRON_BAR) < 2) {
-                        return ExecutionResult.success(buyIronBarsNode(), "Buy 2x Iron bar before forging");
-                    }
+                    // This should already be satisfied by early prep, but keep as safety net
+                    if (countUnnotedIronBars() < 2) return ExecutionResult.success(ensureIronBarsNode, "Ensure 2x unnoted Iron bar before forging");
                     return ExecutionResult.success(talkToThurgoForgeNode(), "Have Thurgo forge the sword");
                 }
 
@@ -152,6 +198,14 @@ public class KnightsSwordTree extends QuestTree {
         };
 
         this.rootNode = smart;
+    }
+
+    private int countUnnotedIronBars() {
+        int count = 0;
+        for (Item item : org.dreambot.api.methods.container.impl.Inventory.all(IRON_BAR)) {
+            if (item != null && !item.isNoted()) count++;
+        }
+        return count;
     }
 
     private boolean hasBasicItems() {
