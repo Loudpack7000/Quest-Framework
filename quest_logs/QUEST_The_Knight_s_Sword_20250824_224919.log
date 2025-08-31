@@ -1,0 +1,77 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: The Knight's Sword
+Started: 2025-08-24 22:49:19
+Player: Erm I Spose
+Starting Location: (2967, 3377, 0)
+Starting Inventory: Energy potion(3) x2, Water rune x995, Energy potion(4) x4, Earth rune x1000, Bronze pickaxe, Coins x3698, Law rune x54, Energy potion(2), Air rune x52, Chaos rune x70, Staff of fire, Iron bar x2
+Starting Equipment: hat: Rune full helm, amulet: Amulet of strength, chest: Mithril platebody, shield: Rune kiteshield, legs: Rune platelegs, hands: Red gloves, feet: Red boots
+Starting Combat Level: 63
+Starting HP: 100%
+Initial Quest States:
+=====================================
+
+[22:49:19] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[22:49:19] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[22:49:19] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[22:49:19] ACTION: Quest recording started
+    SCRIPT: // Quest: The Knight's Sword
+
+[22:49:19] ACTIVE_QUEST_DETECTED: THE_KNIGHTS_SWORD is currently in progress
+[22:51:09] ACTION: Selected 'Climb-down' on Trapdoor
+    SCRIPT: GameObjects.closest("Trapdoor").interact("Climb-down");
+
+[22:51:09] USER_ACTION: Climb-down | Object_Tile: (3008, 3150, 0)
+[22:51:56] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[22:51:58] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[22:52:00] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[22:52:02] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[22:52:07] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[22:52:14] ACTION: Selected 'Mine' on Blurite rocks
+    SCRIPT: // Mine on Blurite rocks
+
+[22:52:14] USER_ACTION: Mine | Target: Blurite rocks
+[22:52:49] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[22:53:10] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[22:53:10] USER_ACTION: Climb-up | Object_Tile: (3008, 9550, 0)
+[22:53:14] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[22:53:32] ACTION: Selected 'Talk-to' on Thurgo
+    SCRIPT: NPCs.closest("Thurgo").interact("Talk-to");
+
+[22:53:32] USER_ACTION: Talk-to | NPC_Tile: (3002, 3144, 0)
+[22:53:47] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[22:53:47] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[22:53:51] ACTION: Selected 'Cast' on Falador Teleport
+    SCRIPT: // Cast on Falador Teleport
+
+[22:53:51] USER_ACTION: Cast | Target: Falador Teleport
+[22:53:51] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[22:53:51] SPELLBOOK_OPENED: Player opened the magic spellbook
+[22:54:13] ACTION: Selected 'Talk-to' on Squire
+    SCRIPT: NPCs.closest("Squire").interact("Talk-to");
+
+[22:54:13] USER_ACTION: Talk-to | NPC_Tile: (2977, 3342, 0)
+[22:54:20] QUEST_END: === QUEST RECORDING ENDED ===

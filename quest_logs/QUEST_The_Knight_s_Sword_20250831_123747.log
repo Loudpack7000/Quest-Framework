@@ -1,0 +1,67 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: The Knight's Sword
+Started: 2025-08-31 12:37:47
+Player: WhoCouldHave
+Starting Location: (3209, 3220, 2)
+Starting Inventory: Water rune x156, Energy potion(4) x10, Earth rune x2992, Spade, Bronze pickaxe, Law rune x82, Coins x348, Chaos rune x63, Air rune x89, Amulet of accuracy, Air talisman, Iron bar x2
+=====================================
+
+[12:37:47] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[12:37:47] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[12:37:47] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[12:37:47] ACTION: Quest recording started
+    SCRIPT: // Quest: The Knight's Sword
+
+[12:37:47] ACTIVE_QUEST_DETECTED: THE_KNIGHTS_SWORD is currently in progress
+[12:37:51] ACTION: Selected 'Cast' on Falador Teleport
+    SCRIPT: // Cast on Falador Teleport
+
+[12:37:51] USER_ACTION: Cast | Target: Falador Teleport
+[12:37:51] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[12:37:51] SPELLBOOK_OPENED: Player opened the magic spellbook
+[12:39:51] ACTION: Selected 'Climb-down' on Trapdoor
+    SCRIPT: GameObjects.closest("Trapdoor").interact("Climb-down");
+
+[12:39:51] USER_ACTION: Climb-down | Object_Tile: (3008, 3150, 0)
+[12:40:20] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[12:40:20] USER_ACTION: Climb-up | Object_Tile: (3008, 9550, 0)
+[12:40:24] ACTION: Selected 'Climb-down' on Trapdoor
+    SCRIPT: GameObjects.closest("Trapdoor").interact("Climb-down");
+
+[12:40:24] USER_ACTION: Climb-down | Object_Tile: (3008, 3150, 0)
+[12:41:18] ACTION: Selected 'Mine' on Blurite rocks
+    SCRIPT: // Mine on Blurite rocks
+
+[12:41:18] USER_ACTION: Mine | Target: Blurite rocks
+[12:42:29] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[12:42:29] USER_ACTION: Climb-up | Object_Tile: (3008, 9550, 0)
+[12:42:34] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[12:42:39] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[12:42:53] ACTION: Selected 'Talk-to' on Thurgo
+    SCRIPT: NPCs.closest("Thurgo").interact("Talk-to");
+
+[12:42:53] USER_ACTION: Talk-to | NPC_Tile: (3001, 3145, 0)
+[12:43:05] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[12:43:08] ACTION: Selected 'Cast' on Falador Teleport
+    SCRIPT: // Cast on Falador Teleport
+
+[12:43:08] USER_ACTION: Cast | Target: Falador Teleport
+[12:43:27] ACTION: Selected 'Talk-to' on Squire
+    SCRIPT: NPCs.closest("Squire").interact("Talk-to");
+
+[12:43:27] USER_ACTION: Talk-to | NPC_Tile: (2980, 3343, 0)
+[12:43:39] QUEST_END: === QUEST RECORDING ENDED ===

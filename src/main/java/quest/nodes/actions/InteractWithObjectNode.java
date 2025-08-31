@@ -141,9 +141,12 @@ public class InteractWithObjectNode extends ActionNode {
                     }, 7000);
                     break;
                 }
-                case "open":
-                    interactionSuccess = Sleep.sleepUntil(() -> !Players.getLocal().getTile().equals(beforeInteraction), 5000);
+                case "open": {
+                    // Doors often don't cause immediate tile movement; treat as success after brief wait
+                    Sleep.sleep(600, 1200);
+                    interactionSuccess = true;
                     break;
+                }
                 case "pick-from":
                     interactionSuccess = Sleep.sleepUntil(() -> org.dreambot.api.methods.container.impl.Inventory.all().size() != beforeInventory, 5000);
                     break;

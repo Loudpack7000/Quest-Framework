@@ -7,6 +7,7 @@ import quest.nodes.ActionNode;
 import quest.nodes.actions.TalkToNPCNode;
 import quest.nodes.actions.WalkToLocationNode;
 import quest.utils.GrandExchangeUtil;
+import quest.utils.ItemGatheringUtil;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.container.impl.Inventory;
@@ -141,6 +142,25 @@ public class DoricsQuestTree extends QuestTree {
                 }
                 
                 log("All items purchased successfully!");
+                
+                // Now un-note all items since Doric requires unnoted items
+                log("Un-noting items for Doric's Quest...");
+                if (!ItemGatheringUtil.ensureUnnotedInInventory(COPPER_ORE, COPPER_ORE_NEEDED)) {
+                    log("Failed to un-note " + COPPER_ORE);
+                    return false;
+                }
+                
+                if (!ItemGatheringUtil.ensureUnnotedInInventory(CLAY, CLAY_NEEDED)) {
+                    log("Failed to un-note " + CLAY);
+                    return false;
+                }
+                
+                if (!ItemGatheringUtil.ensureUnnotedInInventory(IRON_ORE, IRON_ORE_NEEDED)) {
+                    log("Failed to un-note " + IRON_ORE);
+                    return false;
+                }
+                
+                log("All items un-noted successfully!");
                 return true;
             }
         };
@@ -200,6 +220,25 @@ public class DoricsQuestTree extends QuestTree {
                 Sleep.sleepUntil(() -> !Bank.isOpen(), 3000);
                 
                 log("Successfully collected all quest items from bank");
+                
+                // Ensure items are un-noted since Doric requires unnoted items
+                log("Ensuring items are un-noted for Doric's Quest...");
+                if (!ItemGatheringUtil.ensureUnnotedInInventory(COPPER_ORE, COPPER_ORE_NEEDED)) {
+                    log("Failed to un-note " + COPPER_ORE);
+                    return false;
+                }
+                
+                if (!ItemGatheringUtil.ensureUnnotedInInventory(CLAY, CLAY_NEEDED)) {
+                    log("Failed to un-note " + CLAY);
+                    return false;
+                }
+                
+                if (!ItemGatheringUtil.ensureUnnotedInInventory(IRON_ORE, IRON_ORE_NEEDED)) {
+                    log("Failed to un-note " + IRON_ORE);
+                    return false;
+                }
+                
+                log("All items un-noted successfully!");
                 return hasAllRequiredItems();
             }
         };

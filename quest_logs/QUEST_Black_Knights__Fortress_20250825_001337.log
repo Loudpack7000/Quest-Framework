@@ -1,0 +1,18 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Black Knights' Fortress
+Started: 2025-08-25 00:13:37
+Player: Erm I Spose
+Starting Location: (3023, 3508, 0)
+Starting Inventory: Mithril platebody, Rune full helm, Water rune x990, Earth rune x1000, Salmon x5, Coins x17736, Law rune x45, Dossier, Chaos rune x67, Air rune x16, Cabbage
+=====================================
+
+[00:13:37] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:13:37] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:13:37] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:13:37] ACTION: Quest recording started
+    SCRIPT: // Quest: Black Knights' Fortress
+
+[00:13:37] ACTIVE_QUEST_DETECTED: BLACK_KNIGHTS_FORTRESS is currently in progress
+[00:13:54] QUEST_END: === QUEST RECORDING ENDED ===

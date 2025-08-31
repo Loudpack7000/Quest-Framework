@@ -32,6 +32,8 @@ public class QuestSelectionGUI extends JFrame {
     // Discovery Mode Components
     private JCheckBox discoveryModeCheckbox;
     private JLabel discoveryStatusLabel;
+    private JButton recordErnestButton;
+    private JButton stopRecordingButton;
     
     // Quest Execution Components
     private JComboBox<String> questDropdown;
@@ -185,13 +187,13 @@ public class QuestSelectionGUI extends JFrame {
         
         JLabel descLabel = new JLabel("<html><b>Discovery Mode</b><br>" +
             "Automatically track and record quest actions as you play manually.<br>" +
-            "Perfect for learning new quests or analyzing game mechanics.</html>");
+            "Use the checkbox to start/stop general discovery, or use the button for targeted quest recording.</html>");
         descLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         descLabel.setForeground(UIManager.getColor("Label.foreground"));
         descPanel.add(descLabel, BorderLayout.CENTER);
         
-        // Controls
-        JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+    // Controls
+    JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         controlPanel.setBackground(UIManager.getColor("Panel.background"));
         
         discoveryModeCheckbox = new JCheckBox("START DISCOVERY");
@@ -201,14 +203,40 @@ public class QuestSelectionGUI extends JFrame {
         discoveryModeCheckbox.setFocusPainted(false);
         
         discoveryModeCheckbox.addActionListener(e -> {
-            if (discoveryModeCheckbox.isSelected()) {
-                startDiscoveryMode();
-            } else {
-                stopDiscoveryMode();
+            // Prevent infinite loops by checking if the action was user-initiated
+            if (e.getSource() == discoveryModeCheckbox) {
+                if (discoveryModeCheckbox.isSelected()) {
+                    startDiscoveryMode();
+                } else {
+                    stopDiscoveryMode();
+                }
             }
         });
         
         controlPanel.add(discoveryModeCheckbox);
+
+        // Quick recorder buttons for targeted mapping
+        recordErnestButton = new JButton("RECORD ERNEST THE CHICKEN");
+        recordErnestButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        recordErnestButton.setForeground(UIManager.getColor("Button.foreground"));
+        recordErnestButton.setBackground(UIManager.getColor("Button.background"));
+        recordErnestButton.setFocusPainted(false);
+        recordErnestButton.setPreferredSize(new Dimension(240, 32));
+        recordErnestButton.addActionListener(e -> {
+            if (questStartListener != null) {
+                // If discovery mode isn't running, start it first
+                if (!discoveryRunning) {
+                    startDiscoveryMode();
+                }
+                // Then start recording for Ernest the Chicken
+                questStartListener.onQuestStart("Ernest the Chicken");
+                discoveryStatusLabel.setText("Recording: Ernest the Chicken (targeted quest)");
+                discoveryStatusLabel.setForeground(new Color(255, 200, 120));
+            }
+        });
+        controlPanel.add(recordErnestButton);
+
+        // Remove the redundant STOP RECORDING button - the checkbox handles start/stop
         
         // Status
         discoveryStatusLabel = new JLabel("Ready for Discovery", JLabel.CENTER);
@@ -347,24 +375,34 @@ public class QuestSelectionGUI extends JFrame {
     private void startDiscoveryMode() {
         if (questStartListener != null && !discoveryRunning) {
             discoveryRunning = true;
+            updateDiscoveryUI();
+            questStartListener.onDiscoveryStart();
+        }
+    }
+
+    private void stopDiscoveryMode() {
+        if (discoveryRunning) {
+            discoveryRunning = false;
+            updateDiscoveryUI();
+            if (questStartListener != null) {
+                questStartListener.onDiscoveryStop();
+            }
+        }
+    }
+
+    private void updateDiscoveryUI() {
+        if (discoveryRunning) {
+            discoveryModeCheckbox.setSelected(true);
             discoveryModeCheckbox.setText("STOP DISCOVERY");
             discoveryModeCheckbox.setForeground(new Color(255, 100, 100));
             discoveryStatusLabel.setText("DISCOVERY ACTIVE - Recording all actions");
             discoveryStatusLabel.setForeground(new Color(255, 100, 100));
-            questStartListener.onDiscoveryStart();
-        }
-    }
-    
-    private void stopDiscoveryMode() {
-        if (discoveryRunning) {
-            discoveryRunning = false;
+        } else {
+            discoveryModeCheckbox.setSelected(false);
             discoveryModeCheckbox.setText("START DISCOVERY");
             discoveryModeCheckbox.setForeground(new Color(100, 255, 100));
             discoveryStatusLabel.setText("Discovery stopped");
             discoveryStatusLabel.setForeground(new Color(180, 180, 180));
-            if (questStartListener != null) {
-                questStartListener.onDiscoveryStop();
-            }
         }
     }
     

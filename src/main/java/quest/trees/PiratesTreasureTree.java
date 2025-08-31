@@ -16,6 +16,8 @@ import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.dialogues.Dialogues;
+import org.dreambot.api.methods.quest.Quests;
+import org.dreambot.api.methods.quest.book.FreeQuest;
 
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.interactive.GameObject;
@@ -24,6 +26,7 @@ import org.dreambot.api.utilities.Sleep;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import quest.utils.RunEnergyUtil;
 
 /**
  * Pirate's Treasure Quest Tree Implementation
@@ -51,7 +54,7 @@ public class PiratesTreasureTree extends QuestTree {
     // Key locations from log data
     private static final Tile REDBEARD_FRANK_LOCATION = new Tile(3049, 3253, 0);    // Port Sarim
     private static final Tile SEAMAN_LORRIS_LOCATION = new Tile(3027, 3218, 0);     // Port Sarim docks
-    private static final Tile KARAMJA_DOCK = new Tile(2956, 3146, 0);               // Karamja arrival
+    private static final Tile KARAMJA_DOCK = new Tile(2956, 3146, 0);               // Karamja arrival dock
     private static final Tile ZEMBO_LOCATION = new Tile(2927, 3142, 0);             // Karamja shop
     private static final Tile BANANA_TREES_AREA = new Tile(2921, 3158, 0);          // Banana plantation
     private static final Tile LUTHAS_LOCATION = new Tile(2936, 3152, 0);            // Plantation owner
@@ -88,8 +91,6 @@ public class PiratesTreasureTree extends QuestTree {
     private ActionNode getPirateMessageNode;
     private ActionNode digForTreasureNode;
     private QuestNode smartDecisionNode;  // UPDATED: Now uses QuestNode instead of DecisionNode
-    // Session flag to ensure we explicitly start the quest with Redbeard Frank
-    private boolean hasDialogStartedQuest = false;
     // Track how many bananas were picked from each tree (limit 4 per tree)
     private final Map<String, Integer> bananaTreePickCounts = new HashMap<>();
     // Session flag to indicate we've successfully smuggled rum into the crate
@@ -118,31 +119,39 @@ public class PiratesTreasureTree extends QuestTree {
         smartDecisionNode = new QuestNode("smart_decision", "Smart quest decision based on current state") {
             @Override
             public ExecutionResult execute() {
-                int config = PlayerSettings.getConfig(QUEST_CONFIG_ID);
-                logCurrentState(config, Players.getLocal().getTile());
-
-                // Sync the session flag with real quest state if the quest is already started
-                if (!hasDialogStartedQuest && config >= QUEST_STARTED) {
-                    hasDialogStartedQuest = true;
-                }
+                // Use DreamBot's built-in quest status methods instead of manual config checking
+                boolean isStarted = Quests.isStarted(FreeQuest.PIRATES_TREASURE);
+                boolean isFinished = Quests.isFinished(FreeQuest.PIRATES_TREASURE);
+                
+                log("=== PIRATE'S TREASURE DEBUG ===");
+                log("Quest started: " + isStarted);
+                log("Quest finished: " + isFinished);
+                log("Location: " + Players.getLocal().getTile());
+                log("Has " + KARAMJAN_RUM + ": " + Inventory.contains(KARAMJAN_RUM));
+                log("Has " + BANANA + " (" + Inventory.count(BANANA) + "): " + (Inventory.count(BANANA) >= 10));
+                log("Has " + WHITE_APRON + ": " + (Equipment.contains(WHITE_APRON) || Inventory.contains(WHITE_APRON)));
+                log("Has " + CHEST_KEY + ": " + Inventory.contains(CHEST_KEY));
+                log("Has " + PIRATE_MESSAGE + ": " + Inventory.contains(PIRATE_MESSAGE));
+                log("Has " + CASKET + ": " + Inventory.contains(CASKET));
+                log("Has " + SPADE + ": " + Inventory.contains(SPADE));
+                log("===============================");
                 
                 QuestNode nextStep = null;
                 String reason = "";
                 
-                // Check if quest is actually complete using config values
-                if (config >= QUEST_COMPLETE) {
-                    log("Quest already completed! Config " + QUEST_CONFIG_ID + " = " + config + " (>= " + QUEST_COMPLETE + ")");
-                    log("Quest already completed, but force restart enabled - continuing execution");
+                // PRIORITY 1: Check if quest is finished
+                if (isFinished) {
+                    log("Quest is already finished!");
+                    nextStep = digForTreasureNode; // Open casket if we have it
+                    reason = "Quest finished - open casket if available";
                 }
-                
-                // PRIORITY 1: Always ensure we explicitly start with Redbeard Frank before any travel
-                if (config < QUEST_STARTED || !hasDialogStartedQuest) {
+                // PRIORITY 2: Check if quest is started - if not, start with Redbeard Frank
+                else if (!isStarted) {
                     log("Quest not started yet - need to talk to Redbeard Frank first");
-                    log("Config " + QUEST_CONFIG_ID + " = " + config + " (< " + QUEST_STARTED + ")");
                     nextStep = startQuestNode;
                     reason = "Start quest with Redbeard Frank";
                 }
-                // PRIORITY 2: Check quest progress and items (only after quest is started)
+                // PRIORITY 3: Check quest progress and items (only after quest is started)
                 else if (Inventory.contains(CASKET)) {
                     log("Have casket - quest should be complete");
                     nextStep = digForTreasureNode; // Open casket
@@ -155,11 +164,20 @@ public class PiratesTreasureTree extends QuestTree {
                     log("Have chest key - need to get pirate message");
                     nextStep = getPirateMessageNode;
                     reason = "Get pirate message from Blue Moon Inn";
-                } else if (hasSmuggledRum && !Equipment.contains(WHITE_APRON) && !Inventory.contains(WHITE_APRON) && Players.getLocal().getTile().distance(KARAMJA_DOCK) > 100) {
-                    // After smuggling, prioritize getting apron and job at Port Sarim before retrieving rum
-                    log("Smuggling done and no apron - need to get White apron and job at food shop");
-                    nextStep = getApronAndJobNode;
-                    reason = "Get White apron and job before retrieving rum";
+                } 
+                // CRITICAL FIX: If we're at Port Sarim and already have rum, go exchange for key
+                else if (Inventory.contains(KARAMJAN_RUM) && Players.getLocal().getTile().distance(KARAMJA_DOCK) > 100) {
+                    log("Already have rum at Port Sarim - can skip to exchange for key");
+                    // Reset smuggling flag since we're past that phase
+                    hasSmuggledRum = false;
+                    nextStep = exchangeRumForKeyNode;
+                    reason = "Skip to exchange rum for key (already have rum)";
+                }
+                // NEW ORDER: If we haven't gone to Karamja yet, go there BEFORE apron/job logic
+                else if (needToTravelToKaramja()) {
+                    log("Quest started, need to travel to Karamja");
+                    nextStep = travelToKaramjaNode;
+                    reason = "Travel to Karamja";
                 } else if (hasRumAndNeedToExchange()) {
                     log("Have rum - need to exchange for key");
                     nextStep = exchangeRumForKeyNode;
@@ -173,17 +191,17 @@ public class PiratesTreasureTree extends QuestTree {
                     nextStep = returnToPortSarimNode;
                     reason = "Return to Port Sarim";
                 } else if (needToSmuggleRum()) {
-                    log("Need to smuggle rum using banana crate");
+                    log("Need to smuggle rum using banana crate (hasSmuggledRum=" + hasSmuggledRum + ")");
                     nextStep = smuggleRumNode;
                     reason = "Smuggle rum using banana crate";
+                } else if (hasSmuggledRum && Players.getLocal().getTile().distance(KARAMJA_DOCK) < 100) {
+                    log("Smuggling completed, need to return to Port Sarim");
+                    nextStep = returnToPortSarimNode;
+                    reason = "Return to Port Sarim after smuggling";
                 } else if (needToGetRumAndBananas()) {
                     log("Need to get rum and bananas");
                     nextStep = getRumAndBananasNode;
                     reason = "Get rum and bananas at Karamja";
-                } else if (needToTravelToKaramja()) {
-                    log("Quest started, need to travel to Karamja");
-                    nextStep = travelToKaramjaNode;
-                    reason = "Travel to Karamja";
                 } else {
                     log("Fallback - talk to Redbeard Frank");
                     nextStep = startQuestNode;
@@ -203,14 +221,24 @@ public class PiratesTreasureTree extends QuestTree {
             protected boolean performAction() {
                 log("Starting Pirate's Treasure quest with Redbeard Frank");
                 
-                // Walk to Redbeard Frank
-                if (Players.getLocal().getTile().distance(REDBEARD_FRANK_LOCATION) > 5) {
-                    log("Walking to Redbeard Frank at " + REDBEARD_FRANK_LOCATION);
-                    Walking.walk(REDBEARD_FRANK_LOCATION);
-                    if (!Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(REDBEARD_FRANK_LOCATION) <= 5, 15000)) {
-                        log("Failed to walk to Redbeard Frank");
-                        return false;
+                // Check and manage run energy before starting
+                int currentEnergy = (int) org.dreambot.api.methods.walking.impl.Walking.getRunEnergy();
+                if (currentEnergy < 20) {
+                    log("Low on run energy (" + currentEnergy + "%) - checking for energy potions...");
+                    if (!RunEnergyUtil.hasEnergyPotions()) {
+                        log("No energy potions found - attempting to restock from bank...");
+                        RunEnergyUtil.restockEnergyPotions();
                     }
+                    // Drink a potion if we have one
+                    RunEnergyUtil.manageRunEnergy();
+                }
+                
+                // Walk to Redbeard Frank
+                if (Players.getLocal().getTile().distance(REDBEARD_FRANK_LOCATION) > 8) {
+                    log("Walking to Redbeard Frank at " + REDBEARD_FRANK_LOCATION);
+                    // Manage run energy before walking
+                    RunEnergyUtil.manageRunEnergy();
+                    new WalkToLocationNode("walk_redbeard", REDBEARD_FRANK_LOCATION, "Redbeard Frank").execute();
                 }
                 
                 // Find and talk to Redbeard Frank
@@ -277,7 +305,6 @@ public class PiratesTreasureTree extends QuestTree {
                     
                     log("✅ Dialogue with Redbeard Frank completed - quest should be started!");
                     log("Using dialogue completion as trigger to move to next step");
-                    hasDialogStartedQuest = true;
                     return true; // Quest started successfully based on dialogue completion
                     
                 } catch (Exception e) {
@@ -294,20 +321,18 @@ public class PiratesTreasureTree extends QuestTree {
                 log("Traveling to Karamja...");
                 
                 // Walk to Port Sarim docks
-                if (Players.getLocal().getTile().distance(SEAMAN_LORRIS_LOCATION) > 10) {
+                if (Players.getLocal().getTile().distance(SEAMAN_LORRIS_LOCATION) > 8) {
                     log("Walking to Port Sarim docks...");
-                    Walking.walk(SEAMAN_LORRIS_LOCATION);
-                    if (!Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(SEAMAN_LORRIS_LOCATION) <= 10, 15000)) {
-                        log("Failed to walk to Port Sarim docks");
-                        return false;
-                    }
+                    // Manage run energy before walking
+                    RunEnergyUtil.manageRunEnergy();
+                    new WalkToLocationNode("walk_docks", SEAMAN_LORRIS_LOCATION, "Port Sarim docks").execute();
                 }
                 
-                // Talk to Seaman Lorris
+                // Talk to Seaman Lorris - use Pay-fare action directly
                 NPC lorris = NPCs.closest("Seaman Lorris");
                 if (lorris != null) {
-                    log("Talking to Seaman Lorris to travel to Karamja...");
-                    if (lorris.interact("Talk-to")) {
+                    log("Paying fare to Seaman Lorris to travel to Karamja...");
+                    if (lorris.interact("Pay-fare")) {
                         Sleep.sleepUntil(() -> Dialogues.inDialogue(), 5000);
                         
                         // Handle dialogue to travel to Karamja
@@ -316,10 +341,10 @@ public class PiratesTreasureTree extends QuestTree {
                                 String[] options = Dialogues.getOptions();
                                 log("Lorris dialogue options: " + java.util.Arrays.toString(options));
                                 
-                                // Look for Karamja travel option
+                                // Look for "Yes please" option to confirm travel
                                 for (int i = 0; i < options.length; i++) {
-                                    if (options[i].contains("Karamja") || options[i].contains("travel")) {
-                                        log("Selecting Karamja travel option: " + options[i]);
+                                    if (options[i].contains("Yes") || options[i].contains("please")) {
+                                        log("Selecting yes to travel: " + options[i]);
                                         Dialogues.chooseOption(i + 1);
                                         break;
                                     }
@@ -337,10 +362,23 @@ public class PiratesTreasureTree extends QuestTree {
                             }
                         }
                         
-                        // Wait for arrival at Karamja
-                        Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(KARAMJA_DOCK) < 50, 10000);
-                        log("Successfully arrived at Karamja!");
-                        return true;
+                        // CRITICAL: Wait for ship animation and arrival at Karamja
+                        log("Waiting for ship travel to complete...");
+                        Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(KARAMJA_DOCK) < 50, 20000);
+                        
+                        // IMPORTANT: Cross the gangplank to actually get off the ship
+                        GameObject gangplank = GameObjects.closest("Gangplank");
+                        if (gangplank != null) {
+                            log("Crossing gangplank to disembark at Karamja...");
+                            if (gangplank.interact("Cross")) {
+                                Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(KARAMJA_DOCK) < 10, 8000);
+                                log("✅ Successfully arrived at Karamja!");
+                                return true;
+                            }
+                        } else {
+                            log("WARN: No gangplank found, but may have arrived successfully");
+                            return Players.getLocal().getTile().distance(KARAMJA_DOCK) < 50;
+                        }
                     }
                 }
                 
@@ -359,13 +397,11 @@ public class PiratesTreasureTree extends QuestTree {
                     log("Need to buy Karamjan rum from Zembo...");
                     
                     // Walk to Zembo if not close
-                    if (Players.getLocal().getTile().distance(ZEMBO_LOCATION) > 10) {
+                    if (Players.getLocal().getTile().distance(ZEMBO_LOCATION) > 8) {
                         log("Walking to Zembo at " + ZEMBO_LOCATION);
-                        Walking.walk(ZEMBO_LOCATION);
-                        if (!Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(ZEMBO_LOCATION) <= 10, 10000)) {
-                            log("Failed to walk to Zembo");
-                            return false;
-                        }
+                        // Manage run energy before walking
+                        RunEnergyUtil.manageRunEnergy();
+                        new WalkToLocationNode("walk_zembo", ZEMBO_LOCATION, "Zembo").execute();
                     }
                     
                     // Find and trade with Zembo
@@ -382,21 +418,43 @@ public class PiratesTreasureTree extends QuestTree {
                             return false;
                         }
                         log("Shop opened, attempting to purchase Karamjan rum...");
-                        boolean purchased = purchaseFromShop(KARAMJAN_RUM, 1);
-                        if (!purchased) {
-                            // Sometimes the item may be out of stock or needs a retry
-                            Sleep.sleep(500, 800);
+                        
+                        // CRITICAL: Wait for shop interface to be fully ready
+                        Sleep.sleep(500, 800);
+                        
+                        // Try to purchase rum with retry logic
+                        boolean purchased = false;
+                        int attempts = 0;
+                        while (!purchased && attempts < 3) {
+                            attempts++;
+                            log("Purchase attempt " + attempts + " for Karamjan rum...");
+                            
                             purchased = purchaseFromShop(KARAMJAN_RUM, 1);
+                            if (!purchased) {
+                                log("Purchase attempt " + attempts + " failed, waiting before retry...");
+                                Sleep.sleep(800, 1200);
+                            }
                         }
+                        
                         if (!purchased) {
-                            log("ERROR: Failed to purchase Karamjan rum from shop");
+                            log("ERROR: Failed to purchase Karamjan rum after " + attempts + " attempts");
                             return false;
                         }
-                        if (!Sleep.sleepUntil(() -> Inventory.contains(KARAMJAN_RUM), 4000)) {
-                            log("ERROR: Rum not found in inventory after purchasing");
+                        
+                        // CRITICAL: Wait for rum to actually appear in inventory
+                        log("Waiting for rum to appear in inventory...");
+                        if (!Sleep.sleepUntil(() -> Inventory.contains(KARAMJAN_RUM), 8000)) {
+                            log("ERROR: Rum not found in inventory after purchasing - checking if we have enough coins");
+                            // Check if we have enough coins
+                            if (Inventory.count("Coins") < 30) {
+                                log("ERROR: Not enough coins! Need 30, have: " + Inventory.count("Coins"));
+                                return false;
+                            }
+                            log("ERROR: Purchase may have failed despite shop interaction");
                             return false;
                         }
-                        log("✅ Successfully purchased Karamjan rum from Zembo");
+                        
+                        log("✅ Successfully purchased Karamjan rum from Zembo! Quantity: " + Inventory.count(KARAMJAN_RUM));
                     } else {
                         log("Could not find Zembo");
                         return false;
@@ -409,13 +467,9 @@ public class PiratesTreasureTree extends QuestTree {
                     log("Need to pick " + bananasNeeded + " bananas...");
 
                     // Walk to banana plantation area if not close
-                    if (Players.getLocal().getTile().distance(BANANA_TREES_AREA) > 20) {
+                    if (Players.getLocal().getTile().distance(BANANA_TREES_AREA) > 8) {
                         log("Walking to banana plantation at " + BANANA_TREES_AREA);
-                        Walking.walk(BANANA_TREES_AREA);
-                        if (!Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(BANANA_TREES_AREA) <= 20, 10000)) {
-                            log("Failed to walk to banana plantation");
-                            return false;
-                        }
+                        new WalkToLocationNode("walk_banana_plantation", BANANA_TREES_AREA, "Banana plantation").execute();
                     }
 
                     // Attempt to pick with a limit of 4 bananas per tree before moving to the next
@@ -442,9 +496,8 @@ public class PiratesTreasureTree extends QuestTree {
                         }
 
                         // Move closer if needed
-                        if (Players.getLocal().getTile().distance(tree.getTile()) > 5) {
-                            Walking.walk(tree);
-                            Sleep.sleep(600, 1000);
+                        if (Players.getLocal().getTile().distance(tree.getTile()) > 8) {
+                            new WalkToLocationNode("walk_banana_tree", tree.getTile(), "Banana tree").execute();
                         }
 
                         String key = getTreeKey(tree);
@@ -476,13 +529,9 @@ public class PiratesTreasureTree extends QuestTree {
                     log("Have rum and bananas - now need to talk to Luthas about employment...");
                     
                     // Walk to Luthas if not close
-                    if (Players.getLocal().getTile().distance(LUTHAS_LOCATION) > 10) {
+                    if (Players.getLocal().getTile().distance(LUTHAS_LOCATION) > 8) {
                         log("Walking to Luthas at " + LUTHAS_LOCATION);
-                        Walking.walk(LUTHAS_LOCATION);
-                        if (!Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(LUTHAS_LOCATION) <= 10, 10000)) {
-                            log("Failed to walk to Luthas");
-                            return false;
-                        }
+                        new WalkToLocationNode("walk_luthas", LUTHAS_LOCATION, "Luthas").execute();
                     }
                     
                     // Talk to Luthas about employment
@@ -544,47 +593,159 @@ public class PiratesTreasureTree extends QuestTree {
             protected boolean performAction() {
                 log("Smuggling rum using banana crate method...");
                 
-                // Talk to Luthas about job
+                // Talk to Luthas about job first
                 NPC luthas = NPCs.closest("Luthas");
                 if (luthas != null) {
                     log("Talking to Luthas about employment...");
                     if (luthas.interact("Talk-to")) {
-                        Sleep.sleepUntil(() -> Dialogues.inDialogue(), 5000);
-                        // Handle dialogue about employment
-                        Sleep.sleep(2000);
+                        if (Sleep.sleepUntil(() -> Dialogues.inDialogue(), 5000)) {
+                            // Handle dialogue about employment
+                            while (Dialogues.inDialogue()) {
+                                if (Dialogues.areOptionsAvailable()) {
+                                    String[] options = Dialogues.getOptions();
+                                    log("Luthas dialogue options: " + java.util.Arrays.toString(options));
+                                    
+                                    // Look for employment option
+                                    for (int i = 0; i < options.length; i++) {
+                                        if (options[i].contains("employment") || options[i].contains("job") || options[i].contains("work")) {
+                                            log("Selecting employment option: " + options[i]);
+                                            Dialogues.chooseOption(i + 1);
+                                            break;
+                                        }
+                                    }
+                                    Sleep.sleep(1000, 2000);
+                                } else if (Dialogues.canContinue()) {
+                                    log("Continuing dialogue...");
+                                    if (!Dialogues.spaceToContinue()) {
+                                        Dialogues.continueDialogue();
+                                    }
+                                    Sleep.sleep(1000, 2000);
+                                } else {
+                                    log("Dialogue state unclear, waiting...");
+                                    Sleep.sleep(1000);
+                                }
+                            }
+                            log("✅ Successfully completed employment dialogue with Luthas!");
+                        }
                     }
                 }
                 
-                // Put rum in crate first
+                // STEP 1: Put rum in crate first (CRITICAL - must complete before bananas)
                 if (Inventory.contains(KARAMJAN_RUM)) {
-                    GameObject crate = GameObjects.closest(gameObject -> 
-                        gameObject.getName().equals("Crate") && 
-                        gameObject.getTile().distance(BANANA_CRATE_LOCATION) < 5);
-                    
-                    if (crate != null) {
-                        log("Putting rum in crate...");
-                        Inventory.interact(KARAMJAN_RUM, "Use");
-                        Sleep.sleep(1000);
-                        crate.interact("Use");
-                        Sleep.sleep(2000);
+                    log("STEP 1: Putting rum in crate...");
+
+                    // CRITICAL FIX: Walk to crate location first
+                    if (Players.getLocal().getTile().distance(BANANA_CRATE_LOCATION) > 8) {
+                        log("Walking to banana crate location at " + BANANA_CRATE_LOCATION);
+                        new WalkToLocationNode("walk_to_crate", BANANA_CRATE_LOCATION, "Banana crate").execute();
                     }
+
+                    GameObject crate = GameObjects.closest(gameObject ->
+                        gameObject.getName().equals("Crate") &&
+                        gameObject.getTile().distance(BANANA_CRATE_LOCATION) < 5);
+
+                    if (crate != null) {
+                        log("Using rum on crate...");
+                        Inventory.interact(KARAMJAN_RUM, "Use");
+                        Sleep.sleep(500, 800);
+                        crate.interact("Use");
+
+                        // CRITICAL: Wait for rum to actually be placed in crate
+                        if (Sleep.sleepUntil(() -> !Inventory.contains(KARAMJAN_RUM), 5000)) {
+                            log("✅ Rum successfully placed in crate!");
+                        } else {
+                            log("ERROR: Rum was not placed in crate!");
+                            return false;
+                        }
+                    } else {
+                        log("ERROR: Could not find crate for rum!");
+                        return false;
+                    }
+                } else {
+                    log("ERROR: No rum found in inventory for smuggling!");
+                    return false;
                 }
                 
-                // Fill crate with bananas
-                GameObject crate = GameObjects.closest(gameObject -> 
-                    gameObject.getName().equals("Crate") && 
+                // STEP 2: Fill crate with bananas (only after rum is confirmed placed)
+                log("STEP 2: Filling crate with bananas...");
+
+                // Ensure we're still close to the crate location for banana filling
+                if (Players.getLocal().getTile().distance(BANANA_CRATE_LOCATION) > 8) {
+                    log("Walking back to banana crate location at " + BANANA_CRATE_LOCATION);
+                    new WalkToLocationNode("walk_to_crate_bananas", BANANA_CRATE_LOCATION, "Banana crate").execute();
+                }
+
+                GameObject crate = GameObjects.closest(gameObject ->
+                    gameObject.getName().equals("Crate") &&
                     gameObject.getTile().distance(BANANA_CRATE_LOCATION) < 5);
-                
+
                 if (crate != null) {
                     log("Filling crate with bananas...");
                     if (crate.interact("Fill")) {
-                        Sleep.sleep(3000);
-                        hasSmuggledRum = true;
-                        log("✅ Crate filled with bananas. Marked smuggling as complete.");
+                        // CRITICAL: Wait for bananas to actually be placed
+                        int bananasBefore = Inventory.count(BANANA);
+                        if (Sleep.sleepUntil(() -> Inventory.count(BANANA) < bananasBefore, 5000)) {
+                            log("✅ Bananas successfully placed in crate!");
+                            
+                            // Wait a bit more for the fill action to complete
+                            Sleep.sleep(1000, 2000);
+                            
+                            // Verify we have successfully smuggled
+                            if (!Inventory.contains(KARAMJAN_RUM) && Inventory.count(BANANA) < 10) {
+                                hasSmuggledRum = true;
+                                log("✅ SUCCESS: Smuggling complete! Rum and bananas are in crate.");
+                                
+                                // STEP 3: Talk to Luthas again to get paid and complete the job
+                                log("STEP 3: Talking to Luthas to get paid...");
+                                if (luthas != null && luthas.interact("Talk-to")) {
+                                    if (Sleep.sleepUntil(() -> Dialogues.inDialogue(), 5000)) {
+                                        // Handle payment dialogue
+                                        while (Dialogues.inDialogue()) {
+                                            if (Dialogues.areOptionsAvailable()) {
+                                                String[] options = Dialogues.getOptions();
+                                                log("Luthas payment options: " + java.util.Arrays.toString(options));
+                                                
+                                                // Look for payment/complete job option
+                                                for (int i = 0; i < options.length; i++) {
+                                                    if (options[i].contains("payment") || options[i].contains("paid") || options[i].contains("finished") || options[i].contains("complete")) {
+                                                        log("Selecting payment option: " + options[i]);
+                                                        Dialogues.chooseOption(i + 1);
+                                                        break;
+                                                    }
+                                                }
+                                                Sleep.sleep(1000, 2000);
+                                            } else if (Dialogues.canContinue()) {
+                                                log("Continuing dialogue...");
+                                                if (!Dialogues.spaceToContinue()) {
+                                                    Dialogues.continueDialogue();
+                                                }
+                                                Sleep.sleep(1000, 2000);
+                                            } else {
+                                                log("Dialogue state unclear, waiting...");
+                                                Sleep.sleep(1000);
+                                            }
+                                        }
+                                        log("✅ Successfully completed payment dialogue with Luthas!");
+                                    }
+                                }
+                                
+                                return true;
+                            } else {
+                                log("ERROR: Smuggling verification failed - rum or bananas still in inventory!");
+                                return false;
+                            }
+                        } else {
+                            log("ERROR: Failed to place bananas in crate!");
+                            return false;
+                        }
+                    } else {
+                        log("ERROR: Failed to interact with crate for bananas!");
+                        return false;
                     }
+                } else {
+                    log("ERROR: Could not find crate for bananas!");
+                    return false;
                 }
-                
-                return true;
             }
         };
         
@@ -594,44 +755,97 @@ public class PiratesTreasureTree extends QuestTree {
             protected boolean performAction() {
                 log("Returning to Port Sarim...");
 
-                // Prefer paying fare or talking to customs officer with option handling
+                // Walk to customs officer location first
+                if (Players.getLocal().getTile().distance(CUSTOMS_OFFICER_LOCATION) > 8) {
+                    log("Walking to customs officer at " + CUSTOMS_OFFICER_LOCATION);
+                    new WalkToLocationNode("walk_customs", CUSTOMS_OFFICER_LOCATION, "Customs officer").execute();
+                }
+                
+                // Pay fare to customs officer with proper dialogue handling
                 NPC customs = NPCs.closest("Customs officer");
                 if (customs != null) {
-                    log("Interacting with Customs officer to sail back...");
-                    boolean interacted = customs.interact("Pay-fare") || customs.interact("Talk-to");
-                    if (interacted) {
-                        Sleep.sleepUntil(() -> Dialogues.inDialogue() || !Players.getLocal().isMoving(), 4000);
-                        long end = System.currentTimeMillis() + 8000;
-                        while (System.currentTimeMillis() < end && Dialogues.inDialogue()) {
+                    log("Paying fare to Customs officer to sail back...");
+                    if (customs.interact("Pay-Fare")) {
+                        Sleep.sleepUntil(() -> Dialogues.inDialogue(), 5000);
+                        
+                        // Handle the multi-step customs dialogue
+                        while (Dialogues.inDialogue()) {
                             if (Dialogues.areOptionsAvailable()) {
                                 String[] options = Dialogues.getOptions();
+                                log("Customs dialogue options: " + java.util.Arrays.toString(options));
+                                
+                                // Handle different dialogue stages
+                                boolean foundOption = false;
                                 for (int i = 0; i < options.length; i++) {
                                     String opt = options[i];
-                                    if (opt.contains("Yes") || opt.contains("Okay") || opt.contains("Can I travel") || opt.contains("fare") || opt.contains("Pay")) {
+                                    // Stage 1: "Can I journey on this ship?"
+                                    if (opt.contains("journey") || opt.contains("ship")) {
+                                        log("Selecting journey option: " + opt);
                                         Dialogues.chooseOption(i + 1);
+                                        foundOption = true;
+                                        break;
+                                    }
+                                    // Stage 2: "Search away, I have nothing to hide."
+                                    else if (opt.contains("Search away") || opt.contains("nothing to hide")) {
+                                        log("Selecting search option: " + opt);
+                                        Dialogues.chooseOption(i + 1);
+                                        foundOption = true;
+                                        break;
+                                    }
+                                    // Stage 3: "Ok."
+                                    else if (opt.equals("Ok.")) {
+                                        log("Selecting Ok: " + opt);
+                                        Dialogues.chooseOption(i + 1);
+                                        foundOption = true;
                                         break;
                                     }
                                 }
+                                
+                                if (!foundOption) {
+                                    log("No specific option found, selecting first option");
+                                    Dialogues.chooseOption(1);
+                                }
+                                Sleep.sleep(1000, 2000);
                             } else if (Dialogues.canContinue()) {
-                                if (!Dialogues.spaceToContinue()) Dialogues.continueDialogue();
+                                log("Continuing dialogue...");
+                                if (!Dialogues.spaceToContinue()) {
+                                    Dialogues.continueDialogue();
+                                }
+                                Sleep.sleep(1000, 2000);
                             } else {
-                                Sleep.sleep(350, 600);
+                                log("Dialogue state unclear, waiting...");
+                                Sleep.sleep(1000);
                             }
                         }
+                        
+                        log("✅ Customs dialogue completed, waiting for ship travel...");
                     }
                 }
 
-                // Fallback: try crossing gangplank
+                // After customs dialogue, cross the gangplank
                 GameObject gangplank = GameObjects.closest("Gangplank");
                 if (gangplank != null) {
-                    log("Trying gangplank to return to Port Sarim...");
-                    gangplank.interact("Cross");
+                    log("Crossing gangplank to return to Port Sarim...");
+                    if (gangplank.interact("Cross")) {
+                        log("Successfully crossed gangplank, waiting for arrival...");
+                    }
+                } else {
+                    log("WARN: No gangplank found for return journey");
                 }
 
-                // Wait for arrival at Port Sarim
-                boolean arrived = Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(new Tile(3029, 3217, 0)) < 12, 12000);
-                if (!arrived) {
+                // Wait for arrival at Port Sarim with better detection
+                Tile portSarimDock = new Tile(3029, 3217, 0);
+                boolean arrived = Sleep.sleepUntil(() -> {
+                    Tile currentTile = Players.getLocal().getTile();
+                    return currentTile.distance(portSarimDock) < 20 && currentTile.getZ() == 0;
+                }, 15000);
+                
+                if (arrived) {
+                    log("✅ Successfully returned to Port Sarim!");
+                } else {
                     log("WARN: Did not detect arrival to Port Sarim within timeout");
+                    // Check if we're actually there anyway
+                    arrived = Players.getLocal().getTile().distance(portSarimDock) < 30;
                 }
                 return arrived;
             }
@@ -642,6 +856,24 @@ public class PiratesTreasureTree extends QuestTree {
             @Override
             protected boolean performAction() {
                 log("Getting White apron and job at food shop...");
+                
+                // CRITICAL FIX: Check if we already have apron and job access
+                if (Equipment.contains(WHITE_APRON) || Inventory.contains(WHITE_APRON)) {
+                    log("✅ Already have White apron - checking if we need job access...");
+                    
+                    // Test if we already have job access by trying to open the door
+                    GameObject door = GameObjects.closest("Door");
+                    if (door != null && door.getTile().distance(new Tile(3017, 3206, 0)) < 5) {
+                        log("Testing if we already have job access...");
+                        if (door.interact("Open")) {
+                            Sleep.sleep(1000, 1500);
+                            log("✅ Door opened successfully - we already have job access! Skipping Wydin dialogue.");
+                            return true;
+                        } else {
+                            log("Door interaction failed - we need to talk to Wydin for job access");
+                        }
+                    }
+                }
                 
                 // Get White apron if not wearing it
                 if (!Equipment.contains(WHITE_APRON) && !Inventory.contains(WHITE_APRON)) {
@@ -660,53 +892,12 @@ public class PiratesTreasureTree extends QuestTree {
                     Sleep.sleep(1000);
                 }
                 
-                // Talk to Wydin for job
+                // Talk to Wydin for job (only if we don't already have access)
                 NPC wydin = NPCs.closest("Wydin");
                 if (wydin != null) {
-                    log("Talking to Wydin for job...");
+                    log("Talking to Wydin for job access...");
                     if (wydin.interact("Talk-to")) {
-                        Sleep.sleepUntil(() -> Dialogues.inDialogue(), 5000);
-                        // Handle job dialogue
-                        Sleep.sleep(3000);
-                    }
-                }
-                
-                return Equipment.contains(WHITE_APRON) || Inventory.contains(WHITE_APRON);
-            }
-        };
-        
-        // Retrieve rum from crate (ID: 2071)
-        retrieveRumNode = new ActionNode("retrieve_rum", "Retrieve smuggled rum from crate") {
-            @Override
-            protected boolean performAction() {
-                log("Retrieving smuggled rum from crate (ID: " + RUM_CRATE_ID + ")...");
-                
-                // First, ensure we have and wear the white apron
-                if (!Equipment.contains(WHITE_APRON)) {
-                    if (Inventory.contains(WHITE_APRON)) {
-                        log("Wearing White apron...");
-                        Inventory.interact(WHITE_APRON, "Wear");
-                        Sleep.sleep(1000);
-                    } else {
-                        log("ERROR: No White apron found in inventory or equipment!");
-                        return false;
-                    }
-                }
-                
-                // Check if we need to talk to Wydin for job access
-                // Only talk to Wydin if we haven't already completed the job dialogue
-                boolean needToTalkToWydin = true;
-                
-                // Try to find Wydin and check if we need to talk to him
-                NPC wydin = NPCs.closest("Wydin");
-                if (wydin != null) {
-                    log("Checking if we need to talk to Wydin for job access...");
-                    
-                    // Try to interact with Wydin to see if dialogue opens
-                    if (wydin.interact("Talk-to")) {
-                        if (Sleep.sleepUntil(() -> Dialogues.inDialogue(), 3000)) {
-                            log("Dialogue opened with Wydin - completing job dialogue...");
-                            
+                        if (Sleep.sleepUntil(() -> Dialogues.inDialogue(), 5000)) {
                             // Handle job dialogue
                             while (Dialogues.inDialogue()) {
                                 if (Dialogues.areOptionsAvailable()) {
@@ -734,31 +925,97 @@ public class PiratesTreasureTree extends QuestTree {
                                 }
                             }
                             log("✅ Successfully completed job dialogue with Wydin!");
-                        } else {
-                            log("No dialogue opened with Wydin - we may already have job access");
-                            needToTalkToWydin = false;
                         }
+                    }
+                }
+                
+                return Equipment.contains(WHITE_APRON) || Inventory.contains(WHITE_APRON);
+            }
+        };
+        
+        // Retrieve rum from crate (ID: 2071)
+        retrieveRumNode = new ActionNode("retrieve_rum", "Retrieve smuggled rum from crate") {
+            @Override
+            protected boolean performAction() {
+                log("Retrieving smuggled rum from crate (ID: " + RUM_CRATE_ID + ")...");
+                
+                // CRITICAL FIX: Check if we already have the rum (skip if we do)
+                if (Inventory.contains(KARAMJAN_RUM)) {
+                    log("✅ Already have Karamjan rum - skipping retrieval!");
+                    return true;
+                }
+                
+                // First, ensure we have and wear the white apron
+                if (!Equipment.contains(WHITE_APRON)) {
+                    if (Inventory.contains(WHITE_APRON)) {
+                        log("Wearing White apron...");
+                        Inventory.interact(WHITE_APRON, "Wear");
+                        Sleep.sleep(1000);
                     } else {
-                        log("ERROR: Failed to interact with Wydin!");
+                        log("ERROR: No White apron found in inventory or equipment!");
                         return false;
                     }
-                } else {
-                    log("ERROR: Could not find Wydin!");
-                    return false;
+                }
+                
+                // CRITICAL FIX: Skip Wydin dialogue if we already have job access
+                // Try to access the crate first to see if we already have job access
+                GameObject door = GameObjects.closest("Door");
+                if (door != null && door.getTile().distance(new Tile(3017, 3206, 0)) < 5) {
+                    log("Testing if we already have job access by trying to open door...");
+                    if (door.interact("Open")) {
+                        Sleep.sleep(1000, 1500);
+                        // If door opened, we already have job access
+                        log("✅ Door opened successfully - we already have job access, skipping Wydin dialogue!");
+                    } else {
+                        log("Door interaction failed - we may need to talk to Wydin");
+                        // Only talk to Wydin if door interaction failed
+                        NPC wydin = NPCs.closest("Wydin");
+                        if (wydin != null) {
+                            log("Talking to Wydin for job access...");
+                            if (wydin.interact("Talk-to")) {
+                                if (Sleep.sleepUntil(() -> Dialogues.inDialogue(), 3000)) {
+                                    log("Dialogue opened with Wydin - completing job dialogue...");
+                                    
+                                    // Handle job dialogue
+                                    while (Dialogues.inDialogue()) {
+                                        if (Dialogues.areOptionsAvailable()) {
+                                            String[] options = Dialogues.getOptions();
+                                            log("Wydin dialogue options: " + java.util.Arrays.toString(options));
+                                            
+                                            // Look for job/work option
+                                            for (int i = 0; i < options.length; i++) {
+                                                if (options[i].contains("job") || options[i].contains("work") || options[i].contains("employment")) {
+                                                    log("Selecting job option: " + options[i]);
+                                                    Dialogues.chooseOption(i + 1);
+                                                    break;
+                                                }
+                                            }
+                                            Sleep.sleep(1000, 2000);
+                                        } else if (Dialogues.canContinue()) {
+                                            log("Continuing dialogue...");
+                                            if (!Dialogues.spaceToContinue()) {
+                                                Dialogues.continueDialogue();
+                                            }
+                                            Sleep.sleep(1000, 2000);
+                                        } else {
+                                            log("Dialogue state unclear, waiting...");
+                                            Sleep.sleep(1000);
+                                        }
+                                    }
+                                    log("✅ Successfully completed job dialogue with Wydin!");
+                                }
+                            }
+                        }
+                    }
                 }
                 
                 // Walk to the rum crate location if not close
-                if (Players.getLocal().getTile().distance(RUM_CRATE_LOCATION) > 5) {
+                if (Players.getLocal().getTile().distance(RUM_CRATE_LOCATION) > 8) {
                     log("Walking to rum crate location at " + RUM_CRATE_LOCATION);
-                    Walking.walk(RUM_CRATE_LOCATION);
-                    if (!Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(RUM_CRATE_LOCATION) <= 5, 10000)) {
-                        log("ERROR: Failed to walk to rum crate location!");
-                        return false;
-                    }
+                    new WalkToLocationNode("walk_rum_crate", RUM_CRATE_LOCATION, "Rum crate location").execute();
                 }
                 
-                // Open door to back room
-                GameObject door = GameObjects.closest("Door");
+                // Open door to back room (reuse door variable from earlier check)
                 if (door != null && door.getTile().distance(new Tile(3017, 3206, 0)) < 5) {
                     log("Opening door to back room...");
                     if (door.interact("Open")) {
@@ -806,9 +1063,8 @@ public class PiratesTreasureTree extends QuestTree {
                 log("Exchanging rum for chest key...");
                 
                 // Walk to Redbeard Frank
-                if (Players.getLocal().getTile().distance(REDBEARD_FRANK_LOCATION) > 10) {
-                    Walking.walk(REDBEARD_FRANK_LOCATION);
-                    Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(REDBEARD_FRANK_LOCATION) < 10, 10000);
+                if (Players.getLocal().getTile().distance(REDBEARD_FRANK_LOCATION) > 8) {
+                    new WalkToLocationNode("walk_redbeard_exchange", REDBEARD_FRANK_LOCATION, "Redbeard Frank").execute();
                 }
                 
                 // Talk to Redbeard Frank with rum
@@ -816,15 +1072,86 @@ public class PiratesTreasureTree extends QuestTree {
                 if (redbeard != null && Inventory.contains(KARAMJAN_RUM)) {
                     log("Talking to Redbeard Frank with rum...");
                     if (redbeard.interact("Talk-to")) {
-                        Sleep.sleepUntil(() -> Dialogues.inDialogue(), 5000);
-                        // Handle dialogue to exchange rum for key
-                        Sleep.sleep(3000);
-                        Sleep.sleepUntil(() -> Inventory.contains(CHEST_KEY), 5000);
-                        return true;
+                        if (Sleep.sleepUntil(() -> Dialogues.inDialogue(), 5000)) {
+                            log("✅ Dialogue opened with Redbeard Frank - handling rum exchange...");
+                            
+                            // Handle dialogue to exchange rum for key
+                            long startTime = System.currentTimeMillis();
+                            boolean dialogueHandled = false;
+                            
+                            while (Dialogues.inDialogue() && System.currentTimeMillis() - startTime < 15000) {
+                                if (Dialogues.areOptionsAvailable()) {
+                                    String[] options = Dialogues.getOptions();
+                                    log("Redbeard dialogue options: " + java.util.Arrays.toString(options));
+                                    
+                                    // Look for options related to rum, treasure, or giving items
+                                    boolean foundOption = false;
+                                    for (int i = 0; i < options.length; i++) {
+                                        String option = options[i].toLowerCase();
+                                        if (option.contains("rum") || option.contains("treasure") || 
+                                            option.contains("give") || option.contains("here") || 
+                                            option.contains("yes") || option.contains("okay")) {
+                                            log("Selecting option: " + options[i]);
+                                            Dialogues.chooseOption(i + 1);
+                                            foundOption = true;
+                                            Sleep.sleep(1000, 2000);
+                                            break;
+                                        }
+                                    }
+                                    
+                                    if (!foundOption) {
+                                        log("No specific option found, selecting first option");
+                                        Dialogues.chooseOption(1);
+                                        Sleep.sleep(1000, 2000);
+                                    }
+                                    
+                                } else if (Dialogues.canContinue()) {
+                                    log("Continuing dialogue...");
+                                    if (!Dialogues.spaceToContinue()) {
+                                        Dialogues.continueDialogue();
+                                    }
+                                    Sleep.sleep(1000, 2000);
+                                } else {
+                                    log("Dialogue state unclear, waiting...");
+                                    Sleep.sleep(1000);
+                                }
+                                
+                                // Check if we received the chest key
+                                if (Inventory.contains(CHEST_KEY)) {
+                                    log("✅ Successfully received chest key from Redbeard Frank!");
+                                    dialogueHandled = true;
+                                    break;
+                                }
+                            }
+                            
+                            if (!dialogueHandled) {
+                                log("WARN: Dialogue timeout or incomplete - checking if we got the key anyway");
+                            }
+                            
+                            // Final verification that we got the key
+                            if (Sleep.sleepUntil(() -> Inventory.contains(CHEST_KEY), 5000)) {
+                                log("✅ SUCCESS: Chest key confirmed in inventory!");
+                                return true;
+                            } else {
+                                log("ERROR: Failed to receive chest key from Redbeard Frank!");
+                                return false;
+                            }
+                        } else {
+                            log("ERROR: Dialogue did not open with Redbeard Frank!");
+                            return false;
+                        }
+                    } else {
+                        log("ERROR: Failed to interact with Redbeard Frank!");
+                        return false;
                     }
+                } else {
+                    if (redbeard == null) {
+                        log("ERROR: Could not find Redbeard Frank!");
+                    } else {
+                        log("ERROR: No Karamjan rum in inventory!");
+                    }
+                    return false;
                 }
-                
-                return false;
             }
         };
         
@@ -836,32 +1163,46 @@ public class PiratesTreasureTree extends QuestTree {
                 
                 // Travel near Blue Moon Inn (ground floor) first
                 Tile innGround = new Tile(BLUE_MOON_INN_UPSTAIRS.getX(), BLUE_MOON_INN_UPSTAIRS.getY(), 0);
-                if (Players.getLocal().getTile().distance(innGround) > 20) {
+                if (Players.getLocal().getTile().distance(innGround) > 8) {
                     log("Traveling to Blue Moon Inn (ground floor)...");
-                    Walking.walk(innGround);
-                    if (!Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(innGround) <= 8, 15000)) {
-                        log("ERROR: Failed to walk to Blue Moon Inn (ground)");
-                        return false;
-                    }
+                    new WalkToLocationNode("walk_blue_moon_ground", innGround, "Blue Moon Inn ground floor").execute();
                 }
 
-                // If we are not upstairs yet, try to climb up
+                // If we are not upstairs yet, get inside and climb up first
                 if (Players.getLocal().getZ() != 1) {
-                    GameObject stairs = GameObjects.closest(go -> go != null && ("Stairs".equals(go.getName()) || "Staircase".equals(go.getName()) || "Ladder".equals(go.getName())) && go.hasAction("Climb-up"));
+                    // Open the inn door if we're just outside
+                    GameObject door = GameObjects.closest(go -> go != null && "Door".equals(go.getName()) && go.hasAction("Open") && go.getTile().distance(innGround) <= 6);
+                    if (door != null) {
+                        log("Opening Blue Moon Inn door if closed...");
+                        door.interact("Open");
+                        Sleep.sleep(600, 1000);
+                    }
+
+                    // Find stairs/staircase/ladder within the inn vicinity and climb up
+                    GameObject stairs = GameObjects.closest(go -> go != null && ("Stairs".equals(go.getName()) || "Staircase".equals(go.getName()) || "Ladder".equals(go.getName())) && go.hasAction("Climb-up") && go.getTile().distance(innGround) <= 12);
                     if (stairs != null) {
+                        if (Players.getLocal().getTile().distance(stairs.getTile()) > 5) {
+                            new WalkToLocationNode("walk_to_stairs", stairs.getTile(), "Blue Moon Inn stairs").execute();
+                        }
                         log("Climbing upstairs in Blue Moon Inn...");
                         if (stairs.interact("Climb-up")) {
-                            Sleep.sleepUntil(() -> Players.getLocal().getZ() == 1, 6000);
+                            if (!Sleep.sleepUntil(() -> Players.getLocal().getZ() == 1, 6000)) {
+                                log("ERROR: Failed to change to upstairs level after climbing");
+                                return false; // Avoid pathing to upstairs tile while still on ground
+                            }
+                        } else {
+                            log("ERROR: Failed to interact with stairs");
+                            return false;
                         }
                     } else {
-                        log("WARN: Could not find stairs to go upstairs; attempting direct pathing");
+                        log("ERROR: Could not find stairs to go upstairs. Will retry from ground floor.");
+                        return false; // Guard: don't attempt to path to upstairs tile from ground
                     }
                 }
 
-                // Ensure we are close to the upstairs chest
-                if (Players.getLocal().getTile().distance(BLUE_MOON_INN_UPSTAIRS) > 6) {
-                    Walking.walk(BLUE_MOON_INN_UPSTAIRS);
-                    Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(BLUE_MOON_INN_UPSTAIRS) <= 4, 8000);
+                // Now we are upstairs; ensure we are close to the upstairs chest tile only on level 1
+                if (Players.getLocal().getZ() == 1 && Players.getLocal().getTile().distance(BLUE_MOON_INN_UPSTAIRS) > 6) {
+                    new WalkToLocationNode("walk_blue_moon_upstairs", BLUE_MOON_INN_UPSTAIRS, "Blue Moon Inn upstairs").execute();
                 }
                 
                 // Use key on the specific chest (ID: 2070)
@@ -908,10 +1249,32 @@ public class PiratesTreasureTree extends QuestTree {
                 log("Digging for treasure at Falador garden...");
                 
                 // Travel to Falador garden dig site
-                if (Players.getLocal().getTile().distance(FALADOR_GARDEN_DIG_SITE) > 20) {
+                if (Players.getLocal().getTile().distance(FALADOR_GARDEN_DIG_SITE) > 8) {
                     log("Traveling to Falador garden...");
-                    Walking.walk(FALADOR_GARDEN_DIG_SITE);
-                    Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(FALADOR_GARDEN_DIG_SITE) < 10, 15000);
+                    // Manage run energy before walking
+                    RunEnergyUtil.manageRunEnergy();
+                    new WalkToLocationNode("walk_falador_garden", FALADOR_GARDEN_DIG_SITE, "Falador garden").execute();
+                }
+
+                // Ensure we are exactly on the dig tile before digging to avoid premature digs en route
+                if (!Players.getLocal().getTile().equals(FALADOR_GARDEN_DIG_SITE)) {
+                    if (Players.getLocal().getTile().distance(FALADOR_GARDEN_DIG_SITE) > 1) {
+                        log("Not exactly on the dig tile yet; walking precisely to (" + FALADOR_GARDEN_DIG_SITE.getX() + ", " + FALADOR_GARDEN_DIG_SITE.getY() + ", " + FALADOR_GARDEN_DIG_SITE.getZ() + ")");
+                        new WalkToLocationNode("walk_exact_dig_tile", FALADOR_GARDEN_DIG_SITE, "Exact dig tile").execute();
+                        // After walking, re-check exact position next loop
+                        return false;
+                    }
+                }
+
+                // Make sure we have and have read the pirate message before digging
+                if (!Inventory.contains(PIRATE_MESSAGE)) {
+                    log("ERROR: Pirate message not in inventory; cannot dig yet.");
+                    return false;
+                }
+                // Read the message if it's not already been read; reading is safe even if already read
+                log("Reading Pirate message before digging...");
+                if (Inventory.interact(PIRATE_MESSAGE, "Read")) {
+                    Sleep.sleep(600, 1000);
                 }
                 
                 // Get spade if needed
@@ -952,7 +1315,8 @@ public class PiratesTreasureTree extends QuestTree {
                 }
                 
                 // Dig at the treasure location
-                if (Inventory.contains(SPADE)) {
+                // Final guard: only dig if exactly on the target tile
+                if (Inventory.contains(SPADE) && Players.getLocal().getTile().equals(FALADOR_GARDEN_DIG_SITE)) {
                     log("Digging for treasure...");
                     if (Inventory.interact(SPADE, "Dig")) {
                         Sleep.sleepUntil(() -> Inventory.contains(CASKET), 10000);
@@ -981,7 +1345,9 @@ public class PiratesTreasureTree extends QuestTree {
     }
     
     private boolean needToRetrieveRum() {
-        return !Inventory.contains(KARAMJAN_RUM) && !Inventory.contains(CHEST_KEY) && 
+        // Only retrieve rum at Port Sarim (not Karamja) after smuggling phase
+        return Players.getLocal().getTile().distance(KARAMJA_DOCK) > 100 &&
+               !Inventory.contains(KARAMJAN_RUM) && !Inventory.contains(CHEST_KEY) &&
                (Equipment.contains(WHITE_APRON) || Inventory.contains(WHITE_APRON));
     }
     
@@ -991,25 +1357,25 @@ public class PiratesTreasureTree extends QuestTree {
     }
     
     private boolean needToSmuggleRum() {
+        // Only need to smuggle if we haven't smuggled yet AND we have the items AND we're on Karamja
+        // CRITICAL FIX: Don't try to smuggle if we already completed smuggling (even if items are gone)
         return !hasSmuggledRum && Inventory.contains(KARAMJAN_RUM) && Inventory.count(BANANA) >= 10 &&
                Players.getLocal().getTile().distance(KARAMJA_DOCK) < 100;
     }
     
     private boolean needToGetRumAndBananas() {
-        // Only collect bananas if we haven't smuggled yet
-        return !hasSmuggledRum && (!Inventory.contains(KARAMJAN_RUM) || Inventory.count(BANANA) < 10) &&
-               Players.getLocal().getTile().distance(KARAMJA_DOCK) < 100;
+        // On Karamja: buy rum if not owned and collect bananas until 10
+        return Players.getLocal().getTile().distance(KARAMJA_DOCK) < 100 &&
+               (!Inventory.contains(KARAMJAN_RUM) || Inventory.count(BANANA) < 10);
     }
     
     private boolean needToTravelToKaramja() {
-        // Only travel to Karamja AFTER quest is started via dialogue with Redbeard Frank
-        int config = PlayerSettings.getConfig(QUEST_CONFIG_ID);
-        boolean questStarted = config >= QUEST_STARTED || hasDialogStartedQuest;
-        // Only travel to Karamja if we haven't already smuggled rum
-        return questStarted && !hasSmuggledRum &&
-               !Inventory.contains(KARAMJAN_RUM) &&
-               !Inventory.contains(CHEST_KEY) &&
-               Players.getLocal().getTile().distance(KARAMJA_DOCK) > 100;
+        // Travel when quest started, we're not on Karamja, and we don't yet have rum/key/message/casket
+        boolean questStarted = Quests.isStarted(FreeQuest.PIRATES_TREASURE);
+        boolean onKaramja = Players.getLocal().getTile().distance(KARAMJA_DOCK) < 100;
+        boolean haveProgressItems = Inventory.contains(KARAMJAN_RUM) || Inventory.contains(CHEST_KEY) ||
+                                     Inventory.contains(PIRATE_MESSAGE) || Inventory.contains(CASKET);
+        return questStarted && !onKaramja && !haveProgressItems;
     }
 
     // ----- Helper methods for Shop reflection to avoid API import issues -----

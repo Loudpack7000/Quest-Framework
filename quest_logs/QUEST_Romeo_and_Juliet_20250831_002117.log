@@ -1,0 +1,89 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Romeo and Juliet
+Started: 2025-08-31 00:21:17
+Player: WhoCouldHave
+Starting Location: (3165, 3487, 0)
+Starting Inventory: Water rune x159, Energy potion(4) x10, Hammer, Spade, Bronze pickaxe, Law rune x97, Coins x348, Air rune x155, Amulet of accuracy, Beer, Earth rune x2999, Redberry pie, Cadava berries, Garlic, Chaos rune x70, Iron bar x2
+=====================================
+
+[00:21:17] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:21:17] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:21:17] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:21:17] ACTION: Quest recording started
+    SCRIPT: // Quest: Romeo and Juliet
+
+[00:21:17] ACTIVE_QUEST_DETECTED: PRINCE_ALI_RESCUE is currently in progress
+[00:21:46] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:21:46] USER_ACTION: Open | Object_Tile: (3165, 3433, 0)
+[00:22:01] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[00:22:01] USER_ACTION: Climb-up | Object_Tile: (3156, 3435, 0)
+[00:22:09] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:22:09] USER_ACTION: Open | Object_Tile: (3159, 3438, 1)
+[00:22:15] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:22:15] USER_ACTION: Open | Object_Tile: (3157, 3431, 1)
+[00:22:17] ACTION: Selected 'Talk-to' on Juliet
+    SCRIPT: NPCs.closest("Juliet").interact("Talk-to");
+
+[00:22:17] USER_ACTION: Talk-to | NPC_Tile: (3158, 3425, 1)
+[00:22:39] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[00:22:39] USER_ACTION: Climb-down | Object_Tile: (3156, 3435, 1)
+[00:23:05] ACTION: Selected 'Talk-to' on Romeo
+    SCRIPT: NPCs.closest("Romeo").interact("Talk-to");
+
+[00:23:05] USER_ACTION: Talk-to | NPC_Tile: (3214, 3421, 0)
+[00:25:29] ACTION: Selected 'Talk-to' on Father Lawrence
+    SCRIPT: NPCs.closest("Father Lawrence").interact("Talk-to");
+
+[00:25:29] USER_ACTION: Talk-to | NPC_Tile: (3254, 3485, 0)
+[00:26:06] ACTION: Selected 'Cast' on Varrock Teleport
+    SCRIPT: // Cast on Varrock Teleport
+
+[00:26:06] USER_ACTION: Cast | Target: Varrock Teleport
+[00:26:06] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[00:26:06] SPELLBOOK_OPENED: Player opened the magic spellbook
+[00:26:38] ACTION: Selected 'Talk-to' on Apothecary
+    SCRIPT: NPCs.closest("Apothecary").interact("Talk-to");
+
+[00:26:38] USER_ACTION: Talk-to | NPC_Tile: (3192, 3402, 0)
+[00:26:56] ACTION: Selected 'Talk-to' on Apothecary
+    SCRIPT: NPCs.closest("Apothecary").interact("Talk-to");
+
+[00:26:56] USER_ACTION: Talk-to | NPC_Tile: (3192, 3402, 0)
+[00:27:45] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:27:45] USER_ACTION: Open | Object_Tile: (3165, 3433, 0)
+[00:28:00] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[00:28:00] USER_ACTION: Climb-up | Object_Tile: (3156, 3435, 0)
+[00:28:09] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:28:09] USER_ACTION: Open | Object_Tile: (3159, 3438, 1)
+[00:28:13] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:28:13] USER_ACTION: Open | Object_Tile: (3157, 3431, 1)
+[00:28:17] ACTION: Selected 'Talk-to' on Juliet
+    SCRIPT: NPCs.closest("Juliet").interact("Talk-to");
+
+[00:28:17] USER_ACTION: Talk-to | NPC_Tile: (3158, 3425, 1)
+[00:29:59] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[00:30:11] QUEST_END: === QUEST RECORDING ENDED ===

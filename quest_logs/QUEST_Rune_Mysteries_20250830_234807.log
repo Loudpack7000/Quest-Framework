@@ -1,0 +1,40 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Rune Mysteries
+Started: 2025-08-30 23:48:07
+Player: CharlesMont
+Starting Location: (3177, 3434, 0)
+Starting Inventory: Gold bar, Energy potion(4) x7, Research package, Coins x12282, Cadava berries
+=====================================
+
+[23:48:07] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[23:48:07] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[23:48:07] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[23:48:07] ACTION: Quest recording started
+    SCRIPT: // Quest: Rune Mysteries
+
+[23:48:07] ACTIVE_QUEST_DETECTED: RUNE_MYSTERIES is currently in progress
+[23:48:55] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[23:48:59] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[23:49:00] ACTION: Selected 'Talk-to' on Aubury
+    SCRIPT: NPCs.closest("Aubury").interact("Talk-to");
+
+[23:49:00] USER_ACTION: Talk-to | NPC_Tile: (3254, 3402, 0)
+[23:50:24] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[23:51:33] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[23:52:50] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[23:53:03] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[23:53:03] QUEST_END: === QUEST RECORDING ENDED ===

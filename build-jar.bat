@@ -149,6 +149,10 @@ echo - Compiling ItemGatheringUtil.java (Unified Item Management)...
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\utils\ItemGatheringUtil.java"
 if %errorlevel% neq 0 goto :compile_error
 
+echo - Compiling RunEnergyUtil.java (Run Energy Management)...
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\utils\RunEnergyUtil.java"
+if %errorlevel% neq 0 goto :compile_error
+
 echo - Compiling core classes (part 1)...
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\core\QuestDatabase.java"
 if %errorlevel% neq 0 goto :compile_error
@@ -190,6 +194,9 @@ javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\
 if %errorlevel% neq 0 goto :compile_error
 
 rem New action nodes
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\actions\TakeGroundItemNode.java"
+if %errorlevel% neq 0 goto :compile_error
+
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\actions\EquipItemsNode.java"
 if %errorlevel% neq 0 goto :compile_error
 
@@ -202,6 +209,7 @@ if %errorlevel% neq 0 goto :compile_error
 rem New action node: UseItemOnNPCNode
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\actions\UseItemOnNPCNode.java"
 if %errorlevel% neq 0 goto :compile_error
+
 
 echo   - Compiling decision nodes...
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\nodes\decisions\QuestProgressDecisionNode.java"
@@ -263,8 +271,16 @@ rem New quest tree: The Knight's Sword
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\KnightsSwordTree.java"
 if %errorlevel% neq 0 goto :compile_error
 
-rem New quest tree: Prince Ali Rescue
-javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\PrinceAliRescueTree.java"
+rem Prince Ali Rescue tree - TODO: Create implementation
+rem javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\PrinceAliRescueTree.java"
+rem if %errorlevel% neq 0 goto :compile_error
+
+rem New quest tree: Ernest the Chicken
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\ErnestTheChickenTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
+rem New quest tree: Below Ice Mountain
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\BelowIceMountainTree.java"
 if %errorlevel% neq 0 goto :compile_error
 
 echo   - Compiling tree wrapper...

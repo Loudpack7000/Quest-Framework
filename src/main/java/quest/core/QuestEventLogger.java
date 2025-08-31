@@ -320,11 +320,14 @@ public class QuestEventLogger implements ActionListener {
         // Log the ACTUAL action that was performed (for non-consumables and non-dialogue-options)
         String actionDescription = "Selected '" + action + "' on " + targetName;
         String scriptCode = generateScriptCode(action, targetName, menuRow);
-        
+
         logAction(actionDescription, scriptCode);
-        logDetail("USER_ACTION", action + " | " + coordinateInfo);
-        
-        script.log("REAL ACTION DETECTED: " + action + " -> " + targetName);
+
+        // Only log additional details for non-banking actions to prevent spam
+        if (!isBankingAction(action)) {
+            logDetail("USER_ACTION", action + " | " + coordinateInfo);
+            script.log("REAL ACTION DETECTED: " + action + " -> " + targetName);
+        }
         
         // SMART CONFIG CHECK: Check configs after quest-relevant actions
         if (isQuestRelevantAction(action, targetName)) {
@@ -345,25 +348,36 @@ public class QuestEventLogger implements ActionListener {
         if (isBankingRelevantAction(action, targetName)) {
             smartBankingCheck("User action: " + action + " on " + targetName);
         }
-        
+
         // SMART COMBAT CHECK: Check combat after combat-relevant actions
         if (isCombatRelevantAction(action, targetName)) {
             smartCombatCheck("User action: " + action + " on " + targetName);
         }
-        
+
         // SMART PRAYER CHECK: Check prayers after prayer-relevant actions
         if (isPrayerRelevantAction(action, targetName)) {
             smartPrayerCheck("User action: " + action + " on " + targetName);
         }
-        
+
         // SMART MAGIC CHECK: Check magic after magic-relevant actions
         if (isMagicRelevantAction(action, targetName)) {
             smartMagicCheck("User action: " + action + " on " + targetName);
         }
-        
-        } catch (Exception e) {
-            // Silent catch to prevent spam
-        }
+
+    } catch (Exception e) {
+        // Silent catch to prevent spam in onAction method
+    }
+}
+
+    /**
+     * Check if action is a banking-related action to reduce duplicate logging
+     */
+    private boolean isBankingAction(String action) {
+        return action != null && (
+            action.startsWith("Withdraw") ||
+            action.startsWith("Deposit") ||
+            action.equals("Bank")
+        );
     }
     
     // REMOVED: Conflicting dialogue detection method - now handled by onAction() with mouse position
@@ -1467,7 +1481,7 @@ public class QuestEventLogger implements ActionListener {
     
     // Removed: legacyQuestStates - unused after varbit-based tracking
     
-    // 8. Quest Progress Tracking - Enhanced with Real-Time Varbit Monitoring
+    // 8. Quest Progress Tracking - Enhanced with Real-Time Varbit Monitoring + NEW API Integration
     private void checkQuestProgress() {
         long currentTime = System.currentTimeMillis();
 
@@ -1478,6 +1492,9 @@ public class QuestEventLogger implements ActionListener {
         lastQuestCheckTime = currentTime;
 
         try {
+            // NEW: Enhanced quest detection using DreamBot's built-in API
+            checkAllFreeQuestsWithAPI();
+            
             // Refresh active quest detection (in case it changes). This method logs only on changes.
             detectCurrentActiveQuest();
             // PRIORITY: Prefer active quest progress via Quest API, then generic known varbits
@@ -1497,6 +1514,43 @@ public class QuestEventLogger implements ActionListener {
 
     // Track last seen varbit per active quest to avoid spam
     private final Map<Quest, Integer> lastActiveQuestVarbitValues = new HashMap<>();
+    
+    // NEW: Enhanced quest detection using DreamBot's built-in API methods
+    private void checkAllFreeQuestsWithAPI() {
+        try {
+            // Check all available free quests using the new API
+            for (FreeQuest quest : FreeQuest.values()) {
+                if (Quests.isStarted(quest)) {
+                    // Get detailed quest state
+                    Quest.State state = quest.getState();
+                    
+                    // Log quest detection with state
+                    if (!lastActiveQuestVarbitValues.containsKey(quest)) {
+                        logDetail("QUEST_API_DETECTED", quest.name() + " - State: " + state);
+                        script.log("QUEST_API_DETECTED: " + quest.name() + " - State: " + state);
+                        
+                        // FIX: Add quest to tracking map to prevent repeated logging
+                        lastActiveQuestVarbitValues.put(quest, 0);
+                        
+                        // Check requirements for new quests
+                        if (!quest.hasRequirements()) {
+                            logDetail("QUEST_API_REQUIREMENTS", quest.name() + " - Missing requirements");
+                            script.log("QUEST_API_REQUIREMENTS: " + quest.name() + " - Missing requirements");
+                        }
+                    }
+                    
+                    // Check for quest completion
+                    if (Quests.isFinished(quest)) {
+                        logDetail("QUEST_API_COMPLETED", quest.name() + " - Quest finished");
+                        script.log("QUEST_API_COMPLETED: " + quest.name() + " - Quest finished");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // Silent catch to prevent breaking the main loop
+            script.log("QUEST_API_ERROR: " + e.getMessage());
+        }
+    }
 
     // Prefer DreamBot Quest API for the currently active quest's varbit when possible
     private void checkActiveQuestProgress() {
@@ -2300,5 +2354,12 @@ public class QuestEventLogger implements ActionListener {
         } catch (IOException e) {
             script.log("Error closing quest log: " + e.getMessage());
         }
+    }
+
+    /**
+     * Get the current quest name being logged
+     */
+    public String getCurrentQuest() {
+        return currentQuest;
     }
 }

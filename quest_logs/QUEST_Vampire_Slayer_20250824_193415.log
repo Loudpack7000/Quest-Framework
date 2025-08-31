@@ -1,0 +1,119 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Vampire Slayer
+Started: 2025-08-24 19:34:15
+Player: TereIsAChair
+Starting Location: (3165, 3485, 0)
+Starting Inventory: Energy potion(3), Energy potion(4) x4, Salmon x5, Coins x15000
+=====================================
+
+[19:34:15] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[19:34:15] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[19:34:15] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[19:34:15] ACTION: Quest recording started
+    SCRIPT: // Quest: Vampire Slayer
+
+[19:34:15] ACTIVE_QUEST_DETECTED: PRINCE_ALI_RESCUE is currently in progress
+[19:34:18] ACTION: Selected 'Bank' on Banker
+    SCRIPT: // Bank on Banker
+
+[19:34:18] USER_ACTION: Bank | Target: Banker
+[19:34:20] ACTION: Selected 'Exchange' on Grand Exchange booth
+    SCRIPT: // Exchange on Grand Exchange booth
+
+[19:34:20] USER_ACTION: Exchange | Target: Grand Exchange booth
+[19:34:26] ACTION: Selected 'Select' on Hammer
+    SCRIPT: // Select on Hammer
+
+[19:34:26] USER_ACTION: Select | Target: Hammer
+[19:35:09] ACTION: Selected 'Cast' on Lumbridge Home Teleport
+    SCRIPT: // Cast on Lumbridge Home Teleport
+
+[19:35:09] USER_ACTION: Cast | Target: Lumbridge Home Teleport
+[19:35:09] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[19:35:09] SPELLBOOK_OPENED: Player opened the magic spellbook
+[19:36:13] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[19:36:39] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[19:36:41] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[19:36:42] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[19:36:43] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[19:36:43] USER_ACTION: Open | Object_Tile: (3098, 3270, 0)
+[19:36:49] ACTION: Selected 'Talk-to' on Morgan
+    SCRIPT: NPCs.closest("Morgan").interact("Talk-to");
+
+[19:36:49] USER_ACTION: Talk-to | NPC_Tile: (3099, 3268, 0)
+[19:38:12] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[19:38:16] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[19:38:51] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[19:38:53] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[19:38:54] ACTION: Selected 'Use' on Vial
+    SCRIPT: Inventory.interact("Vial", "Use");
+
+[19:38:54] USER_ACTION: Use | Target: Vial
+[19:38:54] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3) x2, Energy potion(4), Hammer, Salmon x5, Coins x14826, Vial, Energy potion(2), Garlic, Beer
+
+[19:38:55] ACTION: Selected 'Use' on Vial -> Vial
+    SCRIPT: // Item-on-item
+Inventory.use("Vial", "Vial");
+
+[19:38:55] USER_ACTION: Use | Target: Vial -> Vial
+[19:38:55] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[19:38:56] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[19:38:59] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[19:39:02] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[19:39:04] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[19:39:06] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[19:39:06] USER_ACTION: Drop | Target: Vial
+[19:39:06] ACTION: Inventory changed: Items lost/used
+    SCRIPT: // Current inventory: Energy potion(3) x2, Hammer, Salmon x5, Coins x14826, Vial x2, Energy potion(1), Garlic, Beer
+
+[19:39:07] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[19:39:07] USER_ACTION: Drop | Target: Vial
+[19:39:07] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[19:39:39] ACTION: Selected 'Talk-to' on Dr Harlow
+    SCRIPT: NPCs.closest("Dr Harlow").interact("Talk-to");
+
+[19:39:39] USER_ACTION: Talk-to | NPC_Tile: (3222, 3396, 0)
+[19:39:51] ACTION: Selected 'Talk-to' on Dr Harlow
+    SCRIPT: NPCs.closest("Dr Harlow").interact("Talk-to");
+
+[19:39:51] USER_ACTION: Talk-to | NPC_Tile: (3222, 3396, 0)
+[19:40:17] QUEST_END: === QUEST RECORDING ENDED ===

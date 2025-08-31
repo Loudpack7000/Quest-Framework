@@ -21,6 +21,7 @@ public class SimpleQuestMapper {
     addMapping("GOBLIN_DIPLOMACY", "Goblin Diplomacy");
     addMapping("BLACK_KNIGHTS_FORTRESS", "Black Knights' Fortress");
     addMapping("THE_CORSAIR_CURSE", "The Corsair Curse");
+    addMapping("BELOW_ICE_MOUNTAIN", "Below Ice Mountain");
     }
     
     /**

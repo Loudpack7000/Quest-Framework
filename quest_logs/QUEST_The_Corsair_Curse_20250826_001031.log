@@ -1,0 +1,18 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: The Corsair Curse
+Started: 2025-08-26 00:10:31
+Player: scoober2ber
+Starting Location: (2948, 3368, 0)
+Starting Inventory: Energy potion(4) x10, Water rune x70, Earth rune x80, Spade, Tinderbox, Rune axe, Coins x364, Law rune x60, Air rune x60
+=====================================
+
+[00:10:31] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:10:31] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:10:31] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:10:31] ACTION: Quest recording started
+    SCRIPT: // Quest: The Corsair Curse
+
+[00:10:31] ACTIVE_QUEST_DETECTED: CORSAIR_CURSE is currently in progress
+[00:11:24] QUEST_END: === QUEST RECORDING ENDED ===

@@ -1,0 +1,46 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Ernest the Chicken
+Started: 2025-08-31 13:36:16
+Player: 72diamond329
+Starting Location: (3088, 3336, 0)
+Starting Inventory: Energy potion(3) x4, Water rune x66, Energy potion(4) x4, Spade, Salmon x5, Law rune x61, Energy potion(1), Coins x2584, Air rune x31, Gold bar, Pressure gauge, Earth rune x69, Chaos rune x66, Key
+=====================================
+
+[13:36:16] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[13:36:16] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[13:36:16] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[13:36:16] ACTION: Quest recording started
+    SCRIPT: // Quest: Ernest the Chicken
+
+[13:36:16] ACTIVE_QUEST_DETECTED: ERNEST_THE_CHICKEN is currently in progress
+[13:36:33] ACTION: Selected 'Open' on Large door
+    SCRIPT: GameObjects.closest("Large door").interact("Open");
+
+[13:36:33] USER_ACTION: Open | Object_Tile: (3108, 3353, 0)
+[13:36:43] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[13:36:43] USER_ACTION: Open | Object_Tile: (3119, 3356, 0)
+[13:37:08] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[13:37:08] USER_ACTION: Open | Object_Tile: (3107, 3367, 0)
+[13:37:21] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[13:37:21] USER_ACTION: Open | Object_Tile: (3109, 3358, 0)
+[13:37:28] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[13:37:28] USER_ACTION: Open | Object_Tile: (3101, 3371, 0)
+[13:37:30] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[13:37:30] USER_ACTION: Open | Object_Tile: (3102, 3371, 0)
+[13:37:36] ACTION: Selected 'Take' on Poison
+    SCRIPT: // Take on Poison
+
+[13:37:36] USER_ACTION: Take | Target: Poison
+[13:37:42] QUEST_END: === QUEST RECORDING ENDED ===

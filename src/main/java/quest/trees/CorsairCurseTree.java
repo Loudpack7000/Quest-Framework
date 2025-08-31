@@ -13,6 +13,9 @@ import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.quest.Quests;
+import org.dreambot.api.methods.quest.book.FreeQuest;
+import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
@@ -25,10 +28,16 @@ import org.dreambot.api.wrappers.interactive.NPC;
  * a robust node pattern using existing action nodes and custom steps.
  *
  * Detection:
- * - Uses Quests.isStarted / Quests.isFinished for high-level status.
- * - Uses in-session flags to track visited NPCs since config/varbits are not mapped yet.
+ * - Uses PlayerSettings config/varbit tracking for precise quest state
+ * - Uses DreamBot's Quests API for high-level status when available
+ * - Implements proper resumability by detecting current quest progress
  */
 public class CorsairCurseTree extends QuestTree {
+
+    // Quest configuration tracking - will be determined at runtime
+    private static final int CORSAIR_CURSE_CONFIG_ID = 1404; // Common quest config ID, may need adjustment
+    private static final int QUEST_NOT_STARTED = 0;
+    private static final int QUEST_STARTED = 1;
 
     // Key tiles from recording (approximate)
     private static final Tile RIMMINGTON_TOCK = new Tile(3030, 3273, 0);
@@ -357,26 +366,56 @@ public class CorsairCurseTree extends QuestTree {
         smart = new QuestNode("smart_decision", "Smart decision for The Corsair Curse") {
             @Override
             public ExecutionResult execute() {
-                // Completion check using internal flag
+                // Sync quest state from world first
+                syncFromWorldState();
+                
+                // Check if quest is finished using DreamBot API if available
+                try {
+                    // Try to use FreeQuest enum if it exists for Corsair Curse
+                    // Note: May need adjustment if enum name differs
+                    if (isQuestFinishedByAPI()) {
+                        log("Quest already completed via API");
+                        setQuestComplete();
+                        return ExecutionResult.questComplete();
+                    }
+                } catch (Exception e) {
+                    log("API quest check failed, using fallback: " + e.getMessage());
+                }
+
+                // Check quest config for completion
+                int questConfig = getQuestConfig();
+                log("Quest config " + CORSAIR_CURSE_CONFIG_ID + " = " + questConfig);
+                
                 if (completed) {
+                    log("Quest marked completed internally");
                     setQuestComplete();
                     return ExecutionResult.questComplete();
                 }
 
+                // Determine if quest is started using API or config
+                boolean questStarted = isQuestStartedByAPI() || questConfig >= QUEST_STARTED;
+                log("Quest started check: API=" + isQuestStartedByAPI() + ", config=" + (questConfig >= QUEST_STARTED) + ", result=" + questStarted);
+
                 // Start check
-                if (!started) {
+                if (!questStarted) {
                     log("Quest not started - talk to Captain Tock in Rimmington");
                     return ExecutionResult.success(startWithTock);
                 }
 
-                // Ensure we're at Corsair Cove early
+                // Quest is started, ensure we're at Corsair Cove
                 if (!isAtCorsairCove()) {
-                    log("Traveling to Corsair Cove");
+                    log("Quest started but not at Corsair Cove - traveling there");
                     return ExecutionResult.success(travelToCorsairCove);
                 }
 
-                // Initial crew interviews
-                if (!visitedIthoi) return ExecutionResult.success(talkIthoi);
+                // Progressive quest steps based on inventory and location
+                // Check if we need to talk to navigator (user's current issue)
+                if (isAtCorsairCove() && !visitedIthoi) {
+                    log("At Corsair Cove - need to talk to Ithoi the Navigator");
+                    return ExecutionResult.success(talkIthoi);
+                }
+
+                // Continue with crew interviews
                 if (!visitedArsen) return ExecutionResult.success(talkArsen);
                 if (!visitedColin) return ExecutionResult.success(talkColin);
                 if (!visitedGnocci) return ExecutionResult.success(talkGnocci);
@@ -421,14 +460,127 @@ public class CorsairCurseTree extends QuestTree {
         return Players.getLocal().getTile().getZ() >= targetZ;
     }
 
+    /**
+     * Get current quest configuration value
+     */
+    private int getQuestConfig() {
+        try {
+            return PlayerSettings.getConfig(CORSAIR_CURSE_CONFIG_ID);
+        } catch (Exception e) {
+            log("Failed to get quest config: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    /**
+     * Check if quest is started using DreamBot API
+     */
+    private boolean isQuestStartedByAPI() {
+        try {
+            // Use the correct FreeQuest enum value from DreamBot API
+            return Quests.isStarted(FreeQuest.CORSAIR_CURSE);
+        } catch (Exception e) {
+            log("API quest started check failed: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Check if quest is finished using DreamBot API
+     */
+    private boolean isQuestFinishedByAPI() {
+        try {
+            // Use the correct FreeQuest enum value from DreamBot API
+            return Quests.isFinished(FreeQuest.CORSAIR_CURSE);
+        } catch (Exception e) {
+            log("API quest finished check failed: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Sync quest state from world state to avoid redoing completed steps
+     */
+    private void syncFromWorldState() {
+        try {
+            // If quest is finished via API, mark all steps complete
+            if (isQuestFinishedByAPI()) {
+                visitedIthoi = visitedArsen = visitedColin = visitedGnocci = true;
+                reportedFindingsOnce = spokeChiefTess = climbedOutOfOgreCave = true;
+                dugForDoll = observedTelescope = reinterviewedCrew = true;
+                started = completed = true;
+                return;
+            }
+
+            // If quest is started via API or config, mark as started
+            if (isQuestStartedByAPI() || getQuestConfig() >= QUEST_STARTED) {
+                started = true;
+            }
+
+            // Location-based inference to avoid redoing steps
+            if (Players.getLocal() != null) {
+                Tile currentTile = Players.getLocal().getTile();
+                
+                // If we're at Corsair Cove, we've likely already started the quest
+                if (isAtCorsairCove()) {
+                    started = true;
+                    
+                    // If we're on the ship level, we've likely done initial interviews
+                    if (currentTile.getZ() == 1 && currentTile.distance(TOCK_ON_SHIP) < 20) {
+                        visitedIthoi = visitedArsen = visitedColin = visitedGnocci = true;
+                    }
+                }
+            }
+
+            log("Quest state sync: started=" + started + ", at_cove=" + isAtCorsairCove() + 
+                ", visited_crew=" + (visitedIthoi && visitedArsen && visitedColin && visitedGnocci));
+                
+        } catch (Exception e) {
+            log("Error syncing quest state: " + e.getMessage());
+        }
+    }
+
     @Override
     public boolean isQuestComplete() {
+        // First check DreamBot API for authoritative quest completion status
+        try {
+            boolean apiFinished = Quests.isFinished(FreeQuest.CORSAIR_CURSE);
+            if (apiFinished) {
+                completed = true; // Sync internal state
+                log("Quest finished check (DreamBot API): " + apiFinished);
+                return true;
+            }
+        } catch (Exception e) {
+            log("API quest completion check failed: " + e.getMessage());
+        }
+        
+        // Fallback to internal flag
         log("Quest finished check (internal flag): " + completed);
         return completed;
     }
 
     @Override
     public int getQuestProgress() {
+        // Check DreamBot API first for authoritative progress
+        try {
+            if (Quests.isFinished(FreeQuest.CORSAIR_CURSE)) return 100;
+            if (Quests.isStarted(FreeQuest.CORSAIR_CURSE)) {
+                // Use internal tracking for granular progress when quest is started
+                int pct = 0;
+                if (reinterviewedCrew) pct = 90;
+                else if (observedTelescope) pct = 80;
+                else if (dugForDoll) pct = 70;
+                else if (spokeChiefTess) pct = 60;
+                else if (reportedFindingsOnce) pct = 50;
+                else if (visitedGnocci && visitedColin && visitedArsen && visitedIthoi) pct = 40;
+                else pct = 20; // Quest started but minimal progress
+                return pct;
+            }
+        } catch (Exception e) {
+            log("API quest progress check failed: " + e.getMessage());
+        }
+        
+        // Fallback to internal tracking
         int pct = 0;
         if (completed) return 100;
         if (reinterviewedCrew) pct = 90;

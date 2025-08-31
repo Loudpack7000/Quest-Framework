@@ -1,0 +1,129 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Below Ice Mountain
+Started: 2025-08-21 00:13:18
+Player: TereIsAChair
+Starting Location: (3050, 3414, 0)
+Starting Inventory: Energy potion(3) x2, Water rune x69, Spade, Rune axe, Coins x12371, Law rune x50, Energy potion(2), Cooked meat, Air rune x3, Beer, Bread, Knife, Earth rune x78, Mithril pickaxe, Chaos rune x101
+=====================================
+
+[00:13:18] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:13:18] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:13:18] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:13:18] ACTION: Quest recording started
+    SCRIPT: // Quest: Below Ice Mountain
+
+[00:13:18] ACTIVE_QUEST_DETECTED: BELOW_ICE_MOUNTAIN is currently in progress
+[00:13:34] ACTION: Selected 'Talk-to' on Checkal
+    SCRIPT: NPCs.closest("Checkal").interact("Talk-to");
+
+[00:13:34] USER_ACTION: Talk-to | NPC_Tile: (3087, 3415, 0)
+[00:14:28] ACTION: Selected 'Talk-to' on Atlas
+    SCRIPT: NPCs.closest("Atlas").interact("Talk-to");
+
+[00:14:28] USER_ACTION: Talk-to | NPC_Tile: (3076, 3438, 0)
+[00:17:15] ACTION: Selected 'Open' on Longhall door
+    SCRIPT: GameObjects.closest("Longhall door").interact("Open");
+
+[00:17:15] USER_ACTION: Open | Object_Tile: (3078, 3435, 0)
+[00:17:41] ACTION: Selected 'Talk-to' on Checkal
+    SCRIPT: NPCs.closest("Checkal").interact("Talk-to");
+
+[00:17:41] USER_ACTION: Talk-to | NPC_Tile: (3087, 3415, 0)
+[00:17:49] ACTION: Selected 'Perform' on Flex
+    SCRIPT: // Perform on Flex
+
+[00:17:49] USER_ACTION: Perform | Target: Flex
+[00:17:52] ACTION: Selected 'Cast' on Varrock Teleport
+    SCRIPT: // Cast on Varrock Teleport
+
+[00:17:52] USER_ACTION: Cast | Target: Varrock Teleport
+[00:17:52] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[00:17:52] SPELLBOOK_OPENED: Player opened the magic spellbook
+[00:18:00] ACTION: Selected 'Read journal:' on Below Ice Mountain
+    SCRIPT: // Read journal: on Below Ice Mountain
+
+[00:18:00] USER_ACTION: Read journal: | Target: Below Ice Mountain
+[00:18:08] ACTION: Selected 'Talk-to' on Charlie the Tramp
+    SCRIPT: NPCs.closest("Charlie the Tramp").interact("Talk-to");
+
+[00:18:08] USER_ACTION: Talk-to | NPC_Tile: (3208, 3392, 0)
+[00:18:38] ACTION: Selected 'Talk-to' on Cook
+    SCRIPT: NPCs.closest("Cook").interact("Talk-to");
+
+[00:18:38] USER_ACTION: Talk-to | NPC_Tile: (3229, 3401, 0)
+[00:19:21] ACTION: Selected 'Use' on Knife
+    SCRIPT: Inventory.interact("Knife", "Use");
+
+[00:19:21] USER_ACTION: Use | Target: Knife
+[00:19:21] ACTION: Inventory changed: Items lost/used
+    SCRIPT: // Current inventory: Energy potion(3) x2, Water rune x69, Spade, Rune axe, Coins x12370, Law rune x49, Energy potion(2), Cooked meat, Beer, Bread, Knife, Earth rune x78, Mithril pickaxe, Chaos rune x101
+
+[00:19:22] ACTION: Selected 'Use' on Knife -> Bread
+    SCRIPT: // Item-on-item
+Inventory.use("Knife", "Bread");
+
+[00:19:22] USER_ACTION: Use | Target: Knife -> Bread
+[00:20:36] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[00:20:38] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[00:20:40] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:20:41] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[00:20:43] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[00:20:47] ACTION: Selected 'Talk-to' on Marley
+    SCRIPT: NPCs.closest("Marley").interact("Talk-to");
+
+[00:20:47] USER_ACTION: Talk-to | NPC_Tile: (3088, 3472, 0)
+[00:22:33] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[00:22:35] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:22:36] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[00:22:38] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[00:22:39] ACTION: Selected 'Use' on Vial
+    SCRIPT: Inventory.interact("Vial", "Use");
+
+[00:22:39] USER_ACTION: Use | Target: Vial
+[00:22:40] ACTION: Selected 'Use' on Vial
+    SCRIPT: Inventory.interact("Vial", "Use");
+
+[00:22:40] USER_ACTION: Use | Target: Vial
+[00:22:41] ACTION: Selected 'Use' on Vial -> Vial
+    SCRIPT: // Item-on-item
+Inventory.use("Vial", "Vial");
+
+[00:22:41] USER_ACTION: Use | Target: Vial -> Vial
+[00:22:42] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:22:42] USER_ACTION: Drop | Target: Vial
+[00:22:45] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:22:45] USER_ACTION: Drop | Target: Vial
+[00:22:45] ACTION: Inventory changed: Items changed
+    SCRIPT: // Current inventory: Water rune x69, Knife, Earth rune x78, Spade, Rune axe, Coins x12370, Law rune x49, Vial x2, Mithril pickaxe, Chaos rune x101, Beer
+
+[00:22:46] ACTION: Selected 'Talk-to' on Burntof
+    SCRIPT: NPCs.closest("Burntof").interact("Talk-to");
+
+[00:22:46] USER_ACTION: Talk-to | NPC_Tile: (2956, 3367, 0)
+[00:24:39] QUEST_END: === QUEST RECORDING ENDED ===

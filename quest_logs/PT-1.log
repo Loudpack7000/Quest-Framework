@@ -1,0 +1,53 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-08-24 22:16:57
+Player: TereIsAChair
+Starting Location: (3054, 3252, 0)
+Starting Inventory: Energy potion(4) x4, Water rune x79, Earth rune x82, Coins x14259, Law rune x76, Air rune x38, Chaos rune x110
+Starting Equipment: hat: Wizard hat, amulet: Amulet of magic, weapon: Staff of fire, chest: Black robe, legs: Shade robe, arrows: Bronze arrow
+Starting Combat Level: 62
+Starting HP: 100%
+Initial Quest States:
+=====================================
+
+[22:16:57] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[22:16:57] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[22:16:57] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[22:16:57] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[22:16:57] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 1636 varbits (including 0-values)
+
+[22:16:57] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[22:17:04] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[22:17:06] ACTION: Selected 'Talk-to' on Redbeard Frank
+    SCRIPT: NPCs.closest("Redbeard Frank").interact("Talk-to");
+
+[22:17:06] USER_ACTION: Talk-to | NPC_Tile: (3050, 3254, 0)
+[22:17:07] Movement: Started significant journey from (3054, 3252, 0)
+[22:17:08] Position: Arrived at (3051, 3254, 0)
+[22:17:25] DIALOGUE_OPTIONS: [I'm in search of treasure., Arr!, Do you have anything for trade?]
+[22:17:26] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I'm in search of treasure.
+
+[22:17:29] DIALOGUE_OPTIONS: [Yes., No.]
+[22:17:31] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes., No.]
+
+[22:17:31] QUEST_API_DETECTED: PIRATES_TREASURE - State: STARTED
+[22:17:31] ACTIVE_QUEST_DETECTED: PIRATES_TREASURE is currently in progress
+[22:17:32] QUEST_API_DETECTED: PIRATES_TREASURE - State: STARTED
+[22:17:33] QUEST_API_DETECTED: PIRATES_TREASURE - State: STARTED
+[22:17:34] QUEST_API_DETECTED: PIRATES_TREASURE - State: STARTED
+[22:17:35] QUEST_API_DETECTED: PIRATES_TREASURE - State: STARTED
+[22:17:36] QUEST_API_DETECTED: PIRATES_TREASURE - State: STARTED
+[22:17:37] QUEST_API_DETECTED: PIRATES_TREASURE - State: STARTED
+[22:17:38] QUEST_API_DETECTED: PIRATES_TREASURE - State: STARTED
+[22:21:11] QUEST_END: === QUEST RECORDING ENDED ===

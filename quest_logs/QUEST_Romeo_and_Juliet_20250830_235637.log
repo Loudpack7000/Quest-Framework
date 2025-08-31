@@ -1,0 +1,121 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Romeo and Juliet
+Started: 2025-08-30 23:56:37
+Player: CharlesMont
+Starting Location: (3113, 3171, 0)
+Starting Inventory: Gold bar, Energy potion(3) x5, Energy potion(4), Coins x12282, Energy potion(2), Cadava berries, Air talisman
+=====================================
+
+[23:56:37] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[23:56:37] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[23:56:37] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[23:56:37] ACTION: Quest recording started
+    SCRIPT: // Quest: Romeo and Juliet
+
+[23:59:06] ACTION: Selected 'Talk-to' on Romeo
+    SCRIPT: NPCs.closest("Romeo").interact("Talk-to");
+
+[23:59:06] USER_ACTION: Talk-to | NPC_Tile: (3210, 3425, 0)
+[23:59:28] ACTION: Selected 'Take' on Ashes
+    SCRIPT: // Take on Ashes
+
+[23:59:28] USER_ACTION: Take | Target: Ashes
+[23:59:34] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[23:59:50] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[23:59:50] USER_ACTION: Open | Object_Tile: (3165, 3433, 0)
+[00:00:01] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:00:05] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[00:00:05] USER_ACTION: Climb-up | Object_Tile: (3156, 3435, 0)
+[00:00:14] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:00:14] USER_ACTION: Open | Object_Tile: (3159, 3438, 1)
+[00:00:18] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:00:18] USER_ACTION: Open | Object_Tile: (3157, 3431, 1)
+[00:00:22] ACTION: Selected 'Talk-to' on Juliet
+    SCRIPT: NPCs.closest("Juliet").interact("Talk-to");
+
+[00:00:22] USER_ACTION: Talk-to | NPC_Tile: (3158, 3425, 1)
+[00:00:44] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[00:00:44] USER_ACTION: Climb-down | Object_Tile: (3156, 3435, 1)
+[00:01:07] ACTION: Selected 'Talk-to' on Romeo
+    SCRIPT: NPCs.closest("Romeo").interact("Talk-to");
+
+[00:01:07] USER_ACTION: Talk-to | NPC_Tile: (3208, 3426, 0)
+[00:03:46] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:03:51] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:03:52] ACTION: Selected 'Talk-to' on Father Lawrence
+    SCRIPT: NPCs.closest("Father Lawrence").interact("Talk-to");
+
+[00:03:52] USER_ACTION: Talk-to | NPC_Tile: (3253, 3483, 0)
+[00:05:20] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:05:21] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[00:05:22] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[00:05:27] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:05:27] USER_ACTION: Drop | Target: Vial
+[00:05:27] ACTION: Item consumed: Energy potion(4)
+    SCRIPT: Inventory.getItem("Energy potion(4)").interact("Drink") // or click
+
+[00:05:27] ITEM_CONSUMPTION: Player consumed: Energy potion(4)
+[00:05:27] Inventory Change: Items lost/used - New state: Gold bar, Energy potion(3) x2, Coins x12282, Vial, Energy potion(2) x4, Cadava berries, Air talisman
+[00:05:27] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:05:28] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[00:05:42] ACTION: Selected 'Talk-to' on Apothecary
+    SCRIPT: NPCs.closest("Apothecary").interact("Talk-to");
+
+[00:05:42] USER_ACTION: Talk-to | NPC_Tile: (3195, 3404, 0)
+[00:05:56] ACTION: Selected 'Talk-to' on Apothecary
+    SCRIPT: NPCs.closest("Apothecary").interact("Talk-to");
+
+[00:05:56] USER_ACTION: Talk-to | NPC_Tile: (3195, 3404, 0)
+[00:06:43] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:06:43] USER_ACTION: Open | Object_Tile: (3175, 3424, 0)
+[00:07:00] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[00:07:00] USER_ACTION: Climb-up | Object_Tile: (3156, 3435, 0)
+[00:07:08] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:07:08] USER_ACTION: Open | Object_Tile: (3159, 3438, 1)
+[00:07:10] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:07:10] USER_ACTION: Open | Object_Tile: (3157, 3431, 1)
+[00:07:13] ACTION: Selected 'Talk-to' on Juliet
+    SCRIPT: NPCs.closest("Juliet").interact("Talk-to");
+
+[00:07:13] USER_ACTION: Talk-to | NPC_Tile: (3158, 3425, 1)
+[00:08:08] QUEST_END: === QUEST RECORDING ENDED ===

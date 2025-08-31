@@ -1,0 +1,108 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Pirate's Treasure
+Started: 2025-08-25 00:45:57
+Player: WhoCouldHave
+Starting Location: (3028, 3224, 0)
+Starting Inventory: Energy potion(4) x6, Scroll box (beginner), Spade, Coins x557, Karamjan rum
+=====================================
+
+[00:45:57] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:45:57] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:45:57] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:45:57] ACTION: Quest recording started
+    SCRIPT: // Quest: Pirate's Treasure
+
+[00:45:57] ACTIVE_QUEST_DETECTED: PIRATES_TREASURE is currently in progress
+[00:46:19] ACTION: Selected 'Talk-to' on Redbeard Frank
+    SCRIPT: NPCs.closest("Redbeard Frank").interact("Talk-to");
+
+[00:46:19] USER_ACTION: Talk-to | NPC_Tile: (3049, 3253, 0)
+[00:47:01] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[00:47:02] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:47:43] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[00:48:51] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[00:48:52] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[00:48:54] ACTION: Selected 'Use' on Vial
+    SCRIPT: Inventory.interact("Vial", "Use");
+
+[00:48:54] USER_ACTION: Use | Target: Vial
+[00:48:54] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3), Energy potion(4) x4, Scroll box (beginner), Spade, Coins x557, Vial, Chest key
+
+[00:48:54] ACTION: Selected 'Use' on Vial -> Vial
+    SCRIPT: // Item-on-item
+Inventory.use("Vial", "Vial");
+
+[00:48:54] USER_ACTION: Use | Target: Vial -> Vial
+[00:48:55] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[00:48:56] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:48:58] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[00:49:00] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:49:02] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[00:49:04] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[00:49:05] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[00:49:22] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:49:22] USER_ACTION: Open | Object_Tile: (3217, 3386, 0)
+[00:49:37] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:49:37] USER_ACTION: Drop | Target: Vial
+[00:49:38] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:49:38] USER_ACTION: Drop | Target: Vial
+[00:49:38] ACTION: Inventory changed: Items lost/used
+    SCRIPT: // Current inventory: Energy potion(4) x3, Scroll box (beginner), Spade, Coins x557, Energy potion(1), Vial, Chest key
+
+[00:49:40] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[00:49:44] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:49:44] USER_ACTION: Drop | Target: Vial
+[00:49:44] ACTION: Item consumed: Energy potion(1)
+    SCRIPT: Inventory.getItem("Energy potion(1)").interact("Drink") // or click
+
+[00:49:44] ITEM_CONSUMPTION: Player consumed: Energy potion(1)
+[00:49:47] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[00:49:47] USER_ACTION: Climb-up | Object_Tile: (3227, 3393, 0)
+[00:49:51] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:49:51] USER_ACTION: Open | Object_Tile: (3230, 3397, 1)
+[00:50:09] ACTION: Selected 'Open' on Chest
+    SCRIPT: GameObjects.closest("Chest").interact("Open");
+
+[00:50:09] USER_ACTION: Open | Object_Tile: (3219, 3396, 1)
+[00:50:12] QUEST_END: === QUEST RECORDING ENDED ===

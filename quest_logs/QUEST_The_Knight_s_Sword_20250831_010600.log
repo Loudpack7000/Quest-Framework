@@ -1,0 +1,66 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: The Knight's Sword
+Started: 2025-08-31 01:06:00
+Player: WhoCouldHave
+Starting Location: (3185, 3441, 0)
+Starting Inventory: Energy potion(3) x4, Water rune x159, Spade, Bronze pickaxe, Law rune x87, Energy potion(1), Coins x348, Energy potion(2), Air rune x104, Amulet of accuracy, Earth rune x2993, Redberry pie, Chaos rune x63, Amulet of magic, Air talisman, Iron bar x2
+=====================================
+
+[01:06:00] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[01:06:00] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[01:06:00] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[01:06:00] ACTION: Quest recording started
+    SCRIPT: // Quest: The Knight's Sword
+
+[01:06:00] ACTIVE_QUEST_DETECTED: PRINCE_ALI_RESCUE is currently in progress
+[01:06:02] ACTION: Selected 'Cast' on Falador Teleport
+    SCRIPT: // Cast on Falador Teleport
+
+[01:06:02] USER_ACTION: Cast | Target: Falador Teleport
+[01:06:02] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[01:06:02] SPELLBOOK_OPENED: Player opened the magic spellbook
+[01:06:22] ACTION: Selected 'Talk-to' on Squire
+    SCRIPT: NPCs.closest("Squire").interact("Talk-to");
+
+[01:06:22] USER_ACTION: Talk-to | NPC_Tile: (2978, 3342, 0)
+[01:08:13] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[01:09:21] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[01:09:47] ACTION: Selected 'Talk-to' on Thurgo
+    SCRIPT: NPCs.closest("Thurgo").interact("Talk-to");
+
+[01:09:47] USER_ACTION: Talk-to | NPC_Tile: (3001, 3145, 0)
+[01:09:58] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[01:10:03] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[01:10:04] ACTION: Selected 'Talk-to' on Thurgo
+    SCRIPT: NPCs.closest("Thurgo").interact("Talk-to");
+
+[01:10:04] USER_ACTION: Talk-to | NPC_Tile: (3001, 3145, 0)
+[01:10:14] ACTION: Selected 'Use' on Redberry pie
+    SCRIPT: Inventory.interact("Redberry pie", "Use");
+
+[01:10:14] USER_ACTION: Use | Target: Redberry pie
+[01:10:14] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3), Water rune x158, Spade, Bronze pickaxe, Law rune x86, Energy potion(1) x2, Coins x348, Energy potion(2) x3, Air rune x101, Amulet of accuracy, Earth rune x2993, Redberry pie, Chaos rune x63, Amulet of magic, Air talisman, Iron bar x2
+
+[01:10:15] ACTION: Selected 'Use' on Redberry pie -> Thurgo
+    SCRIPT: // Item-on-item
+Inventory.use("Redberry pie", "Thurgo");
+
+[01:10:15] USER_ACTION: Use | Target: Redberry pie -> Thurgo
+[01:10:15] ACTION: Selected 'Talk-to' on Thurgo
+    SCRIPT: NPCs.closest("Thurgo").interact("Talk-to");
+
+[01:10:15] USER_ACTION: Talk-to | NPC_Tile: (3001, 3145, 0)
+[01:10:20] QUEST_END: === QUEST RECORDING ENDED ===

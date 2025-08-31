@@ -6,6 +6,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+// DreamBot imports for optional inventory snapshots
+import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.wrappers.items.Item;
 
 /**
  * Simple, reliable quest logging utility
@@ -182,5 +188,37 @@ public class QuestLogger {
      */
     public boolean isActive() {
         return currentLogWriter != null;
+    }
+
+    /**
+     * Write a compact inventory snapshot to the quest log.
+     * Aggregates by item name with quantities, e.g., "Coins x 1234, Beer x 3".
+     */
+    public void logInventorySnapshot(String label) {
+        try {
+            Map<String, Integer> counts = new LinkedHashMap<>();
+            for (Item it : Inventory.all()) {
+                if (it == null) continue;
+                String name = it.getName();
+                if (name == null || name.trim().isEmpty()) continue;
+                counts.put(name, counts.getOrDefault(name, 0) + it.getAmount());
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.append(label != null ? label : "Inventory").append(": ");
+            if (counts.isEmpty()) {
+                sb.append("<empty>");
+            } else {
+                boolean first = true;
+                for (Map.Entry<String, Integer> e : counts.entrySet()) {
+                    if (!first) sb.append(", ");
+                    first = false;
+                    sb.append(e.getKey()).append(" x ").append(e.getValue());
+                }
+            }
+            log("INVENTORY", sb.toString());
+        } catch (Throwable t) {
+            // Never fail hard due to logging
+            System.err.println("[QuestLogger] Failed to capture inventory snapshot: " + t.getMessage());
+        }
     }
 } 

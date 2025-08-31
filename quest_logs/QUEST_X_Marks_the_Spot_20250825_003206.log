@@ -1,0 +1,18 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: X Marks the Spot
+Started: 2025-08-25 00:32:06
+Player: WhoCouldHave
+Starting Location: (3228, 3241, 0)
+Starting Inventory: Treasure scroll, Energy potion(4) x10, Spade, Coins x417
+=====================================
+
+[00:32:06] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:32:06] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:32:06] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:32:06] ACTION: Quest recording started
+    SCRIPT: // Quest: X Marks the Spot
+
+[00:32:06] ACTIVE_QUEST_DETECTED: PIRATES_TREASURE is currently in progress
+[00:32:11] QUEST_END: === QUEST RECORDING ENDED ===

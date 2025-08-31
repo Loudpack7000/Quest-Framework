@@ -1,0 +1,26 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: The Knight's Sword
+Started: 2025-08-31 01:23:41
+Player: WhoCouldHave
+Starting Location: (3037, 9576, 0)
+Starting Inventory: Water rune x156, Spade, Bronze pickaxe, Law rune x83, Coins x348, Air rune x92, Amulet of accuracy, Earth rune x2993, Vial, Chaos rune x63, Amulet of magic, Air talisman, Iron bar x2
+=====================================
+
+[01:23:41] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[01:23:41] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[01:23:41] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[01:23:41] ACTION: Quest recording started
+    SCRIPT: // Quest: The Knight's Sword
+
+[01:23:41] ACTIVE_QUEST_DETECTED: THE_KNIGHTS_SWORD is currently in progress
+[01:23:43] ACTION: Selected 'Cast' on Lumbridge Teleport
+    SCRIPT: // Cast on Lumbridge Teleport
+
+[01:23:43] USER_ACTION: Cast | Target: Lumbridge Teleport
+[01:23:43] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[01:23:43] SPELLBOOK_OPENED: Player opened the magic spellbook
+[01:23:49] QUEST_END: === QUEST RECORDING ENDED ===

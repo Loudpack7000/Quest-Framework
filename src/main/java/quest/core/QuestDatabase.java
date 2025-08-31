@@ -112,6 +112,16 @@ public class QuestDatabase {
             Arrays.asList("Raw beef", "Eye of newt", "Onion") // required items
         ));
         
+        // Ernest the Chicken
+        questInfo.put("ERNEST_THE_CHICKEN", new QuestInfo(
+            "ERNEST_THE_CHICKEN",
+            "Ernest the Chicken",
+            1, // difficulty
+            10, // estimated duration minutes
+            new ArrayList<>(), // no skills required
+            Arrays.asList("Spade") // optional; spade can be helpful depending on route
+        ));
+        
         // Romeo and Juliet
         questInfo.put("ROMEO_AND_JULIET", new QuestInfo(
             "ROMEO_AND_JULIET",
@@ -198,6 +208,16 @@ public class QuestDatabase {
                 "Beer",
                 "Soft clay"
             )
+        ));
+
+        // Below Ice Mountain (BIM)
+        questInfo.put("BELOW_ICE_MOUNTAIN", new QuestInfo(
+            "BELOW_ICE_MOUNTAIN",
+            "Below Ice Mountain",
+            1,
+            20,
+            new ArrayList<>(),
+            new ArrayList<>()
         ));
     }
     

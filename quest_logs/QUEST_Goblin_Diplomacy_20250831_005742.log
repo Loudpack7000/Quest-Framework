@@ -1,0 +1,29 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Goblin Diplomacy
+Started: 2025-08-31 00:57:42
+Player: 72diamond329
+Starting Location: (3215, 3425, 0)
+Starting Inventory: Goblin mail, Water rune x69, Energy potion(4) x9, Orange goblin mail, Earth rune x70, Salmon x5, Law rune x67, Coins x18, Energy potion(2), Air rune x58, Chaos rune x69, Blue goblin mail
+=====================================
+
+[00:57:42] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:57:42] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:57:42] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:57:42] ACTION: Quest recording started
+    SCRIPT: // Quest: Goblin Diplomacy
+
+[00:58:20] ACTION: Selected 'Exchange' on Grand Exchange booth
+    SCRIPT: // Exchange on Grand Exchange booth
+
+[00:58:20] USER_ACTION: Exchange | Target: Grand Exchange booth
+[00:58:33] ACTION: Selected 'Exchange' on Grand Exchange booth
+    SCRIPT: // Exchange on Grand Exchange booth
+
+[00:58:33] USER_ACTION: Exchange | Target: Grand Exchange booth
+[00:58:53] ACTION: Selected 'Exchange' on Grand Exchange booth
+    SCRIPT: // Exchange on Grand Exchange booth
+
+[00:58:53] USER_ACTION: Exchange | Target: Grand Exchange booth
+[00:59:03] QUEST_END: === QUEST RECORDING ENDED ===

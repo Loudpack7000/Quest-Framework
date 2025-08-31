@@ -1,0 +1,96 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Black Knights' Fortress
+Started: 2025-08-25 00:06:16
+Player: Erm I Spose
+Starting Location: (3167, 3488, 0)
+Starting Inventory: Water rune x991, Earth rune x1000, Bronze med helm, Salmon x5, Coins x17736, Law rune x46, Chaos rune x67, Air rune x19, Cabbage, Iron chainbody
+=====================================
+
+[00:06:16] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:06:16] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:06:16] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:06:16] ACTION: Quest recording started
+    SCRIPT: // Quest: Black Knights' Fortress
+
+[00:06:19] ACTION: Selected 'Wear' on Bronze med helm
+    SCRIPT: Inventory.interact("Bronze med helm", "Wear");
+
+[00:06:19] USER_ACTION: Wear | Target: Bronze med helm
+[00:06:20] ACTION: Selected 'Wear' on Iron chainbody
+    SCRIPT: Inventory.interact("Iron chainbody", "Wear");
+
+[00:06:20] USER_ACTION: Wear | Target: Iron chainbody
+[00:06:29] ACTION: Selected 'Cast' on Falador Teleport
+    SCRIPT: // Cast on Falador Teleport
+
+[00:06:29] USER_ACTION: Cast | Target: Falador Teleport
+[00:06:29] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[00:06:29] SPELLBOOK_OPENED: Player opened the magic spellbook
+[00:06:52] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[00:06:52] USER_ACTION: Climb-up | Object_Tile: (2968, 3347, 0)
+[00:07:07] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:07:07] USER_ACTION: Open | Object_Tile: (2983, 3348, 1)
+[00:07:14] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[00:07:14] USER_ACTION: Climb-up | Object_Tile: (2983, 3351, 1)
+[00:07:24] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:07:24] USER_ACTION: Open | Object_Tile: (2983, 3348, 2)
+[00:07:41] ACTION: Selected 'Open' on Castle door
+    SCRIPT: GameObjects.closest("Castle door").interact("Open");
+
+[00:07:41] USER_ACTION: Open | Object_Tile: (2961, 3342, 2)
+[00:08:03] ACTION: Selected 'Talk-to' on Sir Amik Varze
+    SCRIPT: NPCs.closest("Sir Amik Varze").interact("Talk-to");
+
+[00:08:03] USER_ACTION: Talk-to | NPC_Tile: (2962, 3341, 2)
+[00:08:40] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[00:08:40] USER_ACTION: Climb-down | Object_Tile: (2960, 3339, 2)
+[00:08:48] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[00:08:48] USER_ACTION: Climb-down | Object_Tile: (2960, 3338, 1)
+[00:12:21] ACTION: Selected 'Wear' on Rune full helm
+    SCRIPT: Inventory.interact("Rune full helm", "Wear");
+
+[00:12:21] USER_ACTION: Wear | Target: Rune full helm
+[00:12:21] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Mithril platebody, Rune full helm, Water rune x990, Earth rune x1000, Salmon x5, Coins x17736, Law rune x45, Dossier, Chaos rune x67, Air rune x16, Cabbage
+
+[00:12:21] ACTION: Equipment changed: hat: Rune full helm → Bronze med helm, chest: Mithril platebody → Iron chainbody
+    SCRIPT: // Equipment slots updated: hat: Rune full helm → Bronze med helm, chest: Mithril platebody → Iron chainbody
+
+[00:12:21] EQUIPMENT_CHANGE: Equipment modified: hat: Rune full helm → Bronze med helm, chest: Mithril platebody → Iron chainbody
+[00:12:22] ACTION: Selected 'Wear' on Bronze med helm
+    SCRIPT: Inventory.interact("Bronze med helm", "Wear");
+
+[00:12:22] USER_ACTION: Wear | Target: Bronze med helm
+[00:12:25] ACTION: Selected 'Attack' on Black Knight
+    SCRIPT: NPCs.closest("Black Knight").interact("Attack");
+
+[00:12:25] USER_ACTION: Attack | NPC_Tile: (3022, 3508, 0)
+[00:12:25] ACTION: Entered combat with Black Knight
+    SCRIPT: NPCs.closest("Black Knight").interact("Attack")
+
+[00:12:25] COMBAT_START: Combat started with: Black Knight (Level 33)
+[00:12:38] ACTION: Selected 'Read journal:' on Black Knights' Fortress
+    SCRIPT: // Read journal: on Black Knights' Fortress
+
+[00:12:38] USER_ACTION: Read journal: | Target: Black Knights' Fortress
+[00:12:42] ACTION: Selected 'Read journal:' on Black Knights' Fortress
+    SCRIPT: // Read journal: on Black Knights' Fortress
+
+[00:12:42] USER_ACTION: Read journal: | Target: Black Knights' Fortress
+[00:12:56] QUEST_END: === QUEST RECORDING ENDED ===

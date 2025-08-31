@@ -1,0 +1,52 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Vampire Slayer
+Started: 2025-08-24 19:40:21
+Player: TereIsAChair
+Starting Location: (3222, 3397, 0)
+Starting Inventory: Energy potion(3) x2, Hammer, Salmon x5, Coins x14826, Vial, Garlic, Stake
+=====================================
+
+[19:40:21] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[19:40:21] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[19:40:21] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[19:40:21] ACTION: Quest recording started
+    SCRIPT: // Quest: Vampire Slayer
+
+[19:40:21] ACTIVE_QUEST_DETECTED: PRINCE_ALI_RESCUE is currently in progress
+[19:40:55] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[19:40:55] USER_ACTION: Drop | Target: Vial
+[19:40:56] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[19:40:58] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[19:42:37] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[19:42:38] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[19:42:40] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[19:42:43] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[19:42:44] ACTION: Selected 'Open' on Large door
+    SCRIPT: GameObjects.closest("Large door").interact("Open");
+
+[19:42:44] USER_ACTION: Open | Object_Tile: (3109, 3353, 0)
+[19:42:56] ACTION: Selected 'Walk-Down' on Stairs
+    SCRIPT: // Walk-Down on Stairs
+
+[19:42:56] USER_ACTION: Walk-Down | Target: Stairs
+[19:43:08] ACTION: Selected 'Open' on Coffin
+    SCRIPT: GameObjects.closest("Coffin").interact("Open");
+
+[19:43:08] USER_ACTION: Open | Object_Tile: (3077, 9775, 0)
+[19:43:09] QUEST_END: === QUEST RECORDING ENDED ===

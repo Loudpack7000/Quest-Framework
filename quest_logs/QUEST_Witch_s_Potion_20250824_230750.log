@@ -1,0 +1,104 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Witch's Potion
+Started: 2025-08-24 23:07:50
+Player: Erm I Spose
+Starting Location: (2945, 3368, 0)
+Starting Inventory: Energy potion(3) x2, Water rune x994, Energy potion(4) x2, Earth rune x1000, Coins x18698, Law rune x53, Energy potion(2), Air rune x49, Chaos rune x70, Staff of fire
+Starting Equipment: hat: Rune full helm, amulet: Amulet of strength, chest: Mithril platebody, shield: Rune kiteshield, legs: Rune platelegs, hands: Red gloves, feet: Red boots
+Starting Combat Level: 63
+Starting HP: 100%
+Initial Quest States:
+=====================================
+
+[23:07:50] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[23:07:50] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[23:07:50] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[23:07:50] ACTION: Quest recording started
+    SCRIPT: // Quest: Witch's Potion
+
+[23:08:01] ACTION: Selected 'Wield' on Staff of fire
+    SCRIPT: Inventory.interact("Staff of fire", "Wield");
+
+[23:08:01] USER_ACTION: Wield | Target: Staff of fire
+[23:08:05] ACTION: Selected 'Cast' on Varrock Teleport
+    SCRIPT: // Cast on Varrock Teleport
+
+[23:08:05] USER_ACTION: Cast | Target: Varrock Teleport
+[23:08:05] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[23:08:05] SPELLBOOK_OPENED: Player opened the magic spellbook
+[23:08:06] ACTION: Selected 'Cast' on Varrock Teleport
+    SCRIPT: // Cast on Varrock Teleport
+
+[23:08:06] USER_ACTION: Cast | Target: Varrock Teleport
+[23:08:50] ACTION: Selected 'Exchange' on Grand Exchange booth
+    SCRIPT: // Exchange on Grand Exchange booth
+
+[23:08:50] USER_ACTION: Exchange | Target: Grand Exchange booth
+[23:09:07] ACTION: Selected 'Exchange' on Grand Exchange booth
+    SCRIPT: // Exchange on Grand Exchange booth
+
+[23:09:07] USER_ACTION: Exchange | Target: Grand Exchange booth
+[23:09:21] ACTION: Selected 'Exchange' on Grand Exchange booth
+    SCRIPT: // Exchange on Grand Exchange booth
+
+[23:09:21] USER_ACTION: Exchange | Target: Grand Exchange booth
+[23:09:39] ACTION: Selected 'Cast' on Falador Teleport
+    SCRIPT: // Cast on Falador Teleport
+
+[23:09:39] USER_ACTION: Cast | Target: Falador Teleport
+[23:10:48] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[23:11:22] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[23:11:22] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[23:11:27] ACTION: Selected 'Talk-to' on Hetty
+    SCRIPT: NPCs.closest("Hetty").interact("Talk-to");
+
+[23:11:27] USER_ACTION: Talk-to | NPC_Tile: (2966, 3203, 0)
+[23:12:08] ACTION: Selected 'Attack' on Rat
+    SCRIPT: NPCs.closest("Rat").interact("Attack");
+
+[23:12:08] USER_ACTION: Attack | NPC_Tile: (2957, 3204, 0)
+[23:12:18] ACTION: Selected 'Take' on Rat's tail
+    SCRIPT: // Take on Rat's tail
+
+[23:12:18] USER_ACTION: Take | Target: Rat's tail
+[23:12:35] ACTION: Selected 'Use' on Raw beef
+    SCRIPT: Inventory.interact("Raw beef", "Use");
+
+[23:12:35] USER_ACTION: Use | Target: Raw beef
+[23:12:35] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3) x3, Water rune x993, Earth rune x1000, Raw beef, Onion, Coins x18615, Eye of newt, Law rune x51, Energy potion(2) x2, Rat's tail, Air rune x40, Chaos rune x69
+
+[23:12:35] Inventory Change: Items gained
+[23:12:38] ACTION: Selected 'Use' on Raw beef -> Fireplace
+    SCRIPT: // Item-on-item
+Inventory.use("Raw beef", "Fireplace");
+
+[23:12:38] USER_ACTION: Use | Target: Raw beef -> Fireplace
+[23:12:41] ACTION: Selected 'Use' on Cooked meat
+    SCRIPT: Inventory.interact("Cooked meat", "Use");
+
+[23:12:41] USER_ACTION: Use | Target: Cooked meat
+[23:12:42] ACTION: Selected 'Use' on Cooked meat -> Fireplace
+    SCRIPT: // Item-on-item
+Inventory.use("Cooked meat", "Fireplace");
+
+[23:12:42] USER_ACTION: Use | Target: Cooked meat -> Fireplace
+[23:12:49] ACTION: Selected 'Talk-to' on Hetty
+    SCRIPT: NPCs.closest("Hetty").interact("Talk-to");
+
+[23:12:49] USER_ACTION: Talk-to | NPC_Tile: (2966, 3204, 0)
+[23:13:16] ACTION: Selected 'Drink-from' on Cauldron
+    SCRIPT: // Drink-from on Cauldron
+
+[23:13:16] USER_ACTION: Drink-from | Target: Cauldron
+[23:13:19] QUEST_END: === QUEST RECORDING ENDED ===

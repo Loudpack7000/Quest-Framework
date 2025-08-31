@@ -3,6 +3,7 @@ package quest;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.Category;
+import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.script.listener.ActionListener;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.MenuRow;
@@ -13,6 +14,7 @@ import org.dreambot.api.methods.container.impl.bank.Bank;
 import quest.gui.QuestSelectionGUI;
 import quest.core.QuestEventLogger;
 import quest.core.QuestExecutor;
+import quest.utils.RunEnergyUtil;
 
 import javax.swing.SwingUtilities;
 import java.awt.Graphics;
@@ -25,9 +27,9 @@ import java.awt.Color;
  */
 @ScriptManifest(
     category = Category.UTILITY,
-    name = "AI Quest Framework v7.5",
+    name = "AI Quest Framework v7.6",
     author = "Leone", 
-    version = 7.5,
+    version = 7.6,
     description = "Complete AI Quest Discovery & Automation Framework with varbit+config monitoring, automated quest execution, and reliable dialogue detection"
 )
 public class SimpleQuestBot extends AbstractScript implements ActionListener {
@@ -111,7 +113,21 @@ public class SimpleQuestBot extends AbstractScript implements ActionListener {
     
     @Override
     public int onLoop() {
+        // CRITICAL: Always check if script should stop first
+        if (!ScriptManager.getScriptManager().isRunning()) {
+            log("Script stop requested - shutting down immediately");
+            return -1; // Exit immediately
+        }
+        
+        // CRITICAL: Check if player is logged out
+        if (Players.getLocal() == null) {
+            log("Player logged out - stopping script immediately");
+            return -1; // Exit immediately
+        }
+        
         loopCount++;
+        // Always manage run energy first.
+        RunEnergyUtil.handleRunEnergy();
         
         if (!guiInitialized) {
             Sleep.sleep(100);
@@ -121,6 +137,12 @@ public class SimpleQuestBot extends AbstractScript implements ActionListener {
         // Check if quest automation is active
         QuestExecutor executor = QuestExecutor.getInstance();
         if (executor.isActive()) {
+            // CRITICAL: Check for stop request before quest execution
+            if (!ScriptManager.getScriptManager().isRunning()) {
+                log("Script stop requested during quest execution - shutting down immediately");
+                return -1; // Exit immediately
+            }
+            
             // WALKING STATE DETECTION: Check if player is currently walking
             if (isPlayerWalking()) {
                 // Extended sleep when walking is in progress - DO NOT interrupt walking
@@ -133,11 +155,19 @@ public class SimpleQuestBot extends AbstractScript implements ActionListener {
                     });
                     lastStatus = walkingStatus;
                 }
-                return org.dreambot.api.methods.Calculations.random(1500, 2000); // Extended sleep for walking (1.5-2s)
+                // Check for stop request during walking sleep
+                int sleepTime = org.dreambot.api.methods.Calculations.random(1500, 2000);
+                Sleep.sleep(sleepTime);
+                if (!ScriptManager.getScriptManager().isRunning()) {
+                    return -1; // Exit if stop was requested during sleep
+                }
+                return 100; // Continue with normal loop
             }
             
-            // Only execute new steps when not walking
-            executor.executeStep();
+            // Only execute new steps when not walking AND when executor is active
+            if (executor.isActive()) {
+                executor.executeStep();
+            }
             
             // Update GUI with automation status
             String automationStatus = "AUTOMATION: " + executor.getCurrentQuestName() + " - " + executor.getCurrentStepDescription();
@@ -159,6 +189,19 @@ public class SimpleQuestBot extends AbstractScript implements ActionListener {
         }
         
         if (recordingMode) {
+            // CRITICAL: Check for stop request during recording
+            if (!ScriptManager.getScriptManager().isRunning()) {
+                log("Script stop requested during recording - shutting down immediately");
+                return -1; // Exit immediately
+            }
+            
+            // CRITICAL: Stop recording if quest automation is finished (but NOT in discovery mode)
+            if (!executor.isActive() && !"Free_Discovery".equals(selectedQuest)) {
+                log("Quest automation finished - automatically stopping recording mode");
+                stopRecording();
+                return 100; // Continue main loop but stop recording
+            }
+            
             // Debug: Confirm we're in recording mode (reduced frequency)
             if (loopCount % 300 == 0) { // Every 90 seconds
                 log("DEBUG: Recording mode active, quest logger = " + (questLogger != null ? "exists" : "null"));
@@ -268,9 +311,13 @@ public class SimpleQuestBot extends AbstractScript implements ActionListener {
         
         log("Recording: Movement, NPCs, Dialogue, Objects, Inventory, Banking, Animations");
         recordingMode = true;
-        
-        // Initialize comprehensive quest logger
-        questLogger = new QuestEventLogger(this, selectedQuest);
+
+        // Initialize comprehensive quest logger - reuse existing if same quest
+        if (questLogger == null || !selectedQuest.equals(questLogger.getCurrentQuest())) {
+            questLogger = new QuestEventLogger(this, selectedQuest);
+        } else {
+            log("Reusing existing quest logger for " + selectedQuest);
+        }
         
         // ActionListener is now implemented by this script class - no manual registration needed
         log("ActionListener implemented - will now capture actual user clicks!");

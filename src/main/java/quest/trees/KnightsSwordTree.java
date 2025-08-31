@@ -24,6 +24,7 @@ import quest.nodes.actions.InteractWithObjectNode;
 import quest.nodes.actions.TalkToNPCNode;
 import quest.nodes.actions.WalkToLocationNode;
 import quest.utils.GrandExchangeUtil;
+import quest.utils.RunEnergyUtil;
 
 /**
  * The Knight's Sword - Tree-based implementation
@@ -61,7 +62,6 @@ public class KnightsSwordTree extends QuestTree {
 
     private QuestNode smart;
     private QuestNode ensureIronBarsNode;
-    private boolean reldoAskedImcando = false;
     private boolean thurgoPieDelivered = false;
 
     public KnightsSwordTree() {
@@ -112,10 +112,6 @@ public class KnightsSwordTree extends QuestTree {
         smart = new QuestNode("smart_decision", "Decide next step for The Knight's Sword") {
             @Override
             public ExecutionResult execute() {
-                // Ensure we have 2x unnoted Iron bars at the very start to save time later
-                if (countUnnotedIronBars() < 2) {
-                    return ExecutionResult.success(ensureIronBarsNode, "Buy and unnote 2x Iron bar early");
-                }
                 // Completion check first
                 if (Quests.isFinished(FreeQuest.THE_KNIGHTS_SWORD) || PlayerSettings.getConfig(CONFIG_ID) >= COMPLETE_VALUE) {
                     return ExecutionResult.success(new ActionNode("finish", "Mark quest complete") {
@@ -126,9 +122,19 @@ public class KnightsSwordTree extends QuestTree {
                         }
                     }, "Quest complete");
                 }
-
+                
+                // FINAL HAND-IN: If we have the Blurite sword, return to Squire to complete
+                if (Inventory.contains("Blurite sword")) {
+                    return ExecutionResult.success(talkToSquireNode(), "Return the Blurite sword to the Squire");
+                }
+                
                 int cfg = PlayerSettings.getConfig(CONFIG_ID);
                 boolean started = Quests.isStarted(FreeQuest.THE_KNIGHTS_SWORD) || cfg >= 1;
+                
+                // Only check iron bars if quest hasn't started yet (very beginning)
+                if (!started && countUnnotedIronBars() < 2) {
+                    return ExecutionResult.success(ensureIronBarsNode, "Buy and unnote 2x Iron bar early");
+                }
 
                 // Do not force baseline items unconditionally; handle per-stage below
 
@@ -145,9 +151,15 @@ public class KnightsSwordTree extends QuestTree {
 
                 // Stage ~1-2: After starting, talk to Reldo about Imcando dwarves, then proceed to Thurgo
                 if (cfg <= 2) {
-                    if (!reldoAskedImcando) {
+                    // Check if we've already talked to Reldo by looking at quest journal state
+                    // If we have the Imcando information, we can skip Reldo
+                    boolean hasImcandoInfo = hasImcandoInformation();
+                    
+                    if (!hasImcandoInfo) {
                         return ExecutionResult.success(talkToReldoNode(), "Consult Reldo in Varrock");
                     }
+                    
+                    // We have Imcando info, now check pie status
                     if (!thurgoPieDelivered) {
                         if (!Inventory.contains(REDBERRY_PIE)) {
                             return ExecutionResult.success(buyPieNode(), "Buy Redberry pie before visiting Thurgo");
@@ -202,8 +214,10 @@ public class KnightsSwordTree extends QuestTree {
 
     private int countUnnotedIronBars() {
         int count = 0;
-        for (Item item : org.dreambot.api.methods.container.impl.Inventory.all(IRON_BAR)) {
-            if (item != null && !item.isNoted()) count++;
+        for (Item i : org.dreambot.api.methods.container.impl.Inventory.all()) {
+            if (i != null && !i.isNoted() && IRON_BAR.equals(i.getName())) {
+                count++;
+            }
         }
         return count;
     }
@@ -218,6 +232,36 @@ public class KnightsSwordTree extends QuestTree {
     private boolean hasAnyPickaxe() {
         String[] picks = new String[]{"Bronze pickaxe", "Iron pickaxe", "Steel pickaxe", "Black pickaxe", "Mithril pickaxe", "Adamant pickaxe", "Rune pickaxe"};
         for (String p : picks) if (Inventory.contains(p)) return true;
+        return false;
+    }
+    
+    /**
+     * Check if we already have the Imcando dwarf information from Reldo.
+     * This prevents the bot from talking to Reldo again after restart.
+     */
+    private boolean hasImcandoInformation() {
+        // Method 1: Check if we have a redberry pie (indicates we know about Thurgo's preference)
+        if (Inventory.contains(REDBERRY_PIE)) {
+            return true;
+        }
+        
+        // Method 2: Check if we've already progressed past the Reldo stage
+        // If config > 2, we've definitely talked to Reldo
+        int cfg = PlayerSettings.getConfig(CONFIG_ID);
+        if (cfg > 2) {
+            return true;
+        }
+        
+        // Method 3: Check if we've already delivered pie to Thurgo
+        if (thurgoPieDelivered) {
+            return true;
+        }
+        
+        // Method 4: Check if we're near Thurgo (indicates we've progressed past Reldo)
+        if (Players.getLocal() != null && Players.getLocal().distance(THURGO_TILE) <= 20) {
+            return true;
+        }
+        
         return false;
     }
 
@@ -284,9 +328,20 @@ public class KnightsSwordTree extends QuestTree {
         return new ActionNode("talk_reldo", "Talk to Reldo about Imcando dwarves") {
             @Override
             protected boolean performAction() {
+                // Check and manage run energy before walking to Reldo
+                int currentEnergy = (int) Walking.getRunEnergy();
+                if (currentEnergy < 20) {
+                    if (!RunEnergyUtil.hasEnergyPotions()) {
+                        RunEnergyUtil.restockEnergyPotions();
+                    }
+                    RunEnergyUtil.manageRunEnergy();
+                }
+                
                 NPC reldo = NPCs.closest("Reldo");
                 if (reldo == null) {
                     if (Players.getLocal().distance(VARROCK_RELDO_TILE) > 6) {
+                        // Manage run energy before walking
+                        RunEnergyUtil.manageRunEnergy();
                         new WalkToLocationNode("walk_reldo", VARROCK_RELDO_TILE, "Reldo").execute();
                         reldo = NPCs.closest("Reldo");
                         if (reldo == null) return false;
@@ -319,9 +374,6 @@ public class KnightsSwordTree extends QuestTree {
                     Sleep.sleep(400, 700);
                 }
 
-                // Mark that we asked, regardless of config movement (some stages don't bump config here)
-                reldoAskedImcando = true;
-
                 // If config advanced, great; otherwise, allow next step to proceed
                 int endCfg = PlayerSettings.getConfig(CONFIG_ID);
                 return endCfg >= startCfg;
@@ -333,8 +385,19 @@ public class KnightsSwordTree extends QuestTree {
         return new ActionNode("thurgo_pie", "Talk to Thurgo and give pie") {
             @Override
             protected boolean performAction() {
+                // Check and manage run energy before walking to Thurgo
+                int currentEnergy = (int) Walking.getRunEnergy();
+                if (currentEnergy < 20) {
+                    if (!RunEnergyUtil.hasEnergyPotions()) {
+                        RunEnergyUtil.restockEnergyPotions();
+                    }
+                    RunEnergyUtil.manageRunEnergy();
+                }
+                
                 // Walk near Thurgo first for reliability
                 if (Players.getLocal().distance(THURGO_TILE) > 6) {
+                    // Manage run energy before walking
+                    RunEnergyUtil.manageRunEnergy();
                     new WalkToLocationNode("walk_thurgo", THURGO_TILE, "Thurgo").execute();
                 }
                 NPC thurgo = NPCs.closest("Thurgo");
@@ -371,6 +434,15 @@ public class KnightsSwordTree extends QuestTree {
         return new ActionNode("get_portrait", "Obtain Sir Vyvin's portrait upstairs") {
             @Override
             protected boolean performAction() {
+                // Check and manage run energy before castle navigation
+                int currentEnergy = (int) Walking.getRunEnergy();
+                if (currentEnergy < 20) {
+                    if (!RunEnergyUtil.hasEnergyPotions()) {
+                        RunEnergyUtil.restockEnergyPotions();
+                    }
+                    RunEnergyUtil.manageRunEnergy();
+                }
+                
                 // Enter castle and go upstairs to floor 1
                 if (Players.getLocal().getTile().getZ() == 0) {
                     if (!new InteractWithObjectNode("climb_ladder", "Ladder", "Climb-up", CASTLE_LADDER_GROUND, "Castle ladder").execute().isSuccess()) {
@@ -405,9 +477,20 @@ public class KnightsSwordTree extends QuestTree {
         return new ActionNode("mine_blurite", "Mine blurite ore in Asgarnian Ice Dungeon") {
             @Override
             protected boolean performAction() {
+                // Check and manage run energy before ice dungeon navigation
+                int currentEnergy = (int) Walking.getRunEnergy();
+                if (currentEnergy < 20) {
+                    if (!RunEnergyUtil.hasEnergyPotions()) {
+                        RunEnergyUtil.restockEnergyPotions();
+                    }
+                    RunEnergyUtil.manageRunEnergy();
+                }
+                
                 // Ensure near trapdoor and go down
                 if (Players.getLocal().getTile().getZ() == 0) {
                     if (Players.getLocal().distance(TRAPDOOR_TILE) > 5) {
+                        // Manage run energy before walking to trapdoor
+                        RunEnergyUtil.manageRunEnergy();
                         new WalkToLocationNode("walk_trapdoor", TRAPDOOR_TILE, "Trapdoor").execute();
                     }
                     new InteractWithObjectNode("climb_down_trapdoor", "Trapdoor", "Climb-down", TRAPDOOR_TILE, "Trapdoor").execute();
@@ -448,7 +531,18 @@ public class KnightsSwordTree extends QuestTree {
         return new ActionNode("thurgo_forge", "Have Thurgo forge the replacement sword") {
             @Override
             protected boolean performAction() {
+                // Check and manage run energy before final Thurgo visit
+                int currentEnergy = (int) Walking.getRunEnergy();
+                if (currentEnergy < 20) {
+                    if (!RunEnergyUtil.hasEnergyPotions()) {
+                        RunEnergyUtil.restockEnergyPotions();
+                    }
+                    RunEnergyUtil.manageRunEnergy();
+                }
+                
                 if (Players.getLocal().distance(THURGO_TILE) > 6) {
+                    // Manage run energy before walking
+                    RunEnergyUtil.manageRunEnergy();
                     new WalkToLocationNode("walk_thurgo_again", THURGO_TILE, "Thurgo").execute();
                 }
                 NPC thurgo = NPCs.closest("Thurgo");

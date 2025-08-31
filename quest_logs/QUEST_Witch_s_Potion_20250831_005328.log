@@ -1,0 +1,66 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Witch's Potion
+Started: 2025-08-31 00:53:28
+Player: 72diamond329
+Starting Location: (2957, 3234, 0)
+Starting Inventory: Water rune x69, Energy potion(4) x9, Raw beef, Salmon x5, Onion, Law rune x68, Coins x18, Energy potion(2), Air rune x64, Blue goblin mail, Goblin mail, Orange goblin mail, Earth rune x70, Eye of newt, Chaos rune x70
+=====================================
+
+[00:53:28] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:53:28] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:53:28] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:53:28] ACTION: Quest recording started
+    SCRIPT: // Quest: Witch's Potion
+
+[00:53:46] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:53:46] USER_ACTION: Open | Object_Tile: (2964, 3206, 0)
+[00:54:02] ACTION: Selected 'Open' on Wardrobe
+    SCRIPT: GameObjects.closest("Wardrobe").interact("Open");
+
+[00:54:02] USER_ACTION: Open | Object_Tile: (2970, 3208, 0)
+[00:54:11] ACTION: Selected 'Talk-to' on Hetty
+    SCRIPT: NPCs.closest("Hetty").interact("Talk-to");
+
+[00:54:11] USER_ACTION: Talk-to | NPC_Tile: (2969, 3207, 0)
+[00:54:49] ACTION: Selected 'Attack' on Rat
+    SCRIPT: NPCs.closest("Rat").interact("Attack");
+
+[00:54:49] USER_ACTION: Attack | NPC_Tile: (2955, 3203, 0)
+[00:54:59] ACTION: Selected 'Take' on Rat's tail
+    SCRIPT: // Take on Rat's tail
+
+[00:54:59] USER_ACTION: Take | Target: Rat's tail
+[00:55:18] ACTION: Selected 'Use' on Raw beef
+    SCRIPT: Inventory.interact("Raw beef", "Use");
+
+[00:55:18] USER_ACTION: Use | Target: Raw beef
+[00:55:18] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Water rune x69, Energy potion(4) x9, Raw beef, Salmon x5, Onion, Law rune x68, Coins x18, Energy potion(2), Air rune x61, Blue goblin mail, Goblin mail, Orange goblin mail, Earth rune x70, Eye of newt, Rat's tail, Chaos rune x69
+
+[00:55:20] ACTION: Selected 'Use' on Raw beef -> Fireplace
+    SCRIPT: // Item-on-item
+Inventory.use("Raw beef", "Fireplace");
+
+[00:55:20] USER_ACTION: Use | Target: Raw beef -> Fireplace
+[00:55:23] ACTION: Selected 'Use' on Cooked meat
+    SCRIPT: Inventory.interact("Cooked meat", "Use");
+
+[00:55:23] USER_ACTION: Use | Target: Cooked meat
+[00:55:26] ACTION: Selected 'Use' on Cooked meat -> Fireplace
+    SCRIPT: // Item-on-item
+Inventory.use("Cooked meat", "Fireplace");
+
+[00:55:26] USER_ACTION: Use | Target: Cooked meat -> Fireplace
+[00:55:32] ACTION: Selected 'Talk-to' on Hetty
+    SCRIPT: NPCs.closest("Hetty").interact("Talk-to");
+
+[00:55:32] USER_ACTION: Talk-to | NPC_Tile: (2970, 3207, 0)
+[00:56:01] ACTION: Selected 'Drink-from' on Cauldron
+    SCRIPT: // Drink-from on Cauldron
+
+[00:56:01] USER_ACTION: Drink-from | Target: Cauldron
+[00:56:05] QUEST_END: === QUEST RECORDING ENDED ===

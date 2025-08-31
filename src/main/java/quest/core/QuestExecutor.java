@@ -16,7 +16,9 @@ import quest.trees.BlackKnightsFortressTree;
 import quest.trees.ImpCatcherTree;
 import quest.trees.CorsairCurseTree;
 import quest.trees.KnightsSwordTree;
-import quest.trees.PrinceAliRescueTree;
+import quest.trees.BelowIceMountainTree;
+import quest.trees.ErnestTheChickenTree;
+// import quest.trees.PrinceAliRescueTree; // REMOVED: Tree deleted from project
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.utilities.Timer;
@@ -302,16 +304,25 @@ public class QuestExecutor {
      * Stop the current quest execution
      */
     public void stopQuest() {
+        log("STOP QUEST REQUESTED - Immediate halt of all quest activities");
+        
+        // CRITICAL: Set emergency stop flag first to prevent any new executions
+        emergencyStop = true;
+        currentState = ExecutorState.IDLE;
+        
         if (activeQuest != null) {
             try {
-                log("Stopping quest execution...");
+                log("Cleaning up active quest: " + activeQuestId);
                 activeQuest.cleanup();
             } catch (Exception e) {
-                log("Error during quest stop: " + e.getMessage());
+                log("Error during quest cleanup: " + e.getMessage());
             }
         }
         
+        // Force stop any ongoing logging/recording
         resetExecutor();
+        
+        log("QUEST EXECUTION FULLY STOPPED - All activities halted");
     }
     
     /**
@@ -347,11 +358,14 @@ public class QuestExecutor {
      * Reset executor to idle state
      */
     private void resetExecutor() {
+        log("Resetting quest executor to idle state...");
+        
+        // Clear all quest-related state
         activeQuest = null;
         activeQuestId = null;
         currentState = ExecutorState.IDLE;
         questContext.clear();
-        emergencyStop = false;
+        emergencyStop = false;  // Reset emergency stop for next quest
         currentRetries = 0;
         stepsCompleted = 0;
 
@@ -363,12 +377,15 @@ public class QuestExecutor {
                     try {
                         java.lang.reflect.Method stopRecording = scriptClass.getMethod("stopRecording");
                         stopRecording.invoke(scriptReference);
+                        log("Successfully stopped quest recording/logging");
                     } catch (NoSuchMethodException ignored) {
                         // Method not present; ignore
                     }
                 }
             }
         } catch (Exception ignored) {}
+        
+        log("Quest executor reset complete - ready for next quest");
     }
     
     /**
@@ -378,8 +395,8 @@ public class QuestExecutor {
     private QuestScript loadQuestScript(String questId) {
         switch (questId) {
             case "PRINCE_ALI_RESCUE":
-                log("Starting Prince Ali Rescue quest tree...");
-                return new TreeQuestWrapper(new PrinceAliRescueTree(), questId, "Prince Ali Rescue");
+                log("Prince Ali Rescue quest tree not available (tree deleted from project)");
+                return null; // Tree was deleted from project
             case "THE_KNIGHTS_SWORD":
                 log("Starting The Knight's Sword quest tree...");
                 return new TreeQuestWrapper(new KnightsSwordTree(), questId, "The Knight's Sword");
@@ -419,6 +436,12 @@ public class QuestExecutor {
                 return new TreeQuestWrapper(new GoblinDiplomacyTree(), questId, "Goblin Diplomacy");
             case "BLACK_KNIGHTS_FORTRESS":
                 return new TreeQuestWrapper(new BlackKnightsFortressTree(), questId, "Black Knights' Fortress");
+            case "BELOW_ICE_MOUNTAIN":
+                log("Starting Below Ice Mountain quest tree...");
+                return new TreeQuestWrapper(new BelowIceMountainTree(), questId, "Below Ice Mountain");
+            case "ERNEST_THE_CHICKEN":
+                log("Starting Ernest the Chicken quest tree...");
+                return new TreeQuestWrapper(new ErnestTheChickenTree(), questId, "Ernest the Chicken");
             case "RESTLESS_GHOST": 
                 // TODO: Implement Restless Ghost script
                 log("Restless Ghost script not yet implemented");

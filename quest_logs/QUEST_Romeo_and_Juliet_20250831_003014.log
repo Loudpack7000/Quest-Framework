@@ -1,0 +1,29 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Romeo and Juliet
+Started: 2025-08-31 00:30:14
+Player: WhoCouldHave
+Starting Location: (3157, 3425, 1)
+Starting Inventory: Energy potion(3), Water rune x159, Energy potion(4) x9, Hammer, Spade, Bronze pickaxe, Law rune x96, Coins x348, Air rune x152, Amulet of accuracy, Beer, Earth rune x2999, Redberry pie, Garlic, Chaos rune x70, Iron bar x2
+=====================================
+
+[00:30:14] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:30:14] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:30:14] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:30:14] ACTION: Quest recording started
+    SCRIPT: // Quest: Romeo and Juliet
+
+[00:30:14] ACTIVE_QUEST_DETECTED: PRINCE_ALI_RESCUE is currently in progress
+[00:30:21] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[00:30:21] USER_ACTION: Climb-down | Object_Tile: (3156, 3435, 1)
+[00:30:43] ACTION: Selected 'Talk-to' on Romeo
+    SCRIPT: NPCs.closest("Romeo").interact("Talk-to");
+
+[00:30:43] USER_ACTION: Talk-to | NPC_Tile: (3211, 3428, 0)
+[00:31:01] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:31:07] QUEST_END: === QUEST RECORDING ENDED ===

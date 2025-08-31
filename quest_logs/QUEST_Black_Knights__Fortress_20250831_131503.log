@@ -1,0 +1,57 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Black Knights' Fortress
+Started: 2025-08-31 13:15:03
+Player: WhoCouldHave
+Starting Location: (2958, 3336, 2)
+Starting Inventory: Energy potion(3) x5, Water rune x153, Energy potion(4) x5, Spade, Bronze pickaxe, Law rune x77, Coins x128, Air rune x74, Amulet of accuracy, Iron chainbody, Earth rune x2991, Bronze med helm, Dossier, Chaos rune x63, Cabbage, Air talisman
+=====================================
+
+[13:15:03] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[13:15:03] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[13:15:03] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[13:15:03] ACTION: Quest recording started
+    SCRIPT: // Quest: Black Knights' Fortress
+
+[13:15:03] ACTIVE_QUEST_DETECTED: BLACK_KNIGHTS_FORTRESS is currently in progress
+[13:15:07] ACTION: Selected 'Wear' on Bronze med helm
+    SCRIPT: Inventory.interact("Bronze med helm", "Wear");
+
+[13:15:07] USER_ACTION: Wear | Target: Bronze med helm
+[13:15:07] ACTION: Selected 'Wear' on Iron chainbody
+    SCRIPT: Inventory.interact("Iron chainbody", "Wear");
+
+[13:15:07] USER_ACTION: Wear | Target: Iron chainbody
+[13:15:07] ACTION: Inventory changed: Items lost/used
+    SCRIPT: // Current inventory: Energy potion(3) x5, Water rune x153, Energy potion(4) x5, Spade, Bronze pickaxe, Law rune x77, Coins x128, Wizard hat, Air rune x74, Amulet of accuracy, Iron chainbody, Earth rune x2991, Dossier, Chaos rune x63, Cabbage, Air talisman
+
+[13:15:07] ACTION: Equipment changed: hat: Wizard hat → Bronze med helm
+    SCRIPT: // Equipment slots updated: hat: Wizard hat → Bronze med helm
+
+[13:15:07] EQUIPMENT_CHANGE: Equipment modified: hat: Wizard hat → Bronze med helm
+[13:15:13] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[13:15:13] USER_ACTION: Climb-down | Object_Tile: (2957, 3338, 2)
+[13:15:21] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[13:15:21] USER_ACTION: Climb-down | Object_Tile: (2960, 3338, 1)
+[13:17:26] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[13:17:39] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[13:17:45] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[13:17:46] ACTION: Selected 'Push' on Wall
+    SCRIPT: // Push on Wall
+
+[13:17:46] USER_ACTION: Push | Target: Wall
+[13:17:54] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[13:18:13] QUEST_END: === QUEST RECORDING ENDED ===

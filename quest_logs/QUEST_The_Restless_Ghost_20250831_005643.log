@@ -1,0 +1,30 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: The Restless Ghost
+Started: 2025-08-31 00:56:43
+Player: WhoCouldHave
+Starting Location: (3242, 3210, 0)
+Starting Inventory: Energy potion(3), Water rune x159, Energy potion(4) x4, Spade, Bronze pickaxe, Law rune x90, Energy potion(1), Coins x348, Air rune x113, Amulet of accuracy, Earth rune x2995, Redberry pie, Chaos rune x63, Air talisman, Iron bar x2
+=====================================
+
+[00:56:43] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:56:43] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:56:43] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:56:43] ACTION: Quest recording started
+    SCRIPT: // Quest: The Restless Ghost
+
+[00:56:43] ACTIVE_QUEST_DETECTED: PRINCE_ALI_RESCUE is currently in progress
+[00:56:47] ACTION: Selected 'Talk-to' on Father Aereck
+    SCRIPT: NPCs.closest("Father Aereck").interact("Talk-to");
+
+[00:56:47] USER_ACTION: Talk-to | NPC_Tile: (3245, 3206, 0)
+[00:58:00] ACTION: Selected 'Talk-to' on Father Urhney
+    SCRIPT: NPCs.closest("Father Urhney").interact("Talk-to");
+
+[00:58:00] USER_ACTION: Talk-to | NPC_Tile: (3147, 3173, 0)
+[00:58:03] ACTION: Selected 'Talk-to' on Father Urhney
+    SCRIPT: NPCs.closest("Father Urhney").interact("Talk-to");
+
+[00:58:03] USER_ACTION: Talk-to | NPC_Tile: (3147, 3173, 0)
+[00:58:10] QUEST_END: === QUEST RECORDING ENDED ===

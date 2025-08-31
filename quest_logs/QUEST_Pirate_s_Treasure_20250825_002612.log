@@ -1,0 +1,22 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Pirate's Treasure
+Started: 2025-08-25 00:26:12
+Player: WhoCouldHave
+Starting Location: (3092, 3244, 0)
+Starting Inventory: Energy potion(4) x5
+=====================================
+
+[00:26:12] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:26:12] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:26:12] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:26:12] ACTION: Quest recording started
+    SCRIPT: // Quest: Pirate's Treasure
+
+[00:26:12] ACTIVE_QUEST_DETECTED: PRINCE_ALI_RESCUE is currently in progress
+[00:26:48] ACTION: Selected 'Talk-to' on Redbeard Frank
+    SCRIPT: NPCs.closest("Redbeard Frank").interact("Talk-to");
+
+[00:26:48] USER_ACTION: Talk-to | NPC_Tile: (3051, 3253, 0)
+[00:27:14] QUEST_END: === QUEST RECORDING ENDED ===

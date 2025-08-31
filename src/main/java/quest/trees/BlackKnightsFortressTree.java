@@ -68,31 +68,54 @@ public class BlackKnightsFortressTree extends QuestTree {
                     return "guard_dialog";
                 }
 
-                // If still have cabbage, perform full sabotage path with explicit routing
+                // If still have cabbage, perform full sabotage path with step-by-step navigation
                 if (Inventory.contains(CABBAGE)) {
                     // PRE-SABOTAGE: ensure we have disguise + cabbage before entering
                     if (!hasAllItemsBase()) return "buy";
                     if (!isEquipped()) return "equip";
-                    // Approach fortress and enter side door
-                    if (!near(FORTRESS_STURDY_DOOR, 12)) return "walk_fortress";
-                    if (!near(FORTRESS_STURDY_DOOR, 4)) return "walk_sturdy_ground";
+                    
+                    // Step-by-step fortress navigation based on discovery logs
+                    if (!near(FORTRESS_STURDY_DOOR, 8)) return "walk_fortress";
+                    
+                    // Step 1: Open Sturdy door (3016, 3514, 0)
                     if (!insideAfterSturdy()) return "open_sturdy";
-
-                    // Go to guard door, open, handle dialogue
-                    if (!near(GUARD_DOOR, 6)) return "walk_guard";
-                    if (!insideAfterGuardDoor()) return "open_guard";
-                    if (Dialogues.areOptionsAvailable()) return "guard_dialog";
-
-                    // Walk to and listen at grill
-                    if (!near(GRILL_TILE, 4)) return "walk_grill";
-                    if (!listened()) return "listen";
-
-                    // Climb to F1 and push wall
-                    if (!near(LADDER_GROUND, 4)) return "walk_ladder";
-                    if (!wallPushedF1()) return "climb_f1";
-
-                    // Use cabbage on hole
-                    if (!holeVisible()) return "walk_hole";
+                    
+                    // Step 2: Push Wall (after sturdy door)
+                    if (!wallPushed()) return "push_wall_1";
+                    
+                    // Step 3: Climb-up Ladder (3016, 3519, 0)
+                    if (Players.getLocal().getZ() == 0 && near(new Tile(3016, 3519, 0), 3)) return "climb_up_1";
+                    
+                    // Step 4: Climb-up Ladder (3015, 3519, 1) 
+                    if (Players.getLocal().getZ() == 1 && near(new Tile(3015, 3519, 1), 3)) return "climb_up_2";
+                    
+                    // Step 5: Climb-down Ladder (3016, 3519, 2)
+                    if (Players.getLocal().getZ() == 2 && near(new Tile(3016, 3519, 2), 3)) return "climb_down_1";
+                    
+                    // Step 6: Climb-down Ladder (3016, 3519, 1)
+                    if (Players.getLocal().getZ() == 1 && near(new Tile(3016, 3519, 1), 3)) return "climb_down_2";
+                    
+                    // Step 7: Open Door (3019, 3515, 1)
+                    if (Players.getLocal().getZ() == 1 && !doorOpened()) return "open_door";
+                    
+                    // Step 8: Climb-up Ladder (3023, 3513, 1)
+                    if (Players.getLocal().getZ() == 1 && near(new Tile(3023, 3513, 1), 3)) return "climb_up_3";
+                    
+                    // Step 9: Climb-down Ladder (3023, 3513, 2)
+                    if (Players.getLocal().getZ() == 2 && near(new Tile(3023, 3513, 2), 3)) return "climb_down_3";
+                    
+                    // Step 10: Open Sturdy door (3025, 3511, 1)
+                    if (Players.getLocal().getZ() == 2 && !sturdyDoor2Opened()) return "open_sturdy_2";
+                    
+                    // Step 11: Climb-down Ladder (3025, 3513, 1)
+                    if (Players.getLocal().getZ() == 1 && near(new Tile(3025, 3513, 1), 3)) return "climb_down_4";
+                    
+                    // Step 12: Listen-at Grill (3026, 3507, 0)
+                    if (Players.getLocal().getZ() == 0 && near(GRILL_TILE, 4) && !listened()) return "listen";
+                    
+                    // After listening, navigate back up to push wall and use cabbage
+                    if (listened() && !wallPushedF1()) return "navigate_to_wall";
+                    if (wallPushedF1() && !holeVisible()) return "walk_hole";
                     return "use_cabbage";
                 }
 
@@ -142,6 +165,21 @@ public class BlackKnightsFortressTree extends QuestTree {
         InteractWithObjectNode openSturdyF1 = new InteractWithObjectNode("bkf_open_sturdy_f1", "Sturdy door", "Open", STURDY_DOOR_F1, "F1 door");
         InteractWithObjectNode pushWallF1 = new InteractWithObjectNode("bkf_push_wall_f1", "Wall", "Push", PUSH_WALL_F1, "Hidden wall F1");
 
+        // Step-by-step fortress navigation nodes
+        InteractWithObjectNode pushWall1 = new InteractWithObjectNode("bkf_push_wall_1", "Wall", "Push", new Tile(3016, 3517, 0), "First wall");
+        InteractWithObjectNode climbUp1 = new InteractWithObjectNode("bkf_climb_up_1", "Ladder", "Climb-up", new Tile(3016, 3519, 0), "Ladder level 0");
+        InteractWithObjectNode climbUp2 = new InteractWithObjectNode("bkf_climb_up_2", "Ladder", "Climb-up", new Tile(3015, 3519, 1), "Ladder level 1");
+        InteractWithObjectNode climbDown1 = new InteractWithObjectNode("bkf_climb_down_1", "Ladder", "Climb-down", new Tile(3016, 3519, 2), "Ladder level 2");
+        InteractWithObjectNode climbDown2 = new InteractWithObjectNode("bkf_climb_down_2", "Ladder", "Climb-down", new Tile(3016, 3519, 1), "Ladder level 1b");
+        InteractWithObjectNode openDoor = new InteractWithObjectNode("bkf_open_door", "Door", "Open", new Tile(3019, 3515, 1), "Interior door");
+        InteractWithObjectNode climbUp3 = new InteractWithObjectNode("bkf_climb_up_3", "Ladder", "Climb-up", new Tile(3023, 3513, 1), "Ladder level 1c");
+        InteractWithObjectNode climbDown3 = new InteractWithObjectNode("bkf_climb_down_3", "Ladder", "Climb-down", new Tile(3023, 3513, 2), "Ladder level 2b");
+        InteractWithObjectNode openSturdy2 = new InteractWithObjectNode("bkf_open_sturdy_2", "Sturdy door", "Open", new Tile(3025, 3511, 1), "Second sturdy door");
+        InteractWithObjectNode climbDown4 = new InteractWithObjectNode("bkf_climb_down_4", "Ladder", "Climb-down", new Tile(3025, 3513, 1), "Final ladder down");
+        
+        // Navigation back up for wall pushing and cabbage use
+        InteractWithObjectNode navigateToWall = new InteractWithObjectNode("bkf_navigate_wall", "Ladder", "Climb-up", LADDER_GROUND, "Navigate to wall");
+
         // Use cabbage on hole
         UseItemOnObjectNode useCabbage = new UseItemOnObjectNode("bkf_use_cabbage", CABBAGE, "Hole");
 
@@ -152,11 +190,22 @@ public class BlackKnightsFortressTree extends QuestTree {
          .addBranch("walk_fortress", walkFortress)
          .addBranch("walk_sturdy_ground", walkSturdyGround)
          .addBranch("open_sturdy", openSturdy)
+         .addBranch("push_wall_1", pushWall1)
+         .addBranch("climb_up_1", climbUp1)
+         .addBranch("climb_up_2", climbUp2)
+         .addBranch("climb_down_1", climbDown1)
+         .addBranch("climb_down_2", climbDown2)
+         .addBranch("open_door", openDoor)
+         .addBranch("climb_up_3", climbUp3)
+         .addBranch("climb_down_3", climbDown3)
+         .addBranch("open_sturdy_2", openSturdy2)
+         .addBranch("climb_down_4", climbDown4)
+         .addBranch("listen", listenGrill)
+         .addBranch("navigate_to_wall", navigateToWall)
          .addBranch("walk_guard", walkGuard)
          .addBranch("open_guard", openGuardDoor)
          .addBranch("guard_dialog", assertEntry)
          .addBranch("walk_grill", walkGrill)
-         .addBranch("listen", listenGrill)
          .addBranch("walk_ladder", walkLadder)
          .addBranch("climb_f1", climbUpGround)
          .addBranch("open_sturdy_f1", openSturdyF1)
@@ -196,8 +245,23 @@ public class BlackKnightsFortressTree extends QuestTree {
     }
 
     private boolean listened() {
-        // If we're close to grill tile, we likely did or will do listen; fall back to cabbage presence
-        return false; // always perform listen step once; lightweight and safe
+        // Check if we've listened at the grill (quest progression)
+        return PlayerSettings.getConfig(CONFIG_BKF) >= 2;
+    }
+    
+    private boolean wallPushed() {
+        // Check if we've pushed the first wall after sturdy door
+        return Players.getLocal().getTile().distance(new Tile(3016, 3517, 0)) < 3;
+    }
+    
+    private boolean doorOpened() {
+        // Check if we're past the door at (3019, 3515, 1)
+        return Players.getLocal().getTile().distance(new Tile(3019, 3515, 1)) < 2;
+    }
+    
+    private boolean sturdyDoor2Opened() {
+        // Check if we're past the second sturdy door
+        return Players.getLocal().getTile().distance(new Tile(3025, 3511, 1)) < 2;
     }
 
     private boolean wallPushedF1() {

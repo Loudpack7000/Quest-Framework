@@ -1,0 +1,39 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Vampire Slayer
+Started: 2025-08-31 00:38:14
+Player: WhoCouldHave
+Starting Location: (3223, 3397, 0)
+Starting Inventory: Water rune x159, Energy potion(4) x8, Hammer, Spade, Bronze pickaxe, Law rune x94, Coins x348, Energy potion(2), Air rune x146, Amulet of accuracy, Earth rune x2998, Redberry pie, Garlic, Chaos rune x70, Stake, Iron bar x2
+=====================================
+
+[00:38:14] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:38:14] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:38:14] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:38:14] ACTION: Quest recording started
+    SCRIPT: // Quest: Vampire Slayer
+
+[00:38:14] ACTIVE_QUEST_DETECTED: PRINCE_ALI_RESCUE is currently in progress
+[00:38:17] ACTION: Selected 'Cast' on Lumbridge Teleport
+    SCRIPT: // Cast on Lumbridge Teleport
+
+[00:38:17] USER_ACTION: Cast | Target: Lumbridge Teleport
+[00:38:17] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[00:38:17] SPELLBOOK_OPENED: Player opened the magic spellbook
+[00:39:23] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[00:40:10] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[00:40:16] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[00:40:20] ACTION: Selected 'Open' on Large door
+    SCRIPT: GameObjects.closest("Large door").interact("Open");
+
+[00:40:20] USER_ACTION: Open | Object_Tile: (3109, 3353, 0)
+[00:40:21] QUEST_END: === QUEST RECORDING ENDED ===

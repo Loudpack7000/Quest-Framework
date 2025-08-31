@@ -1,0 +1,446 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Ernest the Chicken
+Started: 2025-08-18 00:41:37
+Player: WhoCouldHave
+Starting Location: (3111, 3329, 0)
+Starting Inventory: Energy potion(3) x3, Energy potion(4), Tinderbox, Salmon x5, Coins x14480
+=====================================
+
+[00:41:37] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:41:37] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:41:37] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:41:37] ACTION: Quest recording started
+    SCRIPT: // Quest: Ernest the Chicken
+
+[00:41:37] ACTIVE_QUEST_DETECTED: PRINCE_ALI_RESCUE is currently in progress
+[00:41:37] TARGETED_MAPPING: Ernest the Chicken detected – enabling varbit/config discovery
+[00:41:37] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 1636 varbits (including 0-values)
+
+[00:41:37] QUEST STEP 2: CONFIG_DISCOVERY_STARTED (Quest API)
+    SCRIPT: // Using Quest API config 32 baseline=0
+
+[00:41:37] ERNEST_CONFIG_BASELINE: Config 32 = 0
+[00:42:02] ACTION: Selected 'Talk-to' on Veronica
+    SCRIPT: NPCs.closest("Veronica").interact("Talk-to");
+
+[00:42:02] USER_ACTION: Talk-to | NPC_Tile: (3110, 3328, 0)
+[00:42:03] Movement: Started significant journey from (3111, 3329, 0)
+[00:42:04] DIALOGUE_OPTIONS: [Yes., No.]
+[00:42:09] DIALOGUE_OPTIONS: [Yes., No.]
+[00:42:10] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [Yes., No.]
+
+[00:42:14] QUEST STEP 3: CONFIG DISCOVERED: Unknown Quest config 32 changed from 0 to 1
+    SCRIPT: // DISCOVERED: Quest uses config 32 (value 0 → 1)
+
+[00:42:18] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:42:20] Movement: Started significant journey from (3110, 3329, 0)
+[00:42:28] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:42:28] ACTION: Selected 'Open' on Large door
+    SCRIPT: GameObjects.closest("Large door").interact("Open");
+
+[00:42:28] USER_ACTION: Open | Object_Tile: (3109, 3353, 0)
+[00:42:32] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:42:32] USER_ACTION: Open | Object_Tile: (3109, 3358, 0)
+[00:42:32] Movement: Started significant journey from (3108, 3354, 0)
+[00:42:38] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:42:48] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:42:58] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:43:01] Movement: Started significant journey from (3109, 3357, 0)
+[00:43:07] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:43:07] USER_ACTION: Open | Object_Tile: (3107, 3367, 0)
+[00:43:08] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:43:11] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:43:11] USER_ACTION: Open | Object_Tile: (3106, 3369, 0)
+[00:43:12] Movement: Started significant journey from (3106, 3368, 0)
+[00:43:14] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:43:14] USER_ACTION: Open | Object_Tile: (3102, 3371, 0)
+[00:43:18] ACTION: Selected 'Take' on Poison
+    SCRIPT: // Take on Poison
+
+[00:43:18] USER_ACTION: Take | Target: Poison
+[00:43:18] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:43:28] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:43:30] Movement: Started significant journey from (3097, 3366, 0)
+[00:43:34] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[00:43:34] USER_ACTION: Climb-up | Object_Tile: (3108, 3362, 0)
+[00:43:38] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:43:48] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:43:49] Movement: Started significant journey from (3108, 3366, 1)
+[00:43:58] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:44:08] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:44:11] ACTION: Selected 'Take' on Fish food
+    SCRIPT: // Take on Fish food
+
+[00:44:11] USER_ACTION: Take | Target: Fish food
+[00:44:11] Movement: Started significant journey from (3100, 3365, 1)
+[00:44:18] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:44:19] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:44:19] USER_ACTION: Open | Object_Tile: (3110, 3358, 1)
+[00:44:28] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:44:38] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:44:40] Movement: Started significant journey from (3116, 3361, 1)
+[00:44:41] ACTION: Selected 'Take' on Fish food
+    SCRIPT: // Take on Fish food
+
+[00:44:41] USER_ACTION: Take | Target: Fish food
+[00:44:48] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:44:52] ACTION: Selected 'Use' on Fish food
+    SCRIPT: Inventory.interact("Fish food", "Use");
+
+[00:44:52] USER_ACTION: Use | Target: Fish food
+[00:44:52] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3) x3, Energy potion(4), Tinderbox, Salmon x5, Coins x14480, Poison, Fish food
+
+[00:44:53] ACTION: Selected 'Use' on Fish food -> Poison
+    SCRIPT: // Item-on-item
+Inventory.use("Fish food", "Poison");
+
+[00:44:53] USER_ACTION: Use | Target: Fish food -> Poison
+[00:44:58] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:45:01] ACTION: Selected 'Climb-down' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-down");
+
+[00:45:01] USER_ACTION: Climb-down | Object_Tile: (3104, 3362, 1)
+[00:45:01] Movement: Started significant journey from (3108, 3356, 1)
+[00:45:09] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:45:19] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:45:29] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:45:39] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:45:49] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:45:59] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:46:09] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:46:13] ACTION: Selected 'Search' on Bookcase
+    SCRIPT: GameObjects.closest("Bookcase").interact("Search");
+
+[00:46:13] USER_ACTION: Search | Object_Tile: (3097, 3359, 0)
+[00:46:14] Movement: Started significant journey from (3109, 3361, 0)
+[00:46:17] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:46:17] USER_ACTION: Open | Object_Tile: (3107, 3367, 0)
+[00:46:19] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:46:22] ACTION: Selected 'Search' on Bookcase
+    SCRIPT: GameObjects.closest("Bookcase").interact("Search");
+
+[00:46:22] USER_ACTION: Search | Object_Tile: (3097, 3359, 0)
+[00:46:26] Movement: Started significant journey from (3097, 3360, 0)
+[00:46:28] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[00:46:28] USER_ACTION: Climb-down | Object_Tile: (3092, 3362, 0)
+[00:46:29] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:46:39] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:46:39] Movement: Started significant journey from (3117, 9753, 0)
+[00:46:41] ACTION: Selected 'Pull' on Lever B
+    SCRIPT: // Pull on Lever B
+
+[00:46:41] USER_ACTION: Pull | Target: Lever B
+[00:46:49] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:46:50] Movement: Started significant journey from (3118, 9752, 0)
+[00:46:52] ACTION: Selected 'Pull' on Lever A
+    SCRIPT: // Pull on Lever A
+
+[00:46:52] USER_ACTION: Pull | Target: Lever A
+[00:46:59] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:47:05] Movement: Started significant journey from (3108, 9745, 0)
+[00:47:09] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:47:09] USER_ACTION: Open | Object_Tile: (3108, 9758, 0)
+[00:47:09] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:47:17] Movement: Started significant journey from (3108, 9759, 0)
+[00:47:17] ACTION: Selected 'Pull' on Lever D
+    SCRIPT: // Pull on Lever D
+
+[00:47:17] USER_ACTION: Pull | Target: Lever D
+[00:47:19] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:47:29] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:47:32] Movement: Started significant journey from (3107, 9758, 0)
+[00:47:36] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:47:36] USER_ACTION: Open | Object_Tile: (3108, 9758, 0)
+[00:47:39] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:47:43] ACTION: Selected 'Pull' on Lever B
+    SCRIPT: // Pull on Lever B
+
+[00:47:43] USER_ACTION: Pull | Target: Lever B
+[00:47:48] Movement: Started significant journey from (3118, 9752, 0)
+[00:47:49] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:47:53] ACTION: Selected 'Pull' on Lever A
+    SCRIPT: // Pull on Lever A
+
+[00:47:53] USER_ACTION: Pull | Target: Lever A
+[00:47:59] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:48:01] Movement: Started significant journey from (3108, 9745, 0)
+[00:48:03] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:48:03] USER_ACTION: Open | Object_Tile: (3108, 9758, 0)
+[00:48:07] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:48:07] USER_ACTION: Open | Object_Tile: (3102, 9758, 0)
+[00:48:09] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:48:13] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:48:13] USER_ACTION: Open | Object_Tile: (3100, 9760, 0)
+[00:48:13] Movement: Started significant journey from (3099, 9760, 0)
+[00:48:19] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:48:26] ACTION: Selected 'Pull' on Lever E
+    SCRIPT: // Pull on Lever E
+
+[00:48:26] USER_ACTION: Pull | Target: Lever E
+[00:48:27] Movement: Started significant journey from (3097, 9764, 0)
+[00:48:30] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:48:31] ACTION: Selected 'Pull' on Lever F
+    SCRIPT: // Pull on Lever F
+
+[00:48:31] USER_ACTION: Pull | Target: Lever F
+[00:48:40] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:48:40] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:48:40] USER_ACTION: Open | Object_Tile: (3097, 9763, 0)
+[00:48:40] Movement: Started significant journey from (3096, 9765, 0)
+[00:48:44] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:48:44] USER_ACTION: Open | Object_Tile: (3100, 9765, 0)
+[00:48:50] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:48:53] ACTION: Selected 'Pull' on Lever C
+    SCRIPT: // Pull on Lever C
+
+[00:48:53] USER_ACTION: Pull | Target: Lever C
+[00:48:54] Movement: Started significant journey from (3106, 9765, 0)
+[00:49:00] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:49:03] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:49:03] USER_ACTION: Open | Object_Tile: (3108, 9758, 0)
+[00:49:07] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:49:07] USER_ACTION: Open | Object_Tile: (3102, 9763, 0)
+[00:49:10] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:49:10] Movement: Started significant journey from (3100, 9765, 0)
+[00:49:13] ACTION: Selected 'Pull' on Lever E
+    SCRIPT: // Pull on Lever E
+
+[00:49:13] USER_ACTION: Pull | Target: Lever E
+[00:49:20] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:49:22] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:49:22] USER_ACTION: Open | Object_Tile: (3100, 9765, 0)
+[00:49:23] Movement: Started significant journey from (3097, 9767, 0)
+[00:49:25] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:49:25] USER_ACTION: Open | Object_Tile: (3100, 9765, 0)
+[00:49:29] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:49:29] USER_ACTION: Open | Object_Tile: (3102, 9763, 0)
+[00:49:30] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:49:38] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:49:38] USER_ACTION: Open | Object_Tile: (3102, 9758, 0)
+[00:49:39] Movement: Started significant journey from (3102, 9756, 0)
+[00:49:40] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:49:41] ACTION: Selected 'Take' on Oil can
+    SCRIPT: // Take on Oil can
+
+[00:49:41] USER_ACTION: Take | Target: Oil can
+[00:49:49] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:49:49] USER_ACTION: Open | Object_Tile: (3100, 9755, 0)
+[00:49:50] Movement: Started significant journey from (3092, 9755, 0)
+[00:49:50] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:49:54] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[00:49:54] USER_ACTION: Climb-up | Object_Tile: (3117, 9754, 0)
+[00:50:00] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:50:01] ACTION: Teleport/Cutscene detected: 6394 tiles
+    SCRIPT: // Large distance moved - likely teleport or cutscene
+
+[00:50:01] Teleport: Moved 6394 tiles | (3101, 9755, 0) → (3092, 3361, 0)
+[00:50:06] ACTION: Selected 'Pull' on Lever
+    SCRIPT: // Pull on Lever
+
+[00:50:06] USER_ACTION: Pull | Target: Lever
+[00:50:06] Movement: Started significant journey from (3092, 3361, 0)
+[00:50:10] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:50:20] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:50:24] Movement: Started significant journey from (3117, 3365, 0)
+[00:50:27] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:50:29] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[00:50:30] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:50:38] ACTION: Selected 'Take' on Spade
+    SCRIPT: // Take on Spade
+
+[00:50:38] USER_ACTION: Take | Target: Spade
+[00:50:39] Movement: Started significant journey from (3123, 3356, 0)
+[00:50:40] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:50:45] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:50:45] USER_ACTION: Open | Object_Tile: (3119, 3356, 0)
+[00:50:50] Movement: Started significant journey from (3124, 3362, 0)
+[00:50:50] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:51:01] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:51:03] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[00:51:06] ACTION: Selected 'Search' on Compost heap
+    SCRIPT: GameObjects.closest("Compost heap").interact("Search");
+
+[00:51:06] USER_ACTION: Search | Object_Tile: (3084, 3360, 0)
+[00:51:07] Movement: Started significant journey from (3096, 3377, 0)
+[00:51:11] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:51:15] ACTION: Selected 'Search' on Compost heap
+    SCRIPT: GameObjects.closest("Compost heap").interact("Search");
+
+[00:51:15] USER_ACTION: Search | Object_Tile: (3084, 3360, 0)
+[00:51:21] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:51:31] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:51:41] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:51:52] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:52:02] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:52:12] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:52:22] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:52:23] Movement: Started significant journey from (3085, 3362, 0)
+[00:52:31] ACTION: Selected 'Use' on Poisoned fish food
+    SCRIPT: Inventory.interact("Poisoned fish food", "Use");
+
+[00:52:31] USER_ACTION: Use | Target: Poisoned fish food
+[00:52:31] ACTION: Selected 'Use' on Poisoned fish food -> Fountain
+    SCRIPT: // Item-on-item
+Inventory.use("Poisoned fish food", "Fountain");
+
+[00:52:31] USER_ACTION: Use | Target: Poisoned fish food -> Fountain
+[00:52:32] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:52:42] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:52:52] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:53:02] ACTION: Selected 'Search' on Fountain
+    SCRIPT: GameObjects.closest("Fountain").interact("Search");
+
+[00:53:02] USER_ACTION: Search | Object_Tile: (3087, 3334, 0)
+[00:53:02] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:53:12] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:53:18] Movement: Started significant journey from (3088, 3336, 0)
+[00:53:20] ACTION: Selected 'Chop down' on Dead tree
+    SCRIPT: // Chop down on Dead tree
+
+[00:53:20] USER_ACTION: Chop down | Target: Dead tree
+[00:53:22] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:53:29] ACTION: Selected 'Open' on Large door
+    SCRIPT: GameObjects.closest("Large door").interact("Open");
+
+[00:53:29] USER_ACTION: Open | Object_Tile: (3109, 3353, 0)
+[00:53:32] ACTION: Completed journey: 28 tiles
+    SCRIPT: Walking.walk(new Tile(3109, 3354, 0))
+
+[00:53:32] Journey: Walked 28 tiles in 13s | (3088, 3336, 0) → (3109, 3354, 0)
+[00:53:32] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:53:37] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:53:37] USER_ACTION: Open | Object_Tile: (3109, 3358, 0)
+[00:53:38] Movement: Started significant journey from (3109, 3354, 0)
+[00:53:42] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:53:45] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:53:47] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:53:47] USER_ACTION: Open | Object_Tile: (3107, 3367, 0)
+[00:53:50] ACTION: Selected 'Take' on Rubber tube
+    SCRIPT: // Take on Rubber tube
+
+[00:53:50] USER_ACTION: Take | Target: Rubber tube
+[00:53:51] Movement: Started significant journey from (3109, 3367, 0)
+[00:53:52] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:53:53] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:53:53] USER_ACTION: Open | Object_Tile: (3107, 3367, 0)
+[00:54:02] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:54:05] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[00:54:05] USER_ACTION: Climb-up | Object_Tile: (3108, 3362, 0)
+[00:54:06] Movement: Started significant journey from (3112, 3371, 0)
+[00:54:09] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[00:54:10] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[00:54:13] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[00:54:13] USER_ACTION: Climb-up | Object_Tile: (3108, 3362, 0)
+[00:54:13] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:54:23] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:54:25] ACTION: Selected 'Climb-up' on Staircase
+    SCRIPT: GameObjects.closest("Staircase").interact("Climb-up");
+
+[00:54:25] USER_ACTION: Climb-up | Object_Tile: (3108, 3364, 1)
+[00:54:26] Movement: Started significant journey from (3108, 3366, 1)
+[00:54:31] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[00:54:31] USER_ACTION: Open | Object_Tile: (3108, 3364, 2)
+[00:54:34] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:54:34] ACTION: Selected 'Talk-to' on Professor Oddenstein
+    SCRIPT: NPCs.closest("Professor Oddenstein").interact("Talk-to");
+
+[00:54:34] USER_ACTION: Talk-to | NPC_Tile: (3110, 3368, 2)
+[00:54:36] DIALOGUE_OPTIONS: [I'm looking for a guy called Ernest., What does this machine do?, Is this your house?]
+[00:54:39] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I'm looking for a guy called Ernest.
+
+[00:54:44] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:54:44] DIALOGUE_OPTIONS: [I'm glad Veronica didn't actually get engaged to a chicken., Change him back this instant!]
+[00:54:48] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Change him back this instant!
+
+[00:54:53] QUEST STEP 4: CONFIG DISCOVERED: Unknown Quest config 32 changed from 1 to 2
+    SCRIPT: // DISCOVERED: Quest uses config 32 (value 1 → 2)
+
+[00:54:54] QUEST_API_DETECTED: ERNEST_THE_CHICKEN - State: STARTED
+[00:54:55] ACTION: Selected 'Talk-to' on Professor Oddenstein
+    SCRIPT: NPCs.closest("Professor Oddenstein").interact("Talk-to");
+
+[00:54:55] USER_ACTION: Talk-to | NPC_Tile: (3110, 3368, 2)
+[00:55:03] QUEST STEP 5: CONFIG DISCOVERED: Unknown Quest config 32 changed from 2 to 3
+    SCRIPT: // DISCOVERED: Quest uses config 32 (value 2 → 3)
+
+[00:55:10] Movement: Started significant journey from (3110, 3367, 2)
+[00:55:13] QUEST_END: === QUEST RECORDING ENDED ===

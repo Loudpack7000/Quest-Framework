@@ -1,6 +1,8 @@
 package quest.core;
 
 import org.dreambot.api.utilities.Logger;
+import quest.utils.QuestLogger;
+import quest.utils.RunEnergyUtil;
 
 /**
  * Wrapper class to make tree-based quests compatible with the existing QuestScript interface
@@ -50,6 +52,9 @@ public class TreeQuestWrapper implements QuestScript {
     @Override
     public boolean executeCurrentStep() {
         try {
+            // Ensure run energy is managed every loop (energy pots + run toggle)
+            RunEnergyUtil.handleRunEnergy();
+
             // Execute one iteration of the quest tree
             boolean shouldContinue = questTree.execute();
             
@@ -121,6 +126,14 @@ public class TreeQuestWrapper implements QuestScript {
     public void onQuestStart() {
         Logger.log("=== STARTING TREE-BASED QUEST: " + questName + " ===");
         Logger.log("Quest tree initialized and ready for execution");
+        // Initialize quest logger and capture starting inventory snapshot
+        try {
+            QuestLogger.getInstance().initializeQuest(questName);
+            QuestLogger.getInstance().logInventorySnapshot("Starting inventory");
+            Logger.log("[QuestLogger] Writing to file: " + QuestLogger.getInstance().getCurrentLogFile());
+        } catch (Throwable t) {
+            Logger.log("QuestLogger init failed: " + t.getMessage());
+        }
     }
     
     @Override

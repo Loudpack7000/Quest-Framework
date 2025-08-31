@@ -30,6 +30,7 @@ public class GrandExchangeUtil {
         CONSERVATIVE(5),     // 5% increases
         MODERATE(10),        // 10% increases  
         AGGRESSIVE(15),      // 15% increases
+        TWENTY_PERCENT(20),  // 20% increases (exactly what user wanted)
         INSTANT(50),         // 50% over market price
         EXTREME(200),        // 200% over market price (for stuck offers)
         FIXED_500_GP(0);     // Force 500 gp per item (instant buy for cheap items)
@@ -49,7 +50,7 @@ public class GrandExchangeUtil {
      * Buy a single item from Grand Exchange
      */
     public static boolean buyItem(String itemName, int quantity) {
-        return buyItem(itemName, quantity, PriceStrategy.MODERATE);
+        return buyItem(itemName, quantity, PriceStrategy.TWENTY_PERCENT);
     }
     
     /**
@@ -378,7 +379,13 @@ public class GrandExchangeUtil {
             multiplier *= 1.05; // 5% additional per retry
         }
         
-        return (int) (marketPrice * multiplier);
+        // Use ceiling to avoid rounding down on cheap items,
+        // and enforce a floor at least the market price when strategy implies an increase
+        int calculated = (int) Math.ceil(marketPrice * multiplier);
+        if (strategy.getIncreasePercent() > 0) {
+            calculated = Math.max(calculated, marketPrice + 1); // never underbid live price
+        }
+        return calculated;
     }
     
     /**

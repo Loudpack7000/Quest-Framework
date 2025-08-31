@@ -1,0 +1,41 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-08-31 00:33:43
+Player: scoober2ber
+Starting Location: (3166, 3485, 0)
+Starting Inventory: Hammer
+=====================================
+
+[00:33:43] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:33:43] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:33:43] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:33:43] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[00:33:43] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 1636 varbits (including 0-values)
+
+[00:33:43] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[00:33:47] ACTION: Selected 'Bank' on Grand Exchange booth
+    SCRIPT: // Bank on Grand Exchange booth
+
+[00:33:47] USER_ACTION: Bank | Target: Grand Exchange booth
+[00:33:48] Movement: Started significant journey from (3166, 3486, 0)
+[00:33:49] Position: Arrived at (3167, 3488, 0)
+[00:33:58] ACTION: Selected 'Withdraw-1' on Water rune
+    SCRIPT: // Withdraw-1 on Water rune
+
+[00:33:58] USER_ACTION: Withdraw-1 | Target: Water rune
+[00:33:59] ACTION: Selected 'Withdraw-1' on Water rune
+    SCRIPT: // Withdraw-1 on Water rune
+
+[00:33:59] USER_ACTION: Withdraw-1 | Target: Water rune
+[00:34:05] ACTION: Selected 'Withdraw-1' on Feather
+    SCRIPT: // Withdraw-1 on Feather
+
+[00:34:05] USER_ACTION: Withdraw-1 | Target: Feather
+[00:34:53] QUEST_END: === QUEST RECORDING ENDED ===
