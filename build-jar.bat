@@ -283,6 +283,10 @@ rem New quest tree: Below Ice Mountain
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\BelowIceMountainTree.java"
 if %errorlevel% neq 0 goto :compile_error
 
+rem New quest tree: Dragon Slayer - Stage 1
+javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\trees\DragonSlayerTree.java"
+if %errorlevel% neq 0 goto :compile_error
+
 echo   - Compiling tree wrapper...
 javac -cp "lib\*;target\classes" -d "target\classes" "src\main\java\quest\core\TreeQuestWrapper.java"
 if %errorlevel% neq 0 goto :compile_error

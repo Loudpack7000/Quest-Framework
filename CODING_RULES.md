@@ -55,6 +55,18 @@ if (player.getHealth() < 50) {
 - **Validate locations** - confirm correct coordinates and areas for each quest step
 - **Cross-reference requirements** - ensure all quest requirements and items are handled properly
 
+### Consumed Item Resumability (Critical Rule)
+- **NEVER rely solely on consumable items for state detection** - Items like keys, potions, food dissolve/disappear after use
+- **Use multiple detection methods for progress tracking:**
+  - **Position/Area detection** - Check if player is in areas that indicate progress
+  - **Game state detection** - Use configs, varbits, or quest progress values
+  - **Environmental markers** - Check if doors are opened, NPCs are killed, objects are interacted with
+  - **Z-level detection** - Use floor/height changes to detect progression
+- **Always implement fallback logic** for when consumable items are no longer present
+- **Test resumability scenarios** - Test bot behavior when restarting after each major step
+- **Example Issue**: Bot has red key → opens door → key dissolves → bot restarts because it can't find key
+- **Example Fix**: Detect if player is past the door area, on higher floor, or in post-door locations
+
 ### API Documentation Reference
 
 ### API Documentation

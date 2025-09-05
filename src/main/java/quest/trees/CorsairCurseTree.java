@@ -34,13 +34,28 @@ import org.dreambot.api.wrappers.interactive.NPC;
  */
 public class CorsairCurseTree extends QuestTree {
 
-    // Quest configuration tracking - will be determined at runtime
-    private static final int CORSAIR_CURSE_CONFIG_ID = 1404; // Common quest config ID, may need adjustment
+    // Quest configuration tracking - DISCOVERED from manual logs
+    private static final int CORSAIR_CURSE_VARBIT_ID = 6071; // DISCOVERED: Quest uses varbit 6071
+    private static final int CORSAIR_CURSE_CONFIG_ID = 1404; // Fallback config ID
+    
+    // DISCOVERED: Exact varbit progression from manual completion
     private static final int QUEST_NOT_STARTED = 0;
-    private static final int QUEST_STARTED = 1;
+    private static final int QUEST_AT_COVE = 15;
+    private static final int QUEST_FIRST_INTERVIEW = 20;
+    private static final int QUEST_FIRST_REPORT = 25;
+    private static final int QUEST_GNOCCI_DONE = 30;
+    private static final int QUEST_ARSEN_FOLLOWUP = 35;
+    private static final int QUEST_ITHOI_CONFRONTED = 40;
+    private static final int QUEST_ITHOI_ACCUSED = 45;
+    private static final int QUEST_FIRE_LIT = 49;
+    private static final int QUEST_ITHOI_CAUGHT = 50;
+    private static final int QUEST_ITHOI_REPORTED = 52;
+    private static final int QUEST_ITHOI_DEFEATED = 55;
+    private static final int QUEST_COMPLETED = 60;
 
-    // Key tiles from recording (approximate)
-    private static final Tile RIMMINGTON_TOCK = new Tile(3030, 3273, 0);
+    // Key tiles from recording (verified coordinates)
+    private static final Tile PORT_SARIM_TOCK = new Tile(2906, 3226, 0); // Updated to correct location
+    private static final Tile RIMMINGTON_TOCK = new Tile(3030, 3273, 0); // Keep as backup
     private static final Tile COVE_GANGPLANK = new Tile(2578, 2838, 1);
     private static final Tile COVE_DOCK_GROUND = new Tile(2578, 2839, 0);
     private static final Tile ITHOI_STAIRS_GROUND = new Tile(2531, 2833, 0);
@@ -55,13 +70,19 @@ public class CorsairCurseTree extends QuestTree {
     private static final Tile OGRE_HOLE_GROUND = new Tile(2523, 2861, 0);
     private static final Tile OGRE_CAVE_CHIEF = new Tile(2011, 9005, 1);
     private static final Tile OGRE_VINE_LADDER = new Tile(2012, 9005, 1);
-    private static final Tile DOLL_DIG_TILE = new Tile(2504, 2840, 0);
+    private static final Tile DOLL_DIG_TILE = new Tile(2504, 2840, 0); // Near palm tree
     private static final Tile TELESCOPE_TILE = new Tile(2529, 2835, 1);
+    
+    // DISCOVERED: Ithoi boss fight area coordinates
+    private static final Tile ITHOI_BOSS_AREA = new Tile(12257, 2011, 1); // Combat cutscene area
 
     // Items
     private static final String SPADE = "Spade";
+    private static final String TINDERBOX = "Tinderbox";
+    private static final String DRIFTWOOD = "Driftwood";
+    private static final int OGRE_ARTEFACT_ID = 21837; // Ogre artefact item ID
 
-    // Session flags (until precise config/varbits are mapped)
+    // Session flags - now enhanced with discovered quest mechanics
     private boolean visitedIthoi;
     private boolean visitedArsen;
     private boolean visitedColin;
@@ -74,6 +95,14 @@ public class CorsairCurseTree extends QuestTree {
     private boolean observedTelescope;
     private boolean reportedFindingsOnce;
     private boolean reinterviewedCrew;
+    
+    // DISCOVERED: New quest mechanics from manual logs
+    private boolean confrontedIthoi;
+    private boolean accusedIthoi;
+    private boolean litFire;
+    private boolean caughtIthoi;
+    private boolean reportedIthoi;
+    private boolean defeatedIthoi;
 
     // Nodes
     private QuestNode smart;
@@ -89,6 +118,13 @@ public class CorsairCurseTree extends QuestTree {
     private QuestNode digForDollNode;
     private QuestNode observeTelescopeNode;
     private QuestNode reinterviewCrewNode;
+    
+    // DISCOVERED: New quest nodes from manual completion
+    private QuestNode confrontIthoiNode;
+    private QuestNode accuseIthoiNode;
+    private QuestNode lightFireNode;
+    private QuestNode fightIthoiNode;
+    private QuestNode finalReportNode;
 
     public CorsairCurseTree() {
         super("The Corsair Curse");
@@ -101,13 +137,53 @@ public class CorsairCurseTree extends QuestTree {
     }
 
     private void createNodes() {
-        // Start: Talk to Captain Tock in Rimmington
-        startWithTock = new ActionNode("start_tock_rimmington", "Talk to Captain Tock to begin") {
+        // Start: Talk to Captain Tock to begin quest (try both locations)
+        startWithTock = new ActionNode("start_tock_quest", "Talk to Captain Tock to begin") {
             @Override
             protected boolean performAction() {
-                QuestNode talk = new TalkToNPCNode("talk_tock_start", "Captain Tock", RIMMINGTON_TOCK);
+                log("Starting quest - looking for Captain Tock to begin The Corsair Curse");
+                
+                // First try Rimmington location (traditional quest start)
+                NPC tock = NPCs.closest("Captain Tock");
+                if (tock != null && tock.getTile().distance(RIMMINGTON_TOCK) < 20) {
+                    log("Found Captain Tock at Rimmington - starting quest there");
+                    QuestNode talk = new TalkToNPCNode("talk_tock_start_rim", "Captain Tock", RIMMINGTON_TOCK);
+                    boolean ok = talk.execute().isSuccess();
+                    if (ok) {
+                        started = true;
+                        log("Successfully started The Corsair Curse quest at Rimmington");
+                        return true;
+                    }
+                }
+                
+                // If not found at Rimmington or failed, try Port Sarim
+                if (Players.getLocal().getTile().distance(PORT_SARIM_TOCK) < 50) {
+                    log("Trying Captain Tock at Port Sarim location");
+                    QuestNode talk = new TalkToNPCNode("talk_tock_start_ps", "Captain Tock", PORT_SARIM_TOCK);
+                    boolean ok = talk.execute().isSuccess();
+                    if (ok) {
+                        started = true;
+                        log("Successfully started The Corsair Curse quest at Port Sarim");
+                        return true;
+                    }
+                }
+                
+                // Walk to Rimmington as primary quest start location
+                if (Players.getLocal().getTile().distance(RIMMINGTON_TOCK) > 15) {
+                    log("Walking to Rimmington to find Captain Tock");
+                    new WalkToLocationNode("walk_to_rim_tock", RIMMINGTON_TOCK, 8, "Captain Tock (Rimmington)").execute();
+                    Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(RIMMINGTON_TOCK) <= 15, 20000);
+                }
+                
+                // Final attempt at Rimmington
+                QuestNode talk = new TalkToNPCNode("talk_tock_start_final", "Captain Tock", RIMMINGTON_TOCK);
                 boolean ok = talk.execute().isSuccess();
-                if (ok) started = true;
+                if (ok) {
+                    started = true;
+                    log("Successfully started The Corsair Curse quest");
+                } else {
+                    log("Failed to start quest with Captain Tock - will retry");
+                }
                 return ok;
             }
         };
@@ -116,56 +192,124 @@ public class CorsairCurseTree extends QuestTree {
         travelToCorsairCove = new ActionNode("travel_corsair_cove", "Travel to Corsair Cove") {
             @Override
             protected boolean performAction() {
-                // Already there?
-                if (isAtCorsairCove()) {
-                    log("Already near Corsair Cove");
+                // Check if already at Corsair Cove (on the island, not just dock)
+                if (isAtCorsairCoveIsland()) {
+                    log("Already at Corsair Cove island - travel complete");
                     return true;
                 }
 
-                // Try to talk to Captain Tock if nearby
-                NPC tock = NPCs.closest("Captain Tock");
-                if (tock != null) {
-                    log("Talking to Captain Tock to travel...");
-                    if (tock.interact("Talk-to")) {
-                        if (Sleep.sleepUntil(Dialogues::inDialogue, 7000)) {
-                            // Progress through dialogue; look for travel options if present
-                            int guard = 0;
-                            while (Dialogues.inDialogue() && guard++ < 20) {
-                                if (Dialogues.areOptionsAvailable()) {
-                                    String[] opts = Dialogues.getOptions();
-                                    for (int i = 0; i < opts.length; i++) {
-                                        if (opts[i].toLowerCase().contains("ready") ||
-                                            opts[i].toLowerCase().contains("corsair cove") ||
-                                            opts[i].toLowerCase().contains("take me")) {
-                                            Dialogues.chooseOption(i + 1);
-                                            break;
-                                        }
-                                    }
-                                } else if (Dialogues.canContinue()) {
-                                    if (!Dialogues.spaceToContinue()) Dialogues.continueDialogue();
-                                }
-                                Sleep.sleep(600, 900);
-                            }
+                // Check if we're at the dock but haven't crossed the gangplank yet
+                if (isAtCorsairCoveDock() && !isAtCorsairCoveIsland()) {
+                    log("At dock - looking for gangplank to cross");
+                    GameObject gangplank = GameObjects.closest("Gangplank");
+                    if (gangplank != null && gangplank.interact("Cross")) {
+                        log("Crossing gangplank to Corsair Cove");
+                        Sleep.sleepUntil(() -> isAtCorsairCoveIsland() || Players.getLocal().getTile().distance(COVE_GANGPLANK) < 10, 15000);
+                        if (isAtCorsairCoveIsland()) {
+                            log("Successfully arrived at Corsair Cove island");
+                            return true;
                         }
                     }
                 }
 
-                // Use gangplank if visible
-                GameObject gangplank = GameObjects.closest("Gangplank");
-                if (gangplank != null && gangplank.interact("Cross")) {
-                    Sleep.sleepUntil(() -> isAtCorsairCove() || Players.getLocal().getTile().distance(COVE_DOCK_GROUND) < 15, 10000);
-                    started = true;
-                    return true;
+                // Not at Corsair Cove - need to find Captain Tock to sail there
+                log("Not at Corsair Cove - need to find Captain Tock to sail");
+
+                // First, try to find Captain Tock nearby
+                NPC tock = NPCs.closest("Captain Tock");
+                if (tock != null && tock.getTile().distance(Players.getLocal().getTile()) < 15) {
+                    log("Found Captain Tock nearby - attempting to sail");
+                    return talkToTockForTravel(tock);
                 }
 
-                // Last resort: walk towards Rimmington Tock then try again
-                if (Players.getLocal().getTile().distance(RIMMINGTON_TOCK) > 8) {
-                    Walking.walk(RIMMINGTON_TOCK);
-                    Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(RIMMINGTON_TOCK) <= 8, 15000);
+                // Captain Tock not nearby - navigate to Port Sarim location
+                Tile tockLocation = PORT_SARIM_TOCK; // Use the corrected coordinates
+                if (Players.getLocal().getTile().distance(tockLocation) > 8) {
+                    log("Walking to Captain Tock at Port Sarim: " + tockLocation);
+                    new WalkToLocationNode("walk_to_tock", tockLocation, 6, "Captain Tock").execute();
+                    Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(tockLocation) <= 8, 20000);
                 }
-                // If we made it to the area by walking/dialogue, consider started once at cove
-                if (isAtCorsairCove()) started = true;
-                return true; // Let smart node loop
+
+                // Now try to find Captain Tock again
+                tock = NPCs.closest("Captain Tock");
+                if (tock != null) {
+                    log("Arrived at Captain Tock - attempting to sail");
+                    return talkToTockForTravel(tock);
+                } else {
+                    log("Captain Tock not found at expected location - waiting for spawn");
+                    Sleep.sleep(3000, 5000); // Wait for NPC to spawn/load
+                    tock = NPCs.closest("Captain Tock");
+                    if (tock != null) {
+                        return talkToTockForTravel(tock);
+                    }
+                }
+
+                log("Unable to find Captain Tock - will retry");
+                return false; // Retry the travel node
+            }
+
+            private boolean talkToTockForTravel(NPC tock) {
+                if (tock.interact("Talk-to")) {
+                    if (Sleep.sleepUntil(Dialogues::inDialogue, 8000)) {
+                        log("Dialogue opened with Captain Tock");
+
+                        // Progress through dialogue to find travel option
+                        int guard = 0;
+                        boolean foundTravelOption = false;
+
+                        while (Dialogues.inDialogue() && guard++ < 25 && !foundTravelOption) {
+                            if (Dialogues.areOptionsAvailable()) {
+                                String[] opts = Dialogues.getOptions();
+                                log("Available dialogue options: " + String.join(", ", opts));
+
+                                for (int i = 0; i < opts.length; i++) {
+                                    String option = opts[i].toLowerCase();
+                                    if (option.contains("ready") ||
+                                        option.contains("corsair cove") ||
+                                        option.contains("take me") ||
+                                        option.contains("sail") ||
+                                        option.contains("travel")) {
+                                        log("Selecting travel option: " + opts[i]);
+                                        Dialogues.chooseOption(i + 1);
+                                        foundTravelOption = true;
+                                        break;
+                                    }
+                                }
+
+                                // If no specific travel option found, try first option as fallback
+                                if (!foundTravelOption && opts.length > 0) {
+                                    log("No specific travel option found, selecting first: " + opts[0]);
+                                    Dialogues.chooseOption(1);
+                                }
+                            } else if (Dialogues.canContinue()) {
+                                if (!Dialogues.spaceToContinue()) {
+                                    Dialogues.continueDialogue();
+                                }
+                            }
+                            Sleep.sleep(800, 1200);
+                        }
+
+                        // Wait for travel to complete
+                        if (foundTravelOption) {
+                            log("Waiting for travel to Corsair Cove to complete...");
+                            Sleep.sleepUntil(() -> isAtCorsairCoveDock() || isAtCorsairCoveIsland(), 30000);
+
+                            if (isAtCorsairCoveIsland()) {
+                                log("Successfully sailed to Corsair Cove island");
+                                return true;
+                            } else if (isAtCorsairCoveDock()) {
+                                log("Arrived at Corsair Cove dock - will cross gangplank next");
+                                return true;
+                            }
+                        }
+                    } else {
+                        log("Failed to open dialogue with Captain Tock");
+                    }
+                } else {
+                    log("Failed to interact with Captain Tock");
+                }
+
+                return false;
             }
         };
 
@@ -217,17 +361,52 @@ public class CorsairCurseTree extends QuestTree {
         reportToTockOnShip = new ActionNode("report_tock", "Report findings to Captain Tock (ship)") {
             @Override
             protected boolean performAction() {
-                // Ensure we're on or near the ship
-                if (Players.getLocal().getTile().getZ() == 0 && Players.getLocal().getTile().distance(COVE_GANGPLANK) < 15) {
+                log("Attempting to report findings to Captain Tock on ship");
+                
+                // Check if we need to get to the ship level (Z=1)
+                if (Players.getLocal().getTile().getZ() == 0) {
+                    log("Currently on ground level - need to board ship");
+                    
+                    // Walk to gangplank area if not close
+                    if (Players.getLocal().getTile().distance(COVE_DOCK_GROUND) > 15) {
+                        log("Walking to dock area near gangplank");
+                        new WalkToLocationNode("walk_to_dock", COVE_DOCK_GROUND, 8, "Dock area").execute();
+                        Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(COVE_DOCK_GROUND) <= 15, 10000);
+                    }
+                    
+                    // Find and cross gangplank
                     GameObject gangplank = GameObjects.closest("Gangplank");
                     if (gangplank != null) {
-                        gangplank.interact("Cross");
-                        Sleep.sleepUntil(() -> Players.getLocal().getTile().getZ() == 1, 7000);
+                        log("Found gangplank at: " + gangplank.getTile() + " - crossing to ship");
+                        if (gangplank.interact("Cross")) {
+                            Sleep.sleepUntil(() -> Players.getLocal().getTile().getZ() == 1, 10000);
+                            if (Players.getLocal().getTile().getZ() == 1) {
+                                log("Successfully boarded ship");
+                            } else {
+                                log("Failed to board ship - still on ground level");
+                                return false;
+                            }
+                        } else {
+                            log("Failed to interact with gangplank");
+                            return false;
+                        }
+                    } else {
+                        log("Gangplank not found - cannot board ship");
+                        return false;
                     }
+                } else {
+                    log("Already on ship level");
                 }
+                
+                // Now talk to Captain Tock on the ship
                 QuestNode talk = new TalkToNPCNode("talk_tock_ship", "Captain Tock", TOCK_ON_SHIP);
                 boolean ok = talk.execute().isSuccess();
-                if (ok) reportedFindingsOnce = true;
+                if (ok) {
+                    log("Successfully reported findings to Captain Tock");
+                    reportedFindingsOnce = true;
+                } else {
+                    log("Failed to report findings to Captain Tock");
+                }
                 return ok;
             }
         };
@@ -235,18 +414,51 @@ public class CorsairCurseTree extends QuestTree {
         finalReportToTock = new ActionNode("final_report_tock", "Report final findings to Captain Tock") {
             @Override
             protected boolean performAction() {
-                // Ensure on ship
-                if (Players.getLocal().getTile().getZ() == 0 && Players.getLocal().getTile().distance(COVE_GANGPLANK) < 15) {
+                log("Attempting final report to Captain Tock on ship");
+                
+                // Check if we need to get to the ship level (Z=1)
+                if (Players.getLocal().getTile().getZ() == 0) {
+                    log("Currently on ground level - need to board ship for final report");
+                    
+                    // Walk to gangplank area if not close
+                    if (Players.getLocal().getTile().distance(COVE_DOCK_GROUND) > 15) {
+                        log("Walking to dock area near gangplank");
+                        new WalkToLocationNode("walk_to_dock_final", COVE_DOCK_GROUND, 8, "Dock area").execute();
+                        Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(COVE_DOCK_GROUND) <= 15, 10000);
+                    }
+                    
+                    // Find and cross gangplank
                     GameObject gangplank = GameObjects.closest("Gangplank");
                     if (gangplank != null) {
-                        gangplank.interact("Cross");
-                        Sleep.sleepUntil(() -> Players.getLocal().getTile().getZ() == 1, 7000);
+                        log("Found gangplank at: " + gangplank.getTile() + " - crossing to ship for final report");
+                        if (gangplank.interact("Cross")) {
+                            Sleep.sleepUntil(() -> Players.getLocal().getTile().getZ() == 1, 10000);
+                            if (Players.getLocal().getTile().getZ() == 1) {
+                                log("Successfully boarded ship for final report");
+                            } else {
+                                log("Failed to board ship - still on ground level");
+                                return false;
+                            }
+                        } else {
+                            log("Failed to interact with gangplank");
+                            return false;
+                        }
+                    } else {
+                        log("Gangplank not found - cannot board ship");
+                        return false;
                     }
+                } else {
+                    log("Already on ship level for final report");
                 }
+                
+                // Final talk to Captain Tock
                 QuestNode talk = new TalkToNPCNode("talk_tock_final", "Captain Tock", TOCK_ON_SHIP);
                 boolean ok = talk.execute().isSuccess();
                 if (ok) {
+                    log("Successfully completed final report - quest should be finished!");
                     completed = true;
+                } else {
+                    log("Failed to complete final report to Captain Tock");
                 }
                 return ok;
             }
@@ -255,6 +467,12 @@ public class CorsairCurseTree extends QuestTree {
         visitOgreChief = new ActionNode("visit_ogre_chief", "Return relic and speak to Chief Tess") {
             @Override
             protected boolean performAction() {
+                // First ensure we're at ground level near the hole
+                if (Players.getLocal().getTile().getZ() != 0) {
+                    log("Need to be at ground level to enter ogre cave");
+                    return false;
+                }
+
                 // Enter hole to cave
                 GameObject hole = GameObjects.closest("Hole");
                 if (hole == null || Players.getLocal().getTile().distance(OGRE_HOLE_GROUND) > 8) {
@@ -262,29 +480,68 @@ public class CorsairCurseTree extends QuestTree {
                     new WalkToLocationNode("walk_hole", OGRE_HOLE_GROUND, 3, "Ogre cave hole").execute();
                     hole = GameObjects.closest("Hole");
                 }
+
                 if (hole != null && hole.interact("Enter")) {
+                    log("Entering ogre cave...");
                     Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(OGRE_CAVE_CHIEF) < 50, 10000);
+                } else {
+                    log("Failed to enter ogre cave hole");
+                    return false;
                 }
 
                 // Talk to Chief Tess
                 QuestNode talk = new TalkToNPCNode("talk_chief_tess", "Chief Tess", OGRE_CAVE_CHIEF);
                 boolean ok = talk.execute().isSuccess();
-                if (!ok) return false;
+                if (!ok) {
+                    log("Failed to speak with Chief Tess");
+                    return false;
+                }
                 spokeChiefTess = true;
+                log("Successfully spoke with Chief Tess and returned relic");
 
-                // Climb vine ladder to leave
-                GameObject vine = GameObjects.closest(go -> go.getName().contains("Vine") || go.getName().contains("Vine ladder"));
+                // Wait a moment for any post-dialogue processing
+                Sleep.sleep(2000, 3000);
+
+                // Climb vine ladder to leave (must be done to progress quest)
+                GameObject vine = GameObjects.closest(go -> go.getName().contains("Vine") ||
+                                                      go.getName().contains("Vine ladder") ||
+                                                      go.getName().contains("Climbing rope"));
+
                 if (vine == null) {
                     // Walk to vine tile as fallback
+                    log("Vine not found, walking to vine location");
                     new WalkToLocationNode("walk_vine", OGRE_VINE_LADDER, 2, "Vine ladder").execute();
-                    vine = GameObjects.closest(go -> go.getName().contains("Vine"));
+                    vine = GameObjects.closest(go -> go.getName().contains("Vine") ||
+                                               go.getName().contains("Vine ladder") ||
+                                               go.getName().contains("Climbing rope"));
                 }
-                if (vine != null && (vine.hasAction("Climb") || vine.hasAction("Climb-up"))) {
-                    String action = vine.hasAction("Climb") ? "Climb" : "Climb-up";
-                    vine.interact(action);
-                    Sleep.sleepUntil(() -> Players.getLocal().getTile().getZ() == 0, 7000);
+
+                if (vine != null) {
+                    String action = null;
+                    if (vine.hasAction("Climb")) action = "Climb";
+                    else if (vine.hasAction("Climb-up")) action = "Climb-up";
+                    else if (vine.hasAction("Climb-down")) action = "Climb-down";
+
+                    if (action != null) {
+                        log("Climbing vine ladder to exit cave...");
+                        vine.interact(action);
+                        Sleep.sleepUntil(() -> Players.getLocal().getTile().getZ() == 0, 10000);
+                    } else {
+                        log("Vine ladder has no valid climb action");
+                        return false;
+                    }
+                } else {
+                    log("Cannot find vine ladder to exit cave");
+                    return false;
                 }
-                climbedOutOfOgreCave = Players.getLocal().getTile().getZ() == 0;
+
+                climbedOutOfOgreCave = (Players.getLocal().getTile().getZ() == 0);
+                if (climbedOutOfOgreCave) {
+                    log("Successfully exited ogre cave");
+                } else {
+                    log("Failed to exit ogre cave - still underground");
+                }
+
                 return climbedOutOfOgreCave;
             }
         };
@@ -292,73 +549,362 @@ public class CorsairCurseTree extends QuestTree {
         digForDollNode = new ActionNode("dig_for_doll", "Dig for the possessed doll") {
             @Override
             protected boolean performAction() {
+                // Walk to dig location if not already there
                 if (Players.getLocal().getTile().distance(DOLL_DIG_TILE) > 4) {
+                    log("Walking to dig location near palm tree");
                     new WalkToLocationNode("walk_dig_tile", DOLL_DIG_TILE, 2, "Doll dig tile").execute();
                 }
 
+                // Verify we have a spade
                 if (!Inventory.contains(SPADE)) {
-                    log("Missing Spade - cannot dig");
+                    log("Missing Spade - cannot dig for possessed doll");
                     return false;
                 }
 
-                if (!Inventory.interact(SPADE, "Dig")) return false;
+                // Dig at the location
+                log("Digging for possessed doll...");
+                if (!Inventory.interact(SPADE, "Dig")) {
+                    log("Failed to dig - spade interaction failed");
+                    return false;
+                }
 
-                // Handle potential dialogue choice from the log
-                if (Sleep.sleepUntil(Dialogues::areOptionsAvailable, 5000)) {
-                    String[] opts = Dialogues.getOptions();
-                    for (int i = 0; i < opts.length; i++) {
-                        if (opts[i].toLowerCase().contains("possessed doll") || opts[i].toLowerCase().contains("search")) {
-                            Dialogues.chooseOption(i + 1);
-                            break;
+                // Wait for dig animation and potential dialogue
+                Sleep.sleep(2000, 3000);
+
+                // Handle the search dialogue that appears after digging
+                if (Sleep.sleepUntil(Dialogues::inDialogue, 8000)) {
+                    log("Search dialogue appeared after digging");
+
+                    // Continue through search dialogue
+                    int dialogueGuard = 0;
+                    while (Dialogues.inDialogue() && dialogueGuard++ < 15) {
+                        if (Dialogues.canContinue()) {
+                            if (!Dialogues.spaceToContinue()) {
+                                Dialogues.continueDialogue();
+                            }
+                        } else if (Dialogues.areOptionsAvailable()) {
+                            String[] options = Dialogues.getOptions();
+                            boolean foundValidOption = false;
+
+                            // Look for options related to searching or the doll
+                            for (int i = 0; i < options.length; i++) {
+                                String option = options[i].toLowerCase();
+                                if (option.contains("search") ||
+                                    option.contains("possessed doll") ||
+                                    option.contains("investigate") ||
+                                    option.contains("examine")) {
+                                    log("Selecting search option: " + options[i]);
+                                    Dialogues.chooseOption(i + 1);
+                                    foundValidOption = true;
+                                    break;
+                                }
+                            }
+
+                            // If no specific option found, take the first available
+                            if (!foundValidOption) {
+                                log("No specific search option found, selecting first option");
+                                Dialogues.chooseOption(1);
+                            }
                         }
+                        Sleep.sleep(800, 1200);
                     }
-                }
-                // Continue through any dialogue
-                Sleep.sleep(800, 1200);
-                int guard = 0;
-                while (Dialogues.inDialogue() && guard++ < 10) {
-                    if (Dialogues.canContinue()) {
-                        if (!Dialogues.spaceToContinue()) Dialogues.continueDialogue();
-                    } else if (Dialogues.areOptionsAvailable()) {
-                        Dialogues.chooseOption(1);
+
+                    // Check if we successfully found the doll
+                    if (!Dialogues.inDialogue()) {
+                        log("Successfully dug up and examined the possessed doll");
+                        dugForDoll = true;
+                        return true;
+                    } else {
+                        log("Dialogue still open after processing - may need manual intervention");
+                        return false;
                     }
-                    Sleep.sleep(600, 900);
+                } else {
+                    log("No dialogue appeared after digging - checking if doll was found anyway");
+                    // Sometimes the doll might be found without dialogue
+                    Sleep.sleep(2000, 3000);
+                    dugForDoll = true; // Assume success if no dialogue issues
+                    return true;
                 }
-                dugForDoll = true;
-                return true;
             }
         };
 
         observeTelescopeNode = new ActionNode("observe_telescope", "Observe the telescope") {
             @Override
             protected boolean performAction() {
-                if (!ensureUpstairsAt(ITHOI_STAIRS_GROUND, 1)) return false;
-                GameObject telescope = GameObjects.closest("Telescope");
-                if (telescope != null && telescope.interact("Observe")) {
-                    Sleep.sleep(1500, 2500);
-                    observedTelescope = true;
-                    return true;
+                // Ensure we're in the navigation room upstairs
+                if (!ensureUpstairsAt(ITHOI_STAIRS_GROUND, 1)) {
+                    log("Failed to reach navigation room for telescope observation");
+                    return false;
                 }
-                return false;
+
+                // Find and interact with telescope
+                GameObject telescope = GameObjects.closest("Telescope");
+                if (telescope == null) {
+                    log("Cannot find telescope in navigation room");
+                    return false;
+                }
+
+                if (telescope.interact("Observe")) {
+                    log("Observing telescope...");
+
+                    // Wait for observation animation and any resulting dialogue
+                    Sleep.sleep(2000, 3000);
+
+                    // Handle any observation dialogue
+                    if (Sleep.sleepUntil(Dialogues::inDialogue, 5000)) {
+                        log("Observation dialogue appeared");
+
+                        int dialogueGuard = 0;
+                        while (Dialogues.inDialogue() && dialogueGuard++ < 10) {
+                            if (Dialogues.canContinue()) {
+                                if (!Dialogues.spaceToContinue()) {
+                                    Dialogues.continueDialogue();
+                                }
+                            } else if (Dialogues.areOptionsAvailable()) {
+                                // For telescope observation, usually just continue
+                                Dialogues.chooseOption(1);
+                            }
+                            Sleep.sleep(800, 1200);
+                        }
+
+                        if (!Dialogues.inDialogue()) {
+                            log("Successfully observed telescope and processed results");
+                            observedTelescope = true;
+                            return true;
+                        } else {
+                            log("Observation dialogue did not complete properly");
+                            return false;
+                        }
+                    } else {
+                        // No dialogue - observation might still be successful
+                        log("Telescope observed successfully (no dialogue)");
+                        observedTelescope = true;
+                        return true;
+                    }
+                } else {
+                    log("Failed to interact with telescope");
+                    return false;
+                }
             }
         };
 
         reinterviewCrewNode = new ActionNode("reinterview_crew", "Re-interview crew with new theories") {
             @Override
             protected boolean performAction() {
-                // Gnocci new line
-                if (!ensureUpstairsAt(COOK_STAIRS_GROUND, 1)) return false;
-                new TalkToNPCNode("re_talk_gnocci", "Gnocci the Cook", GNOCCHI_LOCATION).execute();
+                boolean allReinterviewed = true;
 
-                // Arsen follow-up
-                if (!ensureUpstairsAt(TOWER_STAIRS_GROUND, 1)) return false;
-                new TalkToNPCNode("re_talk_arsen", "Arsen the Thief", ARSEN_LOCATION).execute();
+                // Re-interview Gnocci the Cook (must be done first for new dialogue)
+                if (!ensureUpstairsAt(COOK_STAIRS_GROUND, 1)) {
+                    log("Failed to reach cook's quarters for reinterview");
+                    return false;
+                }
+                if (!new TalkToNPCNode("re_talk_gnocci", "Gnocci the Cook", GNOCCHI_LOCATION).execute().isSuccess()) {
+                    log("Failed to reinterview Gnocci");
+                    allReinterviewed = false;
+                }
 
-                // Colin follow-up
-                new TalkToNPCNode("re_talk_colin", "Cabin Boy Colin", COLIN_LOCATION).execute();
+                // Re-interview Arsen the Thief
+                if (!ensureUpstairsAt(TOWER_STAIRS_GROUND, 1)) {
+                    log("Failed to reach tower for Arsen reinterview");
+                    return false;
+                }
+                if (!new TalkToNPCNode("re_talk_arsen", "Arsen the Thief", ARSEN_LOCATION).execute().isSuccess()) {
+                    log("Failed to reinterview Arsen");
+                    allReinterviewed = false;
+                }
 
-                reinterviewedCrew = true;
-                return true;
+                // Re-interview Cabin Boy Colin
+                if (!new TalkToNPCNode("re_talk_colin", "Cabin Boy Colin", COLIN_LOCATION).execute().isSuccess()) {
+                    log("Failed to reinterview Colin");
+                    allReinterviewed = false;
+                }
+
+                // Re-interview Ithoi the Navigator
+                if (!ensureUpstairsAt(ITHOI_STAIRS_GROUND, 1)) {
+                    log("Failed to reach navigation room for Ithoi reinterview");
+                    return false;
+                }
+                if (!new TalkToNPCNode("re_talk_ithoi", "Ithoi the Navigator", ITHOI_LOCATION).execute().isSuccess()) {
+                    log("Failed to reinterview Ithoi");
+                    allReinterviewed = false;
+                }
+
+                if (allReinterviewed) {
+                    log("Successfully reinterviewed all crew members");
+                    reinterviewedCrew = true;
+                    return true;
+                } else {
+                    log("Some crew reinterviews failed - will retry");
+                    return false; // Allow retry
+                }
+            }
+        };
+
+        // DISCOVERED: New quest nodes from manual completion logs
+        
+        // Confront Ithoi about the curse
+        confrontIthoiNode = new ActionNode("confront_ithoi", "Confront Ithoi about the curse") {
+            @Override
+            protected boolean performAction() {
+                if (!ensureUpstairsAt(ITHOI_STAIRS_GROUND, 1)) return false;
+                
+                QuestNode talk = new TalkToNPCNode("talk_ithoi_confront", "Ithoi the Navigator", ITHOI_LOCATION);
+                boolean ok = talk.execute().isSuccess();
+                if (ok) {
+                    log("Confronted Ithoi about the curse");
+                    confrontedIthoi = true;
+                }
+                return ok;
+            }
+        };
+
+        // Accuse Ithoi of faking the curse
+        accuseIthoiNode = new ActionNode("accuse_ithoi", "Accuse Ithoi of faking the curse") {
+            @Override
+            protected boolean performAction() {
+                if (!ensureUpstairsAt(ITHOI_STAIRS_GROUND, 1)) return false;
+                
+                QuestNode talk = new TalkToNPCNode("talk_ithoi_accuse", "Ithoi the Navigator", ITHOI_LOCATION);
+                boolean ok = talk.execute().isSuccess();
+                if (ok) {
+                    log("Accused Ithoi of faking the curse");
+                    accusedIthoi = true;
+                }
+                return ok;
+            }
+        };
+
+        // Light fire to prove Ithoi can move
+        lightFireNode = new ActionNode("light_fire", "Light fire to prove Ithoi can move") {
+            @Override
+            protected boolean performAction() {
+                if (!ensureUpstairsAt(ITHOI_STAIRS_GROUND, 1)) return false;
+                
+                // Check we have tinderbox and driftwood
+                if (!Inventory.contains(TINDERBOX)) {
+                    log("Missing Tinderbox - cannot light fire");
+                    return false;
+                }
+                
+                if (!Inventory.contains(DRIFTWOOD)) {
+                    log("Missing Driftwood - cannot light fire");
+                    return false;
+                }
+                
+                log("Using Tinderbox on Driftwood to light fire...");
+                if (Inventory.interact(TINDERBOX, "Use")) {
+                    Sleep.sleep(1000, 1500);
+                    if (Inventory.interact(DRIFTWOOD, "Use")) {
+                        Sleep.sleepUntil(() -> getQuestVarbit() >= QUEST_FIRE_LIT, 8000);
+                        if (getQuestVarbit() >= QUEST_FIRE_LIT) {
+                            log("Successfully lit fire - Ithoi should move now");
+                            litFire = true;
+                            caughtIthoi = true; // Fire automatically catches Ithoi
+                            return true;
+                        }
+                    }
+                }
+                
+                log("Failed to light fire");
+                return false;
+            }
+        };
+
+        // Fight Ithoi in the boss area
+        fightIthoiNode = new ActionNode("fight_ithoi", "Fight Ithoi the Navigator") {
+            @Override
+            protected boolean performAction() {
+                // Check if we're in the boss fight area
+                Tile currentTile = Players.getLocal().getTile();
+                boolean inBossArea = currentTile.getX() > 10000; // Boss area has X > 10000
+                
+                if (!inBossArea) {
+                    log("Not in boss fight area - waiting for cutscene teleport");
+                    Sleep.sleepUntil(() -> Players.getLocal().getTile().getX() > 10000, 15000);
+                    
+                    if (Players.getLocal().getTile().getX() <= 10000) {
+                        log("Cutscene teleport didn't happen - may need to trigger it");
+                        return false;
+                    }
+                }
+                
+                log("In boss fight area - attacking Ithoi the Navigator");
+                
+                // Find and attack Ithoi
+                NPC ithoi = NPCs.closest("Ithoi the Navigator");
+                int attempts = 0;
+                
+                while (ithoi != null && attempts < 30) {
+                    if (!Players.getLocal().isInCombat()) {
+                        if (ithoi.interact("Attack")) {
+                            log("Attacking Ithoi the Navigator (attempt " + (attempts + 1) + ")");
+                            Sleep.sleepUntil(() -> Players.getLocal().isInCombat(), 3000);
+                        }
+                    }
+                    
+                    // Wait for combat to finish
+                    Sleep.sleep(2000, 3000);
+                    
+                    // Check if Ithoi is defeated (quest progresses)
+                    if (getQuestVarbit() >= QUEST_ITHOI_DEFEATED) {
+                        log("Ithoi defeated! Quest should progress now");
+                        defeatedIthoi = true;
+                        return true;
+                    }
+                    
+                    ithoi = NPCs.closest("Ithoi the Navigator");
+                    attempts++;
+                }
+                
+                // Check final quest state
+                if (getQuestVarbit() >= QUEST_ITHOI_DEFEATED) {
+                    log("Ithoi defeated successfully");
+                    defeatedIthoi = true;
+                    return true;
+                }
+                
+                log("Failed to defeat Ithoi after " + attempts + " attempts");
+                return false;
+            }
+        };
+
+        // Final report to Captain Tock after defeating Ithoi
+        finalReportNode = new ActionNode("final_report_ithoi", "Report Ithoi's defeat to Captain Tock") {
+            @Override
+            protected boolean performAction() {
+                log("Attempting final report about Ithoi's defeat to Captain Tock");
+                
+                // Ensure we're on the ship
+                if (Players.getLocal().getTile().getZ() == 0) {
+                    log("Currently on ground level - need to board ship for final report");
+                    
+                    if (Players.getLocal().getTile().distance(COVE_DOCK_GROUND) > 15) {
+                        log("Walking to dock area near gangplank");
+                        new WalkToLocationNode("walk_to_dock_final_ithoi", COVE_DOCK_GROUND, 8, "Dock area").execute();
+                        Sleep.sleepUntil(() -> Players.getLocal().getTile().distance(COVE_DOCK_GROUND) <= 15, 10000);
+                    }
+                    
+                    GameObject gangplank = GameObjects.closest("Gangplank");
+                    if (gangplank != null) {
+                        log("Found gangplank - crossing to ship for final report");
+                        if (gangplank.interact("Cross")) {
+                            Sleep.sleepUntil(() -> Players.getLocal().getTile().getZ() == 1, 10000);
+                        }
+                    }
+                }
+                
+                // Talk to Captain Tock with final report
+                QuestNode talk = new TalkToNPCNode("talk_tock_final_ithoi", "Captain Tock", TOCK_ON_SHIP);
+                boolean ok = talk.execute().isSuccess();
+                
+                if (ok) {
+                    log("Successfully reported Ithoi's defeat - quest should be complete!");
+                    completed = true;
+                    return true;
+                }
+                
+                log("Failed to complete final report to Captain Tock");
+                return false;
             }
         };
 
@@ -393,12 +939,12 @@ public class CorsairCurseTree extends QuestTree {
                 }
 
                 // Determine if quest is started using API or config
-                boolean questStarted = isQuestStartedByAPI() || questConfig >= QUEST_STARTED;
-                log("Quest started check: API=" + isQuestStartedByAPI() + ", config=" + (questConfig >= QUEST_STARTED) + ", result=" + questStarted);
+                boolean questStarted = isQuestStartedByAPI() || questConfig >= QUEST_AT_COVE;
+                log("Quest started check: API=" + isQuestStartedByAPI() + ", config=" + (questConfig >= QUEST_AT_COVE) + ", result=" + questStarted);
 
                 // Start check
                 if (!questStarted) {
-                    log("Quest not started - talk to Captain Tock in Rimmington");
+                    log("Quest not started - talk to Captain Tock to begin quest");
                     return ExecutionResult.success(startWithTock);
                 }
 
@@ -408,39 +954,125 @@ public class CorsairCurseTree extends QuestTree {
                     return ExecutionResult.success(travelToCorsairCove);
                 }
 
-                // Progressive quest steps based on inventory and location
-                // Check if we need to talk to navigator (user's current issue)
-                if (isAtCorsairCove() && !visitedIthoi) {
-                    log("At Corsair Cove - need to talk to Ithoi the Navigator");
+                // RESUMABILITY CHECK: If we have Ogre artefact, skip to Chief Tess step
+                boolean hasOgreArtefact = Inventory.contains(21837); // Ogre artefact
+                if (hasOgreArtefact && !spokeChiefTess) {
+                    log("RESUMABILITY: Have Ogre artefact - going directly to Chief Tess");
+                    return ExecutionResult.success(visitOgreChief);
+                }
+
+                // Progressive quest steps based on official OSRS sequence
+                // Step 1-4: Initial crew interviews (must be done in this order)
+                log("DEBUG: Crew visit status - Ithoi:" + visitedIthoi + " Arsen:" + visitedArsen +
+                    " Colin:" + visitedColin + " Gnocci:" + visitedGnocci + " HasArtefact:" + hasOgreArtefact);
+
+                if (!visitedIthoi) {
+                    log("Need to interview Ithoi the Navigator first");
                     return ExecutionResult.success(talkIthoi);
                 }
 
-                // Continue with crew interviews
-                if (!visitedArsen) return ExecutionResult.success(talkArsen);
-                if (!visitedColin) return ExecutionResult.success(talkColin);
-                if (!visitedGnocci) return ExecutionResult.success(talkGnocci);
+                if (!visitedArsen) {
+                    log("Need to interview Arsen the Thief");
+                    return ExecutionResult.success(talkArsen);
+                }
 
-                // Report to Captain Tock on ship
-                if (!reportedFindingsOnce) return ExecutionResult.success(reportToTockOnShip);
+                if (!visitedColin) {
+                    log("Need to interview Cabin Boy Colin");
+                    return ExecutionResult.success(talkColin);
+                }
 
-                // Ogre chief + dig step
-                if (!spokeChiefTess || !climbedOutOfOgreCave) return ExecutionResult.success(visitOgreChief);
-                if (!dugForDoll) return ExecutionResult.success(digForDollNode);
+                if (!visitedGnocci) {
+                    log("Need to interview Gnocci the Cook");
+                    return ExecutionResult.success(talkGnocci);
+                }
 
-                // Investigation extras from log
-                if (!observedTelescope) return ExecutionResult.success(observeTelescopeNode);
-                if (!reinterviewedCrew) return ExecutionResult.success(reinterviewCrewNode);
+                // Step 5: Report initial findings to Captain Tock
+                if (!reportedFindingsOnce) {
+                    log("Need to report initial findings to Captain Tock");
+                    return ExecutionResult.success(reportToTockOnShip);
+                }
 
-                // Final report to complete
-                return ExecutionResult.success(finalReportToTock, "Final report to Captain Tock");
+                // Step 6: Visit ogre cave and speak to Chief Tess
+                if (!spokeChiefTess || !climbedOutOfOgreCave) {
+                    log("Need to visit ogre cave and speak to Chief Tess");
+                    return ExecutionResult.success(visitOgreChief);
+                }
+
+                // Step 7: Dig for possessed doll
+                if (!dugForDoll) {
+                    log("Need to dig for the possessed doll");
+                    return ExecutionResult.success(digForDollNode);
+                }
+
+                // Step 8: Observe telescope
+                if (!observedTelescope) {
+                    log("Need to observe the telescope");
+                    return ExecutionResult.success(observeTelescopeNode);
+                }
+
+                // Step 9: Re-interview crew with new information
+                if (!reinterviewedCrew) {
+                    log("Need to re-interview crew with new theories");
+                    return ExecutionResult.success(reinterviewCrewNode);
+                }
+
+                // DISCOVERED: New quest steps from manual completion
+                // Step 10: Confront Ithoi about the curse
+                if (!confrontedIthoi) {
+                    log("Need to confront Ithoi about the curse");
+                    return ExecutionResult.success(confrontIthoiNode);
+                }
+
+                // Step 11: Accuse Ithoi of faking the curse
+                if (!accusedIthoi) {
+                    log("Need to accuse Ithoi of faking the curse");
+                    return ExecutionResult.success(accuseIthoiNode);
+                }
+
+                // Step 12: Light fire to prove Ithoi can move
+                if (!litFire || !caughtIthoi) {
+                    log("Need to light fire to catch Ithoi moving");
+                    return ExecutionResult.success(lightFireNode);
+                }
+
+                // Step 13: Report Ithoi to Captain Tock
+                if (!reportedIthoi && caughtIthoi) {
+                    log("Need to report Ithoi to Captain Tock");
+                    return ExecutionResult.success(reportToTockOnShip);
+                }
+
+                // Step 14: Fight Ithoi in boss area (after cutscene)
+                if (!defeatedIthoi) {
+                    log("Need to fight and defeat Ithoi");
+                    return ExecutionResult.success(fightIthoiNode);
+                }
+
+                // Step 15: Final report about Ithoi's defeat
+                log("All investigation complete - final report about defeating Ithoi");
+                return ExecutionResult.success(finalReportNode, "Final report about Ithoi's defeat");
             }
         };
     }
 
     private boolean isAtCorsairCove() {
-        // Heuristic: near gangplank/central island coords
+        // Legacy method - now uses more precise checks
+        return isAtCorsairCoveDock() || isAtCorsairCoveIsland();
+    }
+
+    private boolean isAtCorsairCoveDock() {
+        // Check if at the dock area (ground level near gangplank)
         Tile t = Players.getLocal().getTile();
-        return t.distance(COVE_DOCK_GROUND) < 120 || t.distance(COVE_GANGPLANK) < 120;
+        return t.distance(COVE_DOCK_GROUND) < 30 && t.getZ() == 0;
+    }
+
+    private boolean isAtCorsairCoveIsland() {
+        // Check if on the Corsair Cove island (ship level or crew areas)
+        Tile t = Players.getLocal().getTile();
+        boolean nearIsland = t.distance(COVE_GANGPLANK) < 50;
+        boolean onIslandLevel = t.getZ() == 1; // Most of the island is on Z=1
+        boolean inIslandArea = (t.getX() >= 2520 && t.getX() <= 2580 && t.getY() >= 2830 && t.getY() <= 2870);
+
+        return (nearIsland && onIslandLevel) || inIslandArea;
     }
 
     private boolean ensureUpstairsAt(Tile groundStairsTile, int targetZ) {
@@ -468,6 +1100,18 @@ public class CorsairCurseTree extends QuestTree {
             return PlayerSettings.getConfig(CORSAIR_CURSE_CONFIG_ID);
         } catch (Exception e) {
             log("Failed to get quest config: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    /**
+     * DISCOVERED: Get quest varbit value for precise state detection
+     */
+    private int getQuestVarbit() {
+        try {
+            return PlayerSettings.getBitValue(CORSAIR_CURSE_VARBIT_ID);
+        } catch (Exception e) {
+            log("Failed to get quest varbit: " + e.getMessage());
             return 0;
         }
     }
@@ -513,21 +1157,85 @@ public class CorsairCurseTree extends QuestTree {
             }
 
             // If quest is started via API or config, mark as started
-            if (isQuestStartedByAPI() || getQuestConfig() >= QUEST_STARTED) {
+            if (isQuestStartedByAPI() || getQuestConfig() >= QUEST_AT_COVE) {
                 started = true;
             }
 
-            // Location-based inference to avoid redoing steps
+            // DISCOVERED: Enhanced state detection using exact varbit values
+            int questVarbit = getQuestVarbit();
+            log("RESUMABILITY: Quest varbit 6071 = " + questVarbit);
+
+            // Item-based state detection for better resumability
+            boolean hasOgreArtefact = Inventory.contains(21837); // Ogre artefact
+            boolean hasSpade = Inventory.contains("Spade");
+            boolean hasTinderbox = Inventory.contains("Tinderbox");
+            boolean hasDriftwood = Inventory.contains("Driftwood");
+
+            if (hasOgreArtefact) {
+                log("RESUMABILITY: Found Ogre artefact in inventory - need to visit Chief Tess");
+                started = true;
+                visitedIthoi = visitedArsen = visitedColin = visitedGnocci = true;
+                reportedFindingsOnce = true;
+                // Don't set spokeChiefTess = true, as we still need to do that step
+            }
+
+            // DISCOVERED: Use varbit values for precise state detection
+            if (questVarbit >= QUEST_AT_COVE) {
+                started = true;
+                log("RESUMABILITY: Quest started (varbit >= " + QUEST_AT_COVE + ")");
+            }
+            if (questVarbit >= QUEST_FIRST_REPORT) {
+                visitedIthoi = visitedArsen = visitedColin = visitedGnocci = true;
+                reportedFindingsOnce = true;
+                log("RESUMABILITY: Initial interviews completed (varbit >= " + QUEST_FIRST_REPORT + ")");
+            }
+            if (questVarbit >= QUEST_ITHOI_CONFRONTED) {
+                reinterviewedCrew = true;
+                log("RESUMABILITY: Crew re-interviews completed (varbit >= " + QUEST_ITHOI_CONFRONTED + ")");
+            }
+            if (questVarbit >= QUEST_ITHOI_ACCUSED) {
+                confrontedIthoi = true;
+                log("RESUMABILITY: Ithoi confronted (varbit >= " + QUEST_ITHOI_ACCUSED + ")");
+            }
+            if (questVarbit >= QUEST_FIRE_LIT) {
+                accusedIthoi = true;
+                log("RESUMABILITY: Ithoi accused (varbit >= " + QUEST_FIRE_LIT + ")");
+            }
+            if (questVarbit >= QUEST_ITHOI_CAUGHT) {
+                litFire = caughtIthoi = true;
+                log("RESUMABILITY: Fire lit and Ithoi caught (varbit >= " + QUEST_ITHOI_CAUGHT + ")");
+            }
+            if (questVarbit >= QUEST_ITHOI_REPORTED) {
+                reportedIthoi = true;
+                log("RESUMABILITY: Ithoi reported to Captain Tock (varbit >= " + QUEST_ITHOI_REPORTED + ")");
+            }
+            if (questVarbit >= QUEST_ITHOI_DEFEATED) {
+                defeatedIthoi = true;
+                log("RESUMABILITY: Ithoi defeated in combat (varbit >= " + QUEST_ITHOI_DEFEATED + ")");
+            }
+            if (questVarbit >= QUEST_COMPLETED) {
+                completed = true;
+                log("RESUMABILITY: Quest completed (varbit >= " + QUEST_COMPLETED + ")");
+            }
+
+            // Conservative location-based inference - only set flags if we're far into the quest
             if (Players.getLocal() != null) {
                 Tile currentTile = Players.getLocal().getTile();
-                
+
                 // If we're at Corsair Cove, we've likely already started the quest
                 if (isAtCorsairCove()) {
                     started = true;
-                    
-                    // If we're on the ship level, we've likely done initial interviews
-                    if (currentTile.getZ() == 1 && currentTile.distance(TOCK_ON_SHIP) < 20) {
+
+                    // Only mark crew interviews as complete if we've progressed significantly
+                    // (e.g., if we've already visited the ogre cave or dug for the doll)
+                    if (spokeChiefTess || dugForDoll || observedTelescope || hasOgreArtefact) {
+                        log("Advanced quest progress detected - assuming crew interviews completed");
                         visitedIthoi = visitedArsen = visitedColin = visitedGnocci = true;
+                        if (!hasOgreArtefact) { // Only mark reported if we don't have the artefact
+                            reportedFindingsOnce = true;
+                        }
+                    } else {
+                        log("At Corsair Cove but haven't progressed far - will interview crew");
                     }
                 }
             }

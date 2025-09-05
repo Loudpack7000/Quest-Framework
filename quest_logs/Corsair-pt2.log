@@ -1,0 +1,367 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-09-02 00:12:46
+Player: WhoCouldHave
+Starting Location: (2555, 2854, 1)
+Starting Inventory: Energy potion(3) x2, Energy potion(4) x13, Water rune x69, Earth rune x69, Spade, Tinderbox, Coins x560, Law rune x72, Air rune x64
+=====================================
+
+[00:12:46] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:12:46] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:12:46] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:12:46] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[00:12:46] ACTIVE_QUEST_DETECTED: CORSAIR_CURSE is currently in progress
+[00:12:46] QUEST STEP 1: VARBIT_DISCOVERY_STARTED (Quest API)
+    SCRIPT: // Using Quest API varbit 6071 baseline=15
+
+[00:12:46] QUEST STEP 2: CONFIG_DISCOVERY_STARTED
+    SCRIPT: // Quest config discovery initiated - monitoring 50 configs (including 0-values)
+
+[00:12:52] QUEST_API_DETECTED: CORSAIR_CURSE - State: STARTED
+[00:12:52] QUEST_API_DETECTED: PRINCE_ALI_RESCUE - State: STARTED
+[00:12:52] QUEST STEP 3: ACTIVE QUEST PROGRESS: CORSAIR_CURSE 0 → 15
+    SCRIPT: // Active quest varbit 6071 now 15
+
+[00:13:03] ACTION: Selected 'Talk-to' on Arsen the Thief
+    SCRIPT: NPCs.closest("Arsen the Thief").interact("Talk-to");
+
+[00:13:03] USER_ACTION: Talk-to | NPC_Tile: (2554, 2859, 1)
+[00:13:03] Movement: Started significant journey from (2555, 2854, 1)
+[00:13:05] Position: Arrived at (2553, 2857, 1)
+[00:13:10] ACTION: Selected 'Talk-to' on Cabin Boy Colin
+    SCRIPT: NPCs.closest("Cabin Boy Colin").interact("Talk-to");
+
+[00:13:10] USER_ACTION: Talk-to | NPC_Tile: (2559, 2859, 1)
+[00:13:12] Position: Arrived at (2557, 2858, 1)
+[00:13:14] QUEST STEP 4: ACTIVE QUEST PROGRESS: CORSAIR_CURSE 15 → 20
+    SCRIPT: // Active quest varbit 6071 now 20
+
+[00:13:14] QUEST STEP 5: VARBIT DISCOVERED: Unknown Quest varbit 6071 changed from 15 to 20
+    SCRIPT: // DISCOVERED: Quest uses varbit 6071 (step 15 → 20)
+
+[00:13:18] ACTION: Selected 'Climb-down' on Stairs
+    SCRIPT: GameObjects.closest("Stairs").interact("Climb-down");
+
+[00:13:18] USER_ACTION: Climb-down | Object_Tile: (2555, 2855, 1)
+[00:13:18] Movement: Started significant journey from (2557, 2858, 1)
+[00:13:21] Position: Arrived at (2555, 2857, 0)
+[00:13:31] Movement: Started significant journey from (2555, 2857, 0)
+[00:13:39] ACTION: Selected 'Cross' on Gangplank
+    SCRIPT: // Cross on Gangplank
+
+[00:13:39] USER_ACTION: Cross | Target: Gangplank
+[00:13:42] ACTION: Completed journey: 30 tiles
+    SCRIPT: Walking.walk(new Tile(2578, 2838, 1))
+
+[00:13:42] Journey: Walked 30 tiles in 11s | (2555, 2857, 0) → (2578, 2838, 1)
+[00:13:42] Position: Arrived at (2578, 2838, 1)
+[00:13:43] ACTION: Selected 'Talk-to' on Captain Tock
+    SCRIPT: NPCs.closest("Captain Tock").interact("Talk-to");
+
+[00:13:43] USER_ACTION: Talk-to | NPC_Tile: (2574, 2835, 1)
+[00:13:43] Movement: Started significant journey from (2578, 2838, 1)
+[00:13:45] DIALOGUE_OPTIONS: [I've ruled out all the Corsairs' theories..., Please take me back to Rimmington., I'll talk to you later.]
+[00:13:47] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I've ruled out all the Corsairs' theories...
+
+[00:13:50] DIALOGUE_OPTIONS: [So what do I do now?, Can I give up and go home?]
+[00:13:51] ACTION: DIALOGUE_SELECTION
+    SCRIPT: So what do I do now?
+
+[00:13:52] QUEST STEP 6: ACTIVE QUEST PROGRESS: CORSAIR_CURSE 20 → 25
+    SCRIPT: // Active quest varbit 6071 now 25
+
+[00:13:52] QUEST STEP 7: VARBIT DISCOVERED: Unknown Quest varbit 6071 changed from 20 to 25
+    SCRIPT: // DISCOVERED: Quest uses varbit 6071 (step 20 → 25)
+
+[00:13:57] ACTION: Selected 'Cross' on Gangplank
+    SCRIPT: // Cross on Gangplank
+
+[00:13:57] USER_ACTION: Cross | Target: Gangplank
+[00:13:57] Movement: Started significant journey from (2574, 2836, 1)
+[00:13:59] Position: Arrived at (2578, 2837, 1)
+[00:14:08] ACTION: Selected 'Climb-up' on Stairs
+    SCRIPT: GameObjects.closest("Stairs").interact("Climb-up");
+
+[00:14:08] USER_ACTION: Climb-up | Object_Tile: (2555, 2855, 0)
+[00:14:15] ACTION: Completed journey: 39 tiles
+    SCRIPT: Walking.walk(new Tile(2547, 2862, 1))
+
+[00:14:15] Journey: Walked 39 tiles in 14s | (2578, 2839, 0) → (2547, 2862, 1)
+[00:14:15] Position: Arrived at (2547, 2862, 1)
+[00:14:15] ACTION: Selected 'Talk-to' on Gnocci the Cook
+    SCRIPT: NPCs.closest("Gnocci the Cook").interact("Talk-to");
+
+[00:14:15] USER_ACTION: Talk-to | NPC_Tile: (2545, 2863, 1)
+[00:14:16] Movement: Started significant journey from (2547, 2862, 1)
+[00:14:17] DIALOGUE_OPTIONS: [I hear it happened straight after dinner., I'm still looking into it.]
+[00:14:18] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I hear it happened straight after dinner.
+
+[00:14:20] QUEST STEP 8: ACTIVE QUEST PROGRESS: CORSAIR_CURSE 25 → 30
+    SCRIPT: // Active quest varbit 6071 now 30
+
+[00:14:20] QUEST STEP 9: VARBIT DISCOVERED: Unknown Quest varbit 6071 changed from 25 to 30
+    SCRIPT: // DISCOVERED: Quest uses varbit 6071 (step 25 → 30)
+
+[00:14:23] ACTION: Selected 'Climb-down' on Stairs
+    SCRIPT: GameObjects.closest("Stairs").interact("Climb-down");
+
+[00:14:23] USER_ACTION: Climb-down | Object_Tile: (2548, 2862, 1)
+[00:14:23] Position: Arrived at (2547, 2862, 1)
+[00:14:28] ACTION: Selected 'Climb-up' on Stairs
+    SCRIPT: GameObjects.closest("Stairs").interact("Climb-up");
+
+[00:14:28] USER_ACTION: Climb-up | Object_Tile: (2548, 2862, 0)
+[00:14:29] Movement: Started significant journey from (2550, 2862, 0)
+[00:14:32] Position: Arrived at (2555, 2854, 1)
+[00:14:33] ACTION: Selected 'Talk-to' on Arsen the Thief
+    SCRIPT: NPCs.closest("Arsen the Thief").interact("Talk-to");
+
+[00:14:33] USER_ACTION: Talk-to | NPC_Tile: (2554, 2859, 1)
+[00:14:38] DIALOGUE_OPTIONS: [I hear Ithoi cooked the meal you ate that night., I'm still looking into it.]
+[00:14:39] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I hear Ithoi cooked the meal you ate that night.
+
+[00:14:41] DIALOGUE_OPTIONS: [What is the mission Francois is doing?, Okay, thanks.]
+[00:14:41] QUEST STEP 10: ACTIVE QUEST PROGRESS: CORSAIR_CURSE 30 → 35
+    SCRIPT: // Active quest varbit 6071 now 35
+
+[00:14:41] QUEST STEP 11: VARBIT DISCOVERED: Unknown Quest varbit 6071 changed from 30 to 35
+    SCRIPT: // DISCOVERED: Quest uses varbit 6071 (step 30 → 35)
+
+[00:14:43] ACTION: DIALOGUE_OPTION_SELECTED
+    SCRIPT: // User selected one of: [What is the mission Francois is doing?, Okay, thanks.]
+
+[00:14:47] ACTION: Selected 'Talk-to' on Cabin Boy Colin
+    SCRIPT: NPCs.closest("Cabin Boy Colin").interact("Talk-to");
+
+[00:14:47] USER_ACTION: Talk-to | NPC_Tile: (2559, 2859, 1)
+[00:14:47] Movement: Started significant journey from (2554, 2858, 1)
+[00:14:48] Position: Arrived at (2557, 2858, 1)
+[00:14:49] DIALOGUE_OPTIONS: [I hear the Captain's thinking of firing Ithoi., I'm still looking into it.]
+[00:14:51] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I hear the Captain's thinking of firing Ithoi.
+
+[00:14:54] ACTION: Selected 'Climb-down' on Stairs
+    SCRIPT: GameObjects.closest("Stairs").interact("Climb-down");
+
+[00:14:54] USER_ACTION: Climb-down | Object_Tile: (2555, 2855, 1)
+[00:14:57] Position: Arrived at (2555, 2857, 0)
+[00:14:59] Movement: Started significant journey from (2555, 2857, 0)
+[00:15:10] ACTION: Selected 'Climb' on Stairs
+    SCRIPT: GameObjects.closest("Stairs").interact("Climb");
+
+[00:15:10] USER_ACTION: Climb | Object_Tile: (2531, 2833, 0)
+[00:15:12] ACTION: Completed journey: 34 tiles
+    SCRIPT: Walking.walk(new Tile(2529, 2835, 1))
+
+[00:15:12] Journey: Walked 34 tiles in 13s | (2555, 2857, 0) → (2529, 2835, 1)
+[00:15:12] Position: Arrived at (2529, 2835, 1)
+[00:15:17] ACTION: Selected 'Talk-to' on Ithoi the Navigator
+    SCRIPT: NPCs.closest("Ithoi the Navigator").interact("Talk-to");
+
+[00:15:17] USER_ACTION: Talk-to | NPC_Tile: (2530, 2840, 1)
+[00:15:18] Movement: Started significant journey from (2529, 2836, 1)
+[00:15:19] DIALOGUE_OPTIONS: [I hear you cooked the meal they ate before getting sick., I'm still looking into it.]
+[00:15:19] Position: Arrived at (2529, 2838, 1)
+[00:15:20] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I hear you cooked the meal they ate before getting sick.
+
+[00:15:21] DIALOGUE_OPTIONS: [Maybe because the Captain's thinking of firing you., Maybe you're just a nasty person., I don't know your reason.]
+[00:15:23] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Maybe because the Captain's thinking of firing you.
+
+[00:15:24] QUEST STEP 12: ACTIVE QUEST PROGRESS: CORSAIR_CURSE 35 → 40
+    SCRIPT: // Active quest varbit 6071 now 40
+
+[00:15:24] QUEST STEP 13: VARBIT DISCOVERED: Unknown Quest varbit 6071 changed from 35 to 40
+    SCRIPT: // DISCOVERED: Quest uses varbit 6071 (step 35 → 40)
+
+[00:15:26] ACTION: Selected 'Climb' on Stairs
+    SCRIPT: GameObjects.closest("Stairs").interact("Climb");
+
+[00:15:26] USER_ACTION: Climb | Object_Tile: (2529, 2834, 1)
+[00:15:28] Position: Arrived at (2529, 2835, 1)
+[00:15:30] ACTION: Selected 'Climb' on Stairs
+    SCRIPT: GameObjects.closest("Stairs").interact("Climb");
+
+[00:15:30] USER_ACTION: Climb | Object_Tile: (2531, 2833, 0)
+[00:15:32] ACTION: Selected 'Talk-to' on Ithoi the Navigator
+    SCRIPT: NPCs.closest("Ithoi the Navigator").interact("Talk-to");
+
+[00:15:32] USER_ACTION: Talk-to | NPC_Tile: (2530, 2840, 1)
+[00:15:32] Movement: Started significant journey from (2529, 2835, 1)
+[00:15:33] DIALOGUE_OPTIONS: [I know you've faked the curse., Um... nothing, really.]
+[00:15:34] Position: Arrived at (2529, 2838, 1)
+[00:15:35] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I know you've faked the curse.
+
+[00:15:36] QUEST STEP 14: ACTIVE QUEST PROGRESS: CORSAIR_CURSE 40 → 45
+    SCRIPT: // Active quest varbit 6071 now 45
+
+[00:15:36] QUEST STEP 15: VARBIT DISCOVERED: Unknown Quest varbit 6071 changed from 40 to 45
+    SCRIPT: // DISCOVERED: Quest uses varbit 6071 (step 40 → 45)
+
+[00:15:36] DIALOGUE_OPTIONS: [I bet I can prove you're well enough to get up., I'll be back.]
+[00:15:38] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I bet I can prove you're well enough to get up.
+
+[00:15:44] ACTION: Selected 'Climb' on Stairs
+    SCRIPT: GameObjects.closest("Stairs").interact("Climb");
+
+[00:15:44] USER_ACTION: Climb | Object_Tile: (2529, 2834, 1)
+[00:15:44] Movement: Started significant journey from (2529, 2838, 1)
+[00:15:46] Position: Arrived at (2529, 2835, 1)
+[00:15:49] ACTION: Selected 'Use' on Tinderbox
+    SCRIPT: Inventory.interact("Tinderbox", "Use");
+
+[00:15:49] USER_ACTION: Use | Target: Tinderbox
+[00:15:50] ACTION: Selected 'Use' on Tinderbox -> Driftwood
+    SCRIPT: // Item-on-item
+Inventory.use("Tinderbox", "Driftwood");
+
+[00:15:50] USER_ACTION: Use | Target: Tinderbox -> Driftwood
+[00:15:53] QUEST STEP 16: ACTIVE QUEST PROGRESS: CORSAIR_CURSE 45 → 49
+    SCRIPT: // Active quest varbit 6071 now 49
+
+[00:15:53] QUEST STEP 17: VARBIT DISCOVERED: Unknown Quest varbit 6071 changed from 45 to 49
+    SCRIPT: // DISCOVERED: Quest uses varbit 6071 (step 45 → 49)
+
+[00:16:05] QUEST STEP 18: ACTIVE QUEST PROGRESS: CORSAIR_CURSE 49 → 50
+    SCRIPT: // Active quest varbit 6071 now 50
+
+[00:16:05] QUEST STEP 19: VARBIT DISCOVERED: Unknown Quest varbit 6071 changed from 49 to 50
+    SCRIPT: // DISCOVERED: Quest uses varbit 6071 (step 49 → 50)
+
+[00:16:08] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[00:16:20] Movement: Started significant journey from (2529, 2838, 0)
+[00:16:20] ACTION: Selected 'Climb' on Stairs
+    SCRIPT: GameObjects.closest("Stairs").interact("Climb");
+
+[00:16:20] USER_ACTION: Climb | Object_Tile: (2531, 2833, 0)
+[00:16:23] Position: Arrived at (2529, 2835, 1)
+[00:16:25] ACTION: Selected 'Talk-to' on Ithoi the Navigator
+    SCRIPT: NPCs.closest("Ithoi the Navigator").interact("Talk-to");
+
+[00:16:25] USER_ACTION: Talk-to | NPC_Tile: (2530, 2840, 1)
+[00:16:29] DIALOGUE_OPTIONS: [I saw you running around! You're not sick!, Um... nothing, really.]
+[00:16:30] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I saw you running around! You're not sick!
+
+[00:17:01] ACTION: Selected 'Climb' on Stairs
+    SCRIPT: GameObjects.closest("Stairs").interact("Climb");
+
+[00:17:01] USER_ACTION: Climb | Object_Tile: (2529, 2834, 1)
+[00:17:02] Movement: Started significant journey from (2529, 2838, 1)
+[00:17:03] Position: Arrived at (2529, 2835, 1)
+[00:17:16] Movement: Started significant journey from (2532, 2833, 0)
+[00:17:36] ACTION: Selected 'Cross' on Gangplank
+    SCRIPT: // Cross on Gangplank
+
+[00:17:36] USER_ACTION: Cross | Target: Gangplank
+[00:17:39] ACTION: Completed journey: 46 tiles
+    SCRIPT: Walking.walk(new Tile(2578, 2838, 1))
+
+[00:17:39] Journey: Walked 46 tiles in 22s | (2532, 2833, 0) → (2578, 2838, 1)
+[00:17:39] Position: Arrived at (2578, 2838, 1)
+[00:17:39] Movement: Started significant journey from (2578, 2838, 1)
+[00:17:40] ACTION: Selected 'Talk-to' on Captain Tock
+    SCRIPT: NPCs.closest("Captain Tock").interact("Talk-to");
+
+[00:17:40] USER_ACTION: Talk-to | NPC_Tile: (2574, 2835, 1)
+[00:17:42] DIALOGUE_OPTIONS: [I've seen Ithoi running around. He's not sick at all., Please take me back to Rimmington., I'll talk to you later.]
+[00:17:44] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I've seen Ithoi running around. He's not sick at all.
+
+[00:17:45] DIALOGUE_OPTIONS: [Why don't you kill him yourself?, I don't believe in capital punishment., I'll be back.]
+[00:17:45] QUEST STEP 20: ACTIVE QUEST PROGRESS: CORSAIR_CURSE 50 → 52
+    SCRIPT: // Active quest varbit 6071 now 52
+
+[00:17:45] QUEST STEP 21: VARBIT DISCOVERED: Unknown Quest varbit 6071 changed from 50 to 52
+    SCRIPT: // DISCOVERED: Quest uses varbit 6071 (step 50 → 52)
+
+[00:17:48] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I'll be back.
+
+[00:17:59] ACTION: Selected 'Cross' on Gangplank
+    SCRIPT: // Cross on Gangplank
+
+[00:17:59] USER_ACTION: Cross | Target: Gangplank
+[00:17:59] Movement: Started significant journey from (2575, 2837, 1)
+[00:18:01] Position: Arrived at (2578, 2839, 0)
+[00:18:26] ACTION: Selected 'Climb' on Stairs
+    SCRIPT: GameObjects.closest("Stairs").interact("Climb");
+
+[00:18:26] USER_ACTION: Climb | Object_Tile: (2531, 2833, 0)
+[00:18:29] ACTION: Teleport/Cutscene detected: 9714 tiles
+    SCRIPT: // Large distance moved - likely teleport or cutscene
+
+[00:18:29] Teleport: Moved 9714 tiles | (2578, 2840, 0) → (12257, 2011, 1)
+[00:18:29] Position: Arrived at (12257, 2011, 1)
+[00:18:30] ACTION: Selected 'Attack' on Ithoi the Navigator
+    SCRIPT: NPCs.closest("Ithoi the Navigator").interact("Attack");
+
+[00:18:30] USER_ACTION: Attack | NPC_Tile: (12257, 2015, 1)
+[00:18:34] ACTION: Selected 'Attack' on Ithoi the Navigator
+    SCRIPT: NPCs.closest("Ithoi the Navigator").interact("Attack");
+
+[00:18:34] USER_ACTION: Attack | NPC_Tile: (12257, 2015, 1)
+[00:18:34] ACTION: Selected 'Attack' on Ithoi the Navigator
+    SCRIPT: NPCs.closest("Ithoi the Navigator").interact("Attack");
+
+[00:18:34] USER_ACTION: Attack | NPC_Tile: (12257, 2015, 1)
+[00:18:36] Movement: Started significant journey from (12257, 2011, 1)
+[00:18:36] ACTION: Selected 'Attack' on Ithoi the Navigator
+    SCRIPT: NPCs.closest("Ithoi the Navigator").interact("Attack");
+
+[00:18:36] USER_ACTION: Attack | NPC_Tile: (12257, 2015, 1)
+[00:18:36] Position: Arrived at (12257, 2013, 1)
+[00:18:39] QUEST STEP 22: CONFIG DISCOVERED: Unknown Quest config 108 changed from 17 to 0
+    SCRIPT: // DISCOVERED: Quest uses config 108 (value 17 → 0)
+
+[00:18:39] ACTION: Selected 'Attack' on Ithoi the Navigator
+    SCRIPT: NPCs.closest("Ithoi the Navigator").interact("Attack");
+
+[00:18:39] USER_ACTION: Attack | NPC_Tile: (12257, 2015, 1)
+[00:20:04] QUEST STEP 23: ACTIVE QUEST PROGRESS: CORSAIR_CURSE 52 → 55
+    SCRIPT: // Active quest varbit 6071 now 55
+
+[00:20:04] QUEST STEP 24: VARBIT DISCOVERED: Unknown Quest varbit 6071 changed from 52 to 55
+    SCRIPT: // DISCOVERED: Quest uses varbit 6071 (step 52 → 55)
+
+[00:20:06] ACTION: Selected 'Climb' on Stairs
+    SCRIPT: GameObjects.closest("Stairs").interact("Climb");
+
+[00:20:06] USER_ACTION: Climb | Object_Tile: (2529, 2834, 1)
+[00:20:07] Movement: Started significant journey from (2529, 2838, 1)
+[00:20:09] Position: Arrived at (2529, 2835, 1)
+[00:20:28] ACTION: Selected 'Cross' on Gangplank
+    SCRIPT: // Cross on Gangplank
+
+[00:20:28] USER_ACTION: Cross | Target: Gangplank
+[00:20:32] ACTION: Completed journey: 46 tiles
+    SCRIPT: Walking.walk(new Tile(2578, 2838, 1))
+
+[00:20:32] Journey: Walked 46 tiles in 22s | (2532, 2833, 0) → (2578, 2838, 1)
+[00:20:32] Position: Arrived at (2578, 2838, 1)
+[00:20:33] Movement: Started significant journey from (2578, 2838, 1)
+[00:20:33] ACTION: Selected 'Talk-to' on Captain Tock
+    SCRIPT: NPCs.closest("Captain Tock").interact("Talk-to");
+
+[00:20:33] USER_ACTION: Talk-to | NPC_Tile: (2574, 2835, 1)
+[00:20:35] DIALOGUE_OPTIONS: [I've killed Ithoi for poisoning your crew., Please take me back to Rimmington., I'll talk to you later.]
+[00:20:37] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I've killed Ithoi for poisoning your crew.
+
+[00:20:40] QUEST STEP 25: VARBIT DISCOVERED: Unknown Quest varbit 6071 changed from 55 to 60
+    SCRIPT: // DISCOVERED: Quest uses varbit 6071 (step 55 → 60)
+
+[00:20:40] ACTIVE_QUEST_DETECTED: PRINCE_ALI_RESCUE is currently in progress
+[00:20:50] QUEST_END: === QUEST RECORDING ENDED ===

@@ -18,6 +18,7 @@ import quest.trees.CorsairCurseTree;
 import quest.trees.KnightsSwordTree;
 import quest.trees.BelowIceMountainTree;
 import quest.trees.ErnestTheChickenTree;
+import quest.trees.DragonSlayerTree;
 // import quest.trees.PrinceAliRescueTree; // REMOVED: Tree deleted from project
 
 import org.dreambot.api.methods.Calculations;
@@ -442,6 +443,21 @@ public class QuestExecutor {
             case "ERNEST_THE_CHICKEN":
                 log("Starting Ernest the Chicken quest tree...");
                 return new TreeQuestWrapper(new ErnestTheChickenTree(), questId, "Ernest the Chicken");
+            case "DRAGON_SLAYER":
+                log("Starting Dragon Slayer quest tree...");
+                return new TreeQuestWrapper(new DragonSlayerTree(), questId, "Dragon Slayer");
+            case "DRAGON_SLAYER_STAGE_2_DEBUG":
+                log("Starting Dragon Slayer - Stage 2 (debug) quest tree...");
+                return new TreeQuestWrapper(new DragonSlayerTree(true), questId, "Dragon Slayer - Stage 2 (debug)");
+            case "DRAGON_SLAYER_MELZAR_DEBUG":
+                log("Starting Dragon Slayer - Melzar's Map Piece (debug) quest tree...");
+                return new TreeQuestWrapper(new DragonSlayerTree("melzar"), questId, "Dragon Slayer - Melzar's Map Piece (debug)");
+            case "DRAGON_SLAYER_LOZAR_DEBUG":
+                log("Starting Dragon Slayer - Lozar's Map Piece (debug) quest tree...");
+                return new TreeQuestWrapper(new DragonSlayerTree("lozar"), questId, "Dragon Slayer - Lozar's Map Piece (debug)");
+            case "DRAGON_SLAYER_BOAT_DEBUG":
+                log("Starting Dragon Slayer - Boat Obtaining (debug) quest tree...");
+                return new TreeQuestWrapper(new DragonSlayerTree("boat"), questId, "Dragon Slayer - Boat Obtaining (debug)");
             case "RESTLESS_GHOST": 
                 // TODO: Implement Restless Ghost script
                 log("Restless Ghost script not yet implemented");

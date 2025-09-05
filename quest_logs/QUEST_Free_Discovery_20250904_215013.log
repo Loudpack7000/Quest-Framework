@@ -1,0 +1,48 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-09-04 21:50:13
+Player: WhoCouldHave
+Starting Location: (3011, 3197, 0)
+Starting Inventory: Energy potion(4) x9, Water rune x186, Earth rune x215, Salmon x7, Law rune x49, Coins x10000, Energy potion(2), Map part x2, Maze key, Chaos rune x189, Air rune x363, Anti-dragon shield
+=====================================
+
+[21:50:13] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[21:50:13] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[21:50:13] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[21:50:13] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[21:50:13] ACTIVE_QUEST_DETECTED: DRAGON_SLAYER is currently in progress
+[21:50:13] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 1636 varbits (including 0-values)
+
+[21:50:13] QUEST STEP 2: CONFIG_DISCOVERY_STARTED (Quest API)
+    SCRIPT: // Using Quest API config 176 baseline=2
+
+[21:50:16] QUEST_API_DETECTED: DRAGON_SLAYER - State: STARTED
+[21:50:16] QUEST_API_DETECTED: PRINCE_ALI_RESCUE - State: STARTED
+[21:50:16] QUEST STEP 3: QUEST PROGRESS: CORSAIR_CURSE step 60 - [STEP 60]
+    SCRIPT: // CORSAIR_CURSE varbit 6071 = 60
+
+[21:50:20] Movement: Started significant journey from (3011, 3197, 0)
+[21:50:23] ACTION: Selected 'Talk-to' on Wormbrain
+    SCRIPT: NPCs.closest("Wormbrain").interact("Talk-to");
+
+[21:50:23] USER_ACTION: Talk-to | NPC_Tile: (3013, 3189, 0) | NPC_ID: 820
+[21:50:24] Position: Arrived at (3011, 3188, 0)
+[21:50:24] DIALOGUE_OPTIONS: [I believe you've got a piece of map that I need., What are you in for?, Sorry, thought this was a zoo.]
+[21:50:27] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I believe you've got a piece of map that I need.
+
+[21:50:29] DIALOGUE_OPTIONS: [I'm not going to do anything for you. Forget it., I'll let you live. I could just kill you., I suppose I could pay you for the map piece..., Where did you get the map piece from?]
+[21:50:32] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I suppose I could pay you for the map piece...
+
+[21:50:34] DIALOGUE_OPTIONS: [You must be joking! Forget it., Alright then, 10,000 it is.]
+[21:50:36] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Alright then, 10,000 it is.
+
+[21:50:41] Movement: Started significant journey from (3011, 3188, 0)
+[21:50:44] QUEST_END: === QUEST RECORDING ENDED ===

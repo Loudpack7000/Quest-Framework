@@ -30,6 +30,7 @@ import org.dreambot.api.methods.quest.book.Quest.State;
 
 // NEW: Import action detection system
 import org.dreambot.api.script.listener.ActionListener;
+import org.dreambot.api.script.listener.VarListener;
 import org.dreambot.api.wrappers.widgets.MenuRow;
 
 import java.io.BufferedWriter;
@@ -52,7 +53,7 @@ import java.util.Map;
  * 6. Banking - Bank operations
  * 7. Animations - What actions you perform
  */
-public class QuestEventLogger implements ActionListener {
+public class QuestEventLogger implements ActionListener, VarListener {
     
     private final AbstractScript script;
     private BufferedWriter logWriter;
@@ -116,6 +117,11 @@ public class QuestEventLogger implements ActionListener {
         put("WITCHS_POTION", 67);
         put("RUNE_MYSTERIES", 63);
         put("DRAGON_SLAYER", 176);
+        put("CORSAIR_CURSE", 6071); // DISCOVERED: From manual completion logs
+        
+        // PRIORITY: Force monitor Dragon Slayer varbit 176
+        put("Free_Discovery", 176);
+        put("DRAGON_SLAYER", 176); // Force Dragon Slayer tracking in discovery mode
     }};
     
     // Removed: questVarbits, lastVarbitValues, lastMovementTime, MOVEMENT_COOLDOWN - unused after consolidation
@@ -290,14 +296,24 @@ public class QuestEventLogger implements ActionListener {
                 
                 // Only log if this exact action hasn't been logged recently
                 if (!actionKey.equals(lastActionLogged) || (currentTime - lastActionLogTime > ACTION_LOG_COOLDOWN)) {
+                    // Get item ID for enhanced logging
+                    String itemIdInfo = "";
+                    try {
+                        Item consumedItem = Inventory.get(item -> item != null && item.getName() != null && 
+                                                         item.getName().equals(targetName));
+                        if (consumedItem != null) {
+                            itemIdInfo = " | Item_ID: " + consumedItem.getID();
+                        }
+                    } catch (Exception ignored) {}
+                    
                     // SINGLE CONSOLIDATED LOG: Only one log entry for consumable usage
                     String actionDescription = "Consumed " + targetName;
                     String scriptCode = "Inventory.interact(\"" + targetName + "\", \"" + action + "\")";
                     
                     logAction(actionDescription, scriptCode);
                     
-                    // Silent console log (no logDetail to avoid duplicate entries)
-                    script.log("CONSUMABLE: " + actionDescription);
+                    // Enhanced console log with item ID
+                    script.log("CONSUMABLE: " + actionDescription + itemIdInfo);
                     
                     // Mark this action as recently logged to prevent ALL duplicate logging
                     lastActionLogged = actionKey;
@@ -669,7 +685,7 @@ public class QuestEventLogger implements ActionListener {
      */
     private String getTargetCoordinates(String action, String targetName, int mouseX, int mouseY) {
         try {
-            // For NPC interactions, get the NPC's tile coordinates
+            // For NPC interactions, get the NPC's tile coordinates AND ID
             if (action.equals("Talk-to") || action.equals("Attack") || action.equals("Trade") || 
                 action.equals("Follow") || action.equals("Examine")) {
                 
@@ -677,11 +693,12 @@ public class QuestEventLogger implements ActionListener {
                                             npc.getName().equals(targetName));
                 if (targetNPC != null) {
                     Tile npcTile = targetNPC.getTile();
-                    return "NPC_Tile: (" + npcTile.getX() + ", " + npcTile.getY() + ", " + npcTile.getZ() + ")";
+                    int npcId = targetNPC.getID();
+                    return "NPC_Tile: (" + npcTile.getX() + ", " + npcTile.getY() + ", " + npcTile.getZ() + ") | NPC_ID: " + npcId;
                 }
             }
             
-            // For GameObject interactions, get the object's tile coordinates
+            // For GameObject interactions, get the object's tile coordinates AND ID
             if (action.equals("Climb-up") || action.equals("Climb-down") || action.equals("Climb") ||
                 action.equals("Open") || action.equals("Close") || action.equals("Search") || 
                 action.equals("Use") || action.equals("Enter") || action.equals("Exit")) {
@@ -690,11 +707,22 @@ public class QuestEventLogger implements ActionListener {
                                                              obj.getName().equals(targetName));
                 if (targetObject != null) {
                     Tile objTile = targetObject.getTile();
-                    return "Object_Tile: (" + objTile.getX() + ", " + objTile.getY() + ", " + objTile.getZ() + ")";
+                    int objId = targetObject.getID();
+                    return "Object_Tile: (" + objTile.getX() + ", " + objTile.getY() + ", " + objTile.getZ() + ") | Object_ID: " + objId;
                 }
             }
             
-            // For everything else (inventory items, spells, etc.), no coordinates needed
+            // For inventory items, try to get item ID
+            try {
+                Item targetItem = Inventory.get(item -> item != null && item.getName() != null && 
+                                               item.getName().equals(targetName));
+                if (targetItem != null) {
+                    int itemId = targetItem.getID();
+                    return "Target: " + targetName + " | Item_ID: " + itemId;
+                }
+            } catch (Exception ignored) {}
+            
+            // For everything else (spells, etc.), no additional info needed
             return "Target: " + targetName;
             
         } catch (Exception e) {
@@ -2335,6 +2363,83 @@ public class QuestEventLogger implements ActionListener {
         return System.getProperty("user.home") + "\\Desktop\\Projects in progress\\Dreambot Projects\\AI Quest system\\quest_logs\\";
     }
     
+    /**
+     * OFFICIAL DREAMBOT API: VarListener implementation for proper varbit/varp tracking
+     */
+    @Override
+    public void onVarBitUpdate(int varbitId, int value) {
+        if (!initialized) return;
+        
+        try {
+            // Check if this is a quest-related varbit
+            boolean isQuestVarbit = false;
+            String questName = "";
+            
+            // Check against known quest varbits
+            for (Map.Entry<String, Integer> entry : QUEST_VARBITS.entrySet()) {
+                if (entry.getValue() == varbitId) {
+                    isQuestVarbit = true;
+                    questName = entry.getKey();
+                    break;
+                }
+            }
+            
+            if (isQuestVarbit) {
+                // Get previous value if we have it
+                Integer previousValue = baselineVarbits.get(varbitId);
+                if (previousValue == null) previousValue = 0;
+                
+                if (previousValue != value) {
+                    logStep("QUEST PROGRESS: " + questName + " varbit " + varbitId + ": " + previousValue + " → " + value, 
+                           "// " + questName + " varbit " + varbitId + " = " + value);
+                    
+                    // Update baseline
+                    baselineVarbits.put(varbitId, value);
+                    
+                    script.log("QUEST VARBIT: " + questName + " (" + varbitId + ") = " + value + " (was " + previousValue + ")");
+                }
+            } else if (discoveryModeActive) {
+                // Discovery mode - log all varbit changes
+                Integer previousValue = baselineVarbits.get(varbitId);
+                if (previousValue == null) previousValue = 0;
+                
+                if (previousValue != value) {
+                    logStep("VARBIT DISCOVERED: Unknown Quest varbit " + varbitId + " changed from " + previousValue + " to " + value,
+                           "// DISCOVERED: Quest uses varbit " + varbitId + " (step " + previousValue + " → " + value + ")");
+                    
+                    baselineVarbits.put(varbitId, value);
+                    script.log("VARBIT DISCOVERY: " + varbitId + " = " + value + " (was " + previousValue + ")");
+                }
+            }
+            
+        } catch (Exception e) {
+            script.log("Error in onVarBitUpdate: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void onVarpUpdate(int varpId, int value) {
+        if (!initialized) return;
+        
+        try {
+            // Log significant varp changes (configs)
+            if (discoveryModeActive) {
+                Integer previousValue = baselineConfigs.get(varpId);
+                if (previousValue == null) previousValue = 0;
+                
+                if (previousValue != value) {
+                    logStep("CONFIG DISCOVERED: Unknown Quest config " + varpId + " changed from " + previousValue + " to " + value,
+                           "// DISCOVERED: Quest uses config " + varpId + " (value " + previousValue + " → " + value + ")");
+                    
+                    baselineConfigs.put(varpId, value);
+                    script.log("CONFIG DISCOVERY: " + varpId + " = " + value + " (was " + previousValue + ")");
+                }
+            }
+        } catch (Exception e) {
+            script.log("Error in onVarpUpdate: " + e.getMessage());
+        }
+    }
+
     public void close() {
         try {
             // Disable all background discovery and polling flags

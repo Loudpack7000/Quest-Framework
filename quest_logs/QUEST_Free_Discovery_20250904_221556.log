@@ -1,0 +1,187 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-09-04 22:15:56
+Player: D D M P E G
+Starting Location: (3190, 3360, 0)
+Starting Inventory: Energy potion(3) x4, Hammer, Water rune x138, Salmon x4, Coins x2450, Law rune x105, Crandor map, Air rune x147, Fire rune x487, Earth rune x222, Steel nails x90, Maze key, Plank x3, Anti-dragon shield
+=====================================
+
+[22:15:56] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[22:15:56] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[22:15:56] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[22:15:56] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[22:15:56] ACTIVE_QUEST_DETECTED: DRAGON_SLAYER is currently in progress
+[22:15:56] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 1636 varbits (including 0-values)
+
+[22:15:56] QUEST STEP 2: CONFIG_DISCOVERY_STARTED (Quest API)
+    SCRIPT: // Using Quest API config 176 baseline=2
+
+[22:15:59] QUEST_API_DETECTED: DRAGON_SLAYER - State: STARTED
+[22:15:59] QUEST STEP 3: QUEST PROGRESS: CORSAIR_CURSE step 60 - [STEP 60]
+    SCRIPT: // CORSAIR_CURSE varbit 6071 = 60
+
+[22:15:59] QUEST STEP 4: QUEST PROGRESS: DEMON_SLAYER step 3 - [STEP 3]
+    SCRIPT: // DEMON_SLAYER varbit 2561 = 3
+
+[22:16:04] ACTION: Selected 'Talk-to' on Guildmaster
+    SCRIPT: NPCs.closest("Guildmaster").interact("Talk-to");
+
+[22:16:04] USER_ACTION: Talk-to | NPC_Tile: (3189, 3359, 0) | NPC_ID: 814
+[22:16:04] Movement: Started significant journey from (3194, 3355, 0)
+[22:16:07] Position: Arrived at (3189, 3360, 0)
+[22:16:07] DIALOGUE_OPTIONS: [What is this place?, About my quest to kill the dragon...]
+[22:16:09] ACTION: DIALOGUE_SELECTION
+    SCRIPT: About my quest to kill the dragon...
+
+[22:16:11] DIALOGUE_OPTIONS: [How can I find the route to Crandor?, Where can I find the right ship?, How can I protect myself from the dragon's breath?, What's so special about this dragon?, Okay, I'll get going!]
+[22:16:15] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Where can I find the right ship?
+
+[22:16:18] DIALOGUE_OPTIONS: [How can I find the route to Crandor?, How can I protect myself from the dragon's breath?, Okay, I'll get going!]
+[22:16:23] DIALOGUE_OPTIONS: [How can I find the route to Crandor?, How can I protect myself from the dragon's breath?, Okay, I'll get going!]
+[22:16:25] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Okay, I'll get going!
+
+[22:16:26] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[22:16:26] USER_ACTION: Open | Object_Tile: (3191, 3363, 0) | Object_ID: 1805
+[22:16:27] Movement: Started significant journey from (3189, 3360, 0)
+[22:16:28] Position: Arrived at (3191, 3363, 0)
+[22:16:45] ACTION: Selected 'Cast' on Lumbridge Teleport
+    SCRIPT: // Cast on Lumbridge Teleport
+
+[22:16:45] USER_ACTION: Cast | Target: Lumbridge Teleport
+[22:16:45] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[22:16:45] SPELLBOOK_OPENED: Player opened the magic spellbook
+[22:16:50] Movement: Started significant journey from (3222, 3219, 0)
+[22:17:24] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[22:17:29] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[22:17:38] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[22:17:47] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[22:17:52] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[22:17:59] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[22:18:07] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[22:18:21] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[22:18:29] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[22:18:29] ACTION: Completed journey: 178 tiles
+    SCRIPT: Walking.walk(new Tile(3045, 3203, 0))
+
+[22:18:29] Journey: Walked 178 tiles in 99s | (3222, 3219, 0) → (3045, 3203, 0)
+[22:18:29] Position: Arrived at (3045, 3203, 0)
+[22:18:32] ACTION: Selected 'Talk-to' on Klarense
+    SCRIPT: NPCs.closest("Klarense").interact("Talk-to");
+
+[22:18:32] USER_ACTION: Talk-to | NPC_Tile: (3046, 3204, 0) | NPC_ID: 819
+[22:18:33] Movement: Started significant journey from (3045, 3203, 0)
+[22:18:33] DIALOGUE_OPTIONS: [Do you know when she will be seaworthy?, Would you take me to Crandor when she's ready?, Why is she damaged?, I'd like to buy her., Ah well, never mind.]
+[22:18:38] DIALOGUE_OPTIONS: [Do you know when she will be seaworthy?, Would you take me to Crandor when she's ready?, Why is she damaged?, I'd like to buy her., Ah well, never mind.]
+[22:18:40] ACTION: DIALOGUE_SELECTION
+    SCRIPT: I'd like to buy her.
+
+[22:18:43] DIALOGUE_OPTIONS: [Yep, sounds good., I'm not paying that much for a broken boat!]
+[22:18:45] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Yep, sounds good.
+
+[22:18:46] QUEST STEP 5: CONFIG DISCOVERED: Unknown Quest config 176 changed from 2 to 3
+    SCRIPT: // DISCOVERED: Quest uses config 176 (value 2 → 3)
+
+[22:18:49] ACTION: Selected 'Attack' on Seagull
+    SCRIPT: NPCs.closest("Seagull").interact("Attack");
+
+[22:18:49] USER_ACTION: Attack | NPC_Tile: (3047, 3204, 0) | NPC_ID: 1339
+[22:18:49] Movement: Started significant journey from (3046, 3203, 0)
+[22:18:50] Position: Arrived at (3047, 3203, 0)
+[22:18:52] ACTION: Selected 'Cross' on Gangplank
+    SCRIPT: // Cross on Gangplank
+
+[22:18:52] USER_ACTION: Cross | Target: Gangplank
+[22:18:57] ACTION: Selected 'Climb-down' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-down");
+
+[22:18:57] USER_ACTION: Climb-down | Object_Tile: (3049, 3208, 1) | Object_ID: 2590
+[22:18:58] Position: Arrived at (3049, 3207, 1)
+[22:19:02] ACTION: Selected 'Repair' on Hole
+    SCRIPT: // Repair on Hole
+
+[22:19:02] USER_ACTION: Repair | Target: Hole
+[22:19:03] Movement: Started significant journey from (3048, 9640, 1)
+[22:19:04] Position: Arrived at (3047, 9640, 1)
+[22:19:14] ACTION: Selected 'Repair' on Hole
+    SCRIPT: // Repair on Hole
+
+[22:19:14] USER_ACTION: Repair | Target: Hole
+[22:19:19] ACTION: Selected 'Repair' on Hole
+    SCRIPT: // Repair on Hole
+
+[22:19:19] USER_ACTION: Repair | Target: Hole
+[22:19:21] QUEST STEP 6: CONFIG DISCOVERED: Unknown Quest config 176 changed from 3 to 6
+    SCRIPT: // DISCOVERED: Quest uses config 176 (value 3 → 6)
+
+[22:19:26] ACTION: Selected 'Climb-up' on Ladder
+    SCRIPT: GameObjects.closest("Ladder").interact("Climb-up");
+
+[22:19:26] USER_ACTION: Climb-up | Object_Tile: (3049, 9640, 1) | Object_ID: 2592
+[22:19:27] Movement: Started significant journey from (3047, 9640, 1)
+[22:19:28] Position: Arrived at (3048, 9640, 1)
+[22:19:31] ACTION: Selected 'Cross' on Gangplank
+    SCRIPT: // Cross on Gangplank
+
+[22:19:31] USER_ACTION: Cross | Target: Gangplank
+[22:19:33] Position: Arrived at (3047, 3204, 0)
+[22:19:39] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[22:19:57] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[22:20:16] ACTION: Completed journey: 65 tiles
+    SCRIPT: Walking.walk(new Tile(3080, 3260, 0))
+
+[22:20:16] Journey: Walked 65 tiles in 41s | (3047, 3204, 0) → (3080, 3260, 0)
+[22:20:16] Position: Arrived at (3080, 3260, 0)
+[22:20:19] Movement: Started significant journey from (3080, 3259, 0)
+[22:20:30] ACTION: Selected 'Open' on Door
+    SCRIPT: GameObjects.closest("Door").interact("Open");
+
+[22:20:30] USER_ACTION: Open | Object_Tile: (3088, 3251, 0) | Object_ID: 1535
+[22:20:35] Position: Arrived at (3102, 3258, 0)
+[22:20:35] ACTION: Selected 'Talk-to' on Ned
+    SCRIPT: NPCs.closest("Ned").interact("Talk-to");
+
+[22:20:35] USER_ACTION: Talk-to | NPC_Tile: (3100, 3258, 0) | NPC_ID: 4280
+[22:20:36] Movement: Started significant journey from (3102, 3258, 0)
+[22:20:37] DIALOGUE_OPTIONS: [You're a sailor? Could you take me to Crandor?, Yes, I would like some rope., No thanks, Ned. I don't need any.]
+[22:20:40] ACTION: DIALOGUE_SELECTION
+    SCRIPT: You're a sailor? Could you take me to Crandor?
+
+[22:20:50] QUEST STEP 7: CONFIG DISCOVERED: Unknown Quest config 176 changed from 6 to 7
+    SCRIPT: // DISCOVERED: Quest uses config 176 (value 6 → 7)
+
+[22:20:53] Movement: Started significant journey from (3101, 3258, 0)
+[22:20:56] QUEST_END: === QUEST RECORDING ENDED ===

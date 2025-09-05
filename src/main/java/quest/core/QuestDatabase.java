@@ -191,6 +191,56 @@ public class QuestDatabase {
             new ArrayList<>(),
             Arrays.asList("Spade") // based on log: used spade to dig
         ));
+        
+        // Dragon Slayer
+        questInfo.put("DRAGON_SLAYER", new QuestInfo(
+            "DRAGON_SLAYER",
+            "Dragon Slayer",
+            3, // difficulty
+            20, // estimated duration minutes
+            Arrays.asList("32 Quest Points"), // skill requirements
+            Arrays.asList("Anti-dragon shield") // required items (for later stages)
+        ));
+
+        // Dragon Slayer (Stage 2 - Debug)
+        questInfo.put("DRAGON_SLAYER_STAGE_2_DEBUG", new QuestInfo(
+            "DRAGON_SLAYER_STAGE_2_DEBUG",
+            "Dragon Slayer - Stage 2 (debug)",
+            3,
+            15,
+            new ArrayList<>(),
+            Arrays.asList("Silk", "Lobster pot", "Unfired bowl", "Wizard's mind bomb")
+        ));
+
+        // Dragon Slayer (Stage 3 - Melzar's Map Piece - Debug)
+        questInfo.put("DRAGON_SLAYER_MELZAR_DEBUG", new QuestInfo(
+            "DRAGON_SLAYER_MELZAR_DEBUG",
+            "Dragon Slayer - Melzar's Map Piece (debug)",
+            4,
+            25,
+            new ArrayList<>(),
+            Arrays.asList("Maze key", "Combat gear", "Food for Lesser Demon fight")
+        ));
+
+        // Dragon Slayer (Stage 4 - Lozar's Map Piece - Debug)
+        questInfo.put("DRAGON_SLAYER_LOZAR_DEBUG", new QuestInfo(
+            "DRAGON_SLAYER_LOZAR_DEBUG",
+            "Dragon Slayer - Lozar's Map Piece (debug)",
+            3,
+            10,
+            new ArrayList<>(),
+            Arrays.asList("10,000 coins (or combat gear for Wormbrain)")
+        ));
+
+        // Dragon Slayer (Stage 5 - Boat Obtaining - Debug)
+        questInfo.put("DRAGON_SLAYER_BOAT_DEBUG", new QuestInfo(
+            "DRAGON_SLAYER_BOAT_DEBUG",
+            "Dragon Slayer - Boat Obtaining (debug)",
+            3,
+            15,
+            new ArrayList<>(),
+            Arrays.asList("Hammer", "3 planks", "90 steel nails", "2,000 coins", "Crandor map", "Amulet of glory (recommended)")
+        ));
 
         // Prince Ali Rescue
         questInfo.put("PRINCE_ALI_RESCUE", new QuestInfo(

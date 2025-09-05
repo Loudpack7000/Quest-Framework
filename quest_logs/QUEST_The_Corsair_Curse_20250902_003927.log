@@ -1,0 +1,49 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: The Corsair Curse
+Started: 2025-09-02 00:39:27
+Player: CharlesMont
+Starting Location: (3167, 3488, 0)
+Starting Inventory: Energy potion(4) x10, Spade, Salmon x5, Tinderbox
+=====================================
+
+[00:39:27] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[00:39:27] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[00:39:27] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[00:39:27] ACTION: Quest recording started
+    SCRIPT: // Quest: The Corsair Curse
+
+[00:40:18] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[00:40:19] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:40:20] ACTION: Consumed Energy potion(2)
+    SCRIPT: Inventory.interact("Energy potion(2)", "Drink")
+
+[00:40:24] ACTION: Consumed Energy potion(1)
+    SCRIPT: Inventory.interact("Energy potion(1)", "Drink")
+
+[00:40:25] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[00:40:33] ACTION: Selected 'Drop' on Vial
+    SCRIPT: Inventory.interact("Vial", "Drop");
+
+[00:40:33] USER_ACTION: Drop | Target: Vial
+[00:40:33] ACTION: Inventory changed: Items gained
+    SCRIPT: // Current inventory: Energy potion(3), Energy potion(4) x8, Spade, Salmon x5, Tinderbox, Vial
+
+[00:40:35] ACTION: Consumed Energy potion(3)
+    SCRIPT: Inventory.interact("Energy potion(3)", "Drink")
+
+[00:41:39] ACTION: Selected 'Talk-to' on Captain Tock
+    SCRIPT: NPCs.closest("Captain Tock").interact("Talk-to");
+
+[00:41:39] USER_ACTION: Talk-to | NPC_Tile: (3030, 3273, 0)
+[00:42:27] ACTION: Consumed Energy potion(4)
+    SCRIPT: Inventory.interact("Energy potion(4)", "Drink")
+
+[00:44:00] QUEST_END: === QUEST RECORDING ENDED ===

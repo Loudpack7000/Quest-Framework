@@ -1,0 +1,258 @@
+=====================================
+    QUEST SCRIPT RECREATION LOG     
+=====================================
+Quest: Free_Discovery
+Started: 2025-09-05 01:20:50
+Player: D D M P E G
+Starting Location: (3042, 3203, 0)
+Starting Inventory: Water rune x137, Earth rune x271, Salmon x22, Coins x450, Law rune x102, Air rune x2805, Chaos rune x2000
+=====================================
+
+[01:20:50] CONSOLE_INTEGRATION: DreamBot console logging enabled - all script output will be mirrored to quest log file
+[01:20:50] CONSOLE_INFO: Quest log location: C:\Users\Leone\Desktop\Projects in progress\Dreambot Projects\AI Quest system\quest_logs\
+[01:20:50] CONSOLE_INFO: DreamBot script: Quest Action Recorder v4.3
+[01:20:50] ACTION: Quest recording started
+    SCRIPT: // Quest: Free_Discovery
+
+[01:20:50] ACTIVE_QUEST_DETECTED: DRAGON_SLAYER is currently in progress
+[01:20:50] QUEST STEP 1: VARBIT_DISCOVERY_STARTED
+    SCRIPT: // Quest varbit discovery initiated - monitoring 1636 varbits (including 0-values)
+
+[01:20:50] QUEST STEP 2: CONFIG_DISCOVERY_STARTED (Quest API)
+    SCRIPT: // Using Quest API config 176 baseline=7
+
+[01:20:52] QUEST_API_DETECTED: DRAGON_SLAYER - State: STARTED
+[01:20:52] QUEST STEP 3: QUEST PROGRESS: CORSAIR_CURSE step 60 - [STEP 60]
+    SCRIPT: // CORSAIR_CURSE varbit 6071 = 60
+
+[01:20:52] QUEST STEP 4: QUEST PROGRESS: DEMON_SLAYER step 3 - [STEP 3]
+    SCRIPT: // DEMON_SLAYER varbit 2561 = 3
+
+[01:20:56] ACTION: Selected 'Cross' on Gangplank
+    SCRIPT: // Cross on Gangplank
+
+[01:20:56] USER_ACTION: Cross | Target: Gangplank
+[01:20:57] Movement: Started significant journey from (3043, 3203, 0)
+[01:20:59] Position: Arrived at (3047, 3204, 0)
+[01:21:02] ACTION: Selected 'Talk-to' on Captain Ned
+    SCRIPT: NPCs.closest("Captain Ned").interact("Talk-to");
+
+[01:21:02] USER_ACTION: Talk-to | NPC_Tile: (3048, 3209, 1) | NPC_ID: 818
+[01:21:03] DIALOGUE_OPTIONS: [Yes, let's go!, No, I'm not quite ready yet.]
+[01:21:05] ACTION: DIALOGUE_SELECTION
+    SCRIPT: Yes, let's go!
+
+[01:21:07] QUEST STEP 5: VARBIT DISCOVERED: Unknown Quest varbit 542 changed from 0 to 1
+    SCRIPT: // DISCOVERED: Quest uses varbit 542 (step 0 → 1)
+
+[01:21:51] QUEST STEP 6: CONFIG DISCOVERED: Unknown Quest config 176 changed from 7 to 8
+    SCRIPT: // DISCOVERED: Quest uses config 176 (value 7 → 8)
+
+[01:21:52] QUEST STEP 7: VARBIT DISCOVERED: Unknown Quest varbit 542 changed from 1 to 0
+    SCRIPT: // DISCOVERED: Quest uses varbit 542 (step 1 → 0)
+
+[01:22:00] Movement: Started significant journey from (2849, 3239, 0)
+[01:22:24] ACTION: Selected 'Enter' on Hole
+    SCRIPT: // Enter on Hole
+
+[01:22:24] USER_ACTION: Enter | Object_Tile: (2833, 3255, 0) | Object_ID: 25154
+[01:22:27] ACTION: Selected 'Enter' on Hole
+    SCRIPT: // Enter on Hole
+
+[01:22:27] USER_ACTION: Enter | Object_Tile: (2833, 3255, 0) | Object_ID: 25154
+[01:22:31] Position: Arrived at (2833, 3258, 0)
+[01:22:32] QUEST STEP 8: VARBIT DISCOVERED: Unknown Quest varbit 542 changed from 0 to 1
+    SCRIPT: // DISCOVERED: Quest uses varbit 542 (step 0 → 1)
+
+[01:22:43] QUEST STEP 9: VARBIT DISCOVERED: Unknown Quest varbit 542 changed from 1 to 0
+    SCRIPT: // DISCOVERED: Quest uses varbit 542 (step 1 → 0)
+
+[01:22:45] Movement: Started significant journey from (2833, 9658, 0)
+[01:22:48] ACTION: Selected 'Attack' on Skeleton
+    SCRIPT: NPCs.closest("Skeleton").interact("Attack");
+
+[01:22:48] USER_ACTION: Attack | NPC_Tile: (2835, 9655, 0) | NPC_ID: 78
+[01:22:59] ACTION: Selected 'Climb-over' on Wall
+    SCRIPT: // Climb-over on Wall
+
+[01:22:59] USER_ACTION: Climb-over | Target: Wall
+[01:23:01] Position: Arrived at (2844, 9636, 0)
+[01:23:04] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:23:04] USER_ACTION: Attack | NPC_Tile: (2849, 9639, 0) | NPC_ID: 816
+[01:23:04] QUEST STEP 10: VARBIT DISCOVERED: Unknown Quest varbit 275 changed from 0 to 1
+    SCRIPT: // DISCOVERED: Quest uses varbit 275 (step 0 → 1)
+
+[01:23:04] QUEST STEP 11: VARBIT DISCOVERED: Unknown Quest varbit 276 changed from 0 to 8
+    SCRIPT: // DISCOVERED: Quest uses varbit 276 (step 0 → 8)
+
+[01:23:05] Movement: Started significant journey from (2847, 9636, 0)
+[01:23:07] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:23:07] USER_ACTION: Attack | NPC_Tile: (2849, 9639, 0) | NPC_ID: 816
+[01:23:07] Position: Arrived at (2849, 9634, 0)
+[01:23:11] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:23:11] USER_ACTION: Attack | NPC_Tile: (2849, 9639, 0) | NPC_ID: 816
+[01:23:12] ACTION: Consumed Salmon
+    SCRIPT: Inventory.interact("Salmon", "Eat")
+
+[01:23:13] Position: Arrived at (2850, 9631, 0)
+[01:23:14] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:23:14] USER_ACTION: Attack | NPC_Tile: (2849, 9639, 0) | NPC_ID: 816
+[01:23:16] ACTION: Consumed Salmon
+    SCRIPT: Inventory.interact("Salmon", "Eat")
+
+[01:23:17] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:23:17] USER_ACTION: Attack | NPC_Tile: (2849, 9639, 0) | NPC_ID: 816
+[01:23:19] ACTION: Selected 'Activate' on Protect from Magic
+    SCRIPT: // Activate on Protect from Magic
+
+[01:23:19] USER_ACTION: Activate | Target: Protect from Magic
+[01:23:21] ACTION: Consumed Salmon
+    SCRIPT: Inventory.interact("Salmon", "Eat")
+
+[01:23:22] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:23:22] USER_ACTION: Attack | NPC_Tile: (2849, 9639, 0) | NPC_ID: 816
+[01:23:25] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:23:25] USER_ACTION: Attack | NPC_Tile: (2849, 9639, 0) | NPC_ID: 816
+[01:23:25] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:23:25] USER_ACTION: Attack | NPC_Tile: (2849, 9639, 0) | NPC_ID: 816
+[01:23:27] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:23:27] USER_ACTION: Attack | NPC_Tile: (2849, 9639, 0) | NPC_ID: 816
+[01:23:28] ACTION: Consumed Salmon
+    SCRIPT: Inventory.interact("Salmon", "Eat")
+
+[01:23:29] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:23:29] USER_ACTION: Attack | NPC_Tile: (2849, 9639, 0) | NPC_ID: 816
+[01:23:35] ACTION: Consumed Salmon
+    SCRIPT: Inventory.interact("Salmon", "Eat")
+
+[01:23:37] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:23:37] USER_ACTION: Attack | NPC_Tile: (2849, 9639, 0) | NPC_ID: 816
+[01:23:41] ACTION: Consumed Salmon
+    SCRIPT: Inventory.interact("Salmon", "Eat")
+
+[01:23:45] ACTION: Consumed Salmon
+    SCRIPT: Inventory.interact("Salmon", "Eat")
+
+[01:23:54] ACTION: Selected 'Climb-over' on Wall
+    SCRIPT: // Climb-over on Wall
+
+[01:23:54] USER_ACTION: Climb-over | Target: Wall
+[01:23:54] Movement: Started significant journey from (2850, 9630, 0)
+[01:23:55] ACTION: Consumed Salmon
+    SCRIPT: Inventory.interact("Salmon", "Eat")
+
+[01:23:56] ACTION: Selected 'Climb-over' on Wall
+    SCRIPT: // Climb-over on Wall
+
+[01:23:56] USER_ACTION: Climb-over | Target: Wall
+[01:23:59] Position: Arrived at (2847, 9636, 0)
+[01:24:01] ACTION: Consumed Salmon
+    SCRIPT: Inventory.interact("Salmon", "Eat")
+
+[01:24:09] ACTION: Selected 'Open' on Wall
+    SCRIPT: GameObjects.closest("Wall").interact("Open");
+
+[01:24:09] USER_ACTION: Open | Object_Tile: (2836, 9600, 0) | Object_ID: 2606
+[01:24:15] ACTION: Completed journey: 38 tiles
+    SCRIPT: Walking.walk(new Tile(2836, 9599, 0))
+
+[01:24:15] Journey: Walked 38 tiles in 13s | (2845, 9636, 0) → (2836, 9599, 0)
+[01:24:15] Position: Arrived at (2836, 9599, 0)
+[01:24:17] ACTION: Selected 'Open' on Wall
+    SCRIPT: GameObjects.closest("Wall").interact("Open");
+
+[01:24:17] USER_ACTION: Open | Object_Tile: (2836, 9600, 0) | Object_ID: 2606
+[01:24:18] Movement: Started significant journey from (2836, 9599, 0)
+[01:24:19] ACTION: Selected 'Attack' on Lesser demon
+    SCRIPT: NPCs.closest("Lesser demon").interact("Attack");
+
+[01:24:19] USER_ACTION: Attack | NPC_Tile: (2837, 9602, 0) | NPC_ID: 2005
+[01:24:28] ACTION: Selected 'Climb-over' on Wall
+    SCRIPT: // Climb-over on Wall
+
+[01:24:28] USER_ACTION: Climb-over | Target: Wall
+[01:24:35] ACTION: Completed journey: 36 tiles
+    SCRIPT: Walking.walk(new Tile(2845, 9636, 0))
+
+[01:24:35] Journey: Walked 36 tiles in 14s | (2836, 9601, 0) → (2845, 9636, 0)
+[01:24:35] Position: Arrived at (2845, 9636, 0)
+[01:24:38] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:24:38] USER_ACTION: Attack | NPC_Tile: (2856, 9634, 0) | NPC_ID: 816
+[01:24:40] ACTION: Consumed Salmon
+    SCRIPT: Inventory.interact("Salmon", "Eat")
+
+[01:24:41] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:24:41] USER_ACTION: Attack | NPC_Tile: (2856, 9634, 0) | NPC_ID: 816
+[01:24:42] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:24:42] USER_ACTION: Attack | NPC_Tile: (2856, 9634, 0) | NPC_ID: 816
+[01:24:46] ACTION: Consumed Salmon
+    SCRIPT: Inventory.interact("Salmon", "Eat")
+
+[01:24:47] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:24:47] USER_ACTION: Attack | NPC_Tile: (2856, 9634, 0) | NPC_ID: 816
+[01:24:49] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:24:49] USER_ACTION: Attack | NPC_Tile: (2856, 9634, 0) | NPC_ID: 816
+[01:24:50] Movement: Started significant journey from (2847, 9636, 0)
+[01:24:52] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:24:52] USER_ACTION: Attack | NPC_Tile: (2856, 9634, 0) | NPC_ID: 816
+[01:24:52] Position: Arrived at (2851, 9636, 0)
+[01:24:53] ACTION: Consumed Salmon
+    SCRIPT: Inventory.interact("Salmon", "Eat")
+
+[01:24:53] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:24:53] USER_ACTION: Attack | NPC_Tile: (2856, 9634, 0) | NPC_ID: 816
+[01:24:57] ACTION: Consumed Salmon
+    SCRIPT: Inventory.interact("Salmon", "Eat")
+
+[01:24:58] ACTION: Selected 'Attack' on Elvarg
+    SCRIPT: NPCs.closest("Elvarg").interact("Attack");
+
+[01:24:58] USER_ACTION: Attack | NPC_Tile: (2855, 9634, 0) | NPC_ID: 816
+[01:25:03] ACTION: Selected 'Cast' on Varrock Teleport
+    SCRIPT: // Cast on Varrock Teleport
+
+[01:25:03] USER_ACTION: Cast | Target: Varrock Teleport
+[01:25:03] ACTION: Opened magic spellbook
+    SCRIPT: Tabs.open(Tab.MAGIC)
+
+[01:25:03] SPELLBOOK_OPENED: Player opened the magic spellbook
+[01:25:05] ACTION: Consumed Salmon
+    SCRIPT: Inventory.interact("Salmon", "Eat")
+
+[01:25:08] QUEST_END: === QUEST RECORDING ENDED ===
