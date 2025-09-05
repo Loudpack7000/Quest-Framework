@@ -36,7 +36,8 @@ public class QuestSelectionGUI extends JFrame {
     private JButton stopRecordingButton;
     
     // Quest Execution Components
-    private JComboBox<String> questDropdown;
+    private JComboBox<String> f2pQuestDropdown;
+    private JComboBox<String> membersQuestDropdown;
     private JButton startQuestButton;
     private JButton stopQuestButton;
     private JLabel questStatusLabel;
@@ -47,14 +48,36 @@ public class QuestSelectionGUI extends JFrame {
     private boolean discoveryRunning = false;
     
     // Available quests - populated from QuestDatabase
-    private static final List<String> AVAILABLE_QUESTS = new ArrayList<>();
+    private static final List<String> F2P_QUESTS = new ArrayList<>();
+    private static final List<String> MEMBERS_QUESTS = new ArrayList<>();
     static {
-        AVAILABLE_QUESTS.add("-- Select a Quest --");
+        F2P_QUESTS.add("-- Select a Free to Play Quest --");
+        MEMBERS_QUESTS.add("-- Select a Members Quest --");
         
         // Add quests from QuestDatabase
         for (QuestDatabase.QuestInfo quest : QuestDatabase.getAllQuests().values()) {
-            AVAILABLE_QUESTS.add(quest.getDisplayName());
+            // Determine if quest is members or F2P based on quest name/content
+            if (isMembersQuest(quest.getDisplayName())) {
+                MEMBERS_QUESTS.add(quest.getDisplayName());
+            } else {
+                F2P_QUESTS.add(quest.getDisplayName());
+            }
         }
+    }
+    
+    private static boolean isMembersQuest(String questName) {
+        // Define members quests - add more as needed
+        String[] membersQuests = {
+            "Dragon Slayer", "Dragon Slayer - Lozar's Map Piece (debug)", 
+            "Dragon Slayer - Boat Obtaining (debug)", "Dragon Slayer - Elvarg Fight (debug)"
+        };
+        
+        for (String membersQuest : membersQuests) {
+            if (questName.contains(membersQuest)) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public interface QuestStartListener {
@@ -267,15 +290,50 @@ public class QuestSelectionGUI extends JFrame {
             UIManager.getColor("TitledBorder.titleColor")
         ));
         
-        questDropdown = new JComboBox<>(AVAILABLE_QUESTS.toArray(new String[0]));
-        questDropdown.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        questDropdown.setPreferredSize(new Dimension(200, 30));
+        // Create two quest selection panels side by side
+        JPanel questSelectionContainer = new JPanel(new GridLayout(1, 2, 15, 0));
+        questSelectionContainer.setBackground(UIManager.getColor("Panel.background"));
         
-        selectionPanel.add(new JLabel("Select Quest:", JLabel.LEFT) {{
-            setForeground(UIManager.getColor("Label.foreground"));
-            setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        }}, BorderLayout.WEST);
-        selectionPanel.add(questDropdown, BorderLayout.CENTER);
+        // Free to Play Quest Selection
+        JPanel f2pPanel = new JPanel(new BorderLayout(5, 5));
+        f2pPanel.setBackground(UIManager.getColor("Panel.background"));
+        f2pPanel.setBorder(new TitledBorder(
+            BorderFactory.createLineBorder(new Color(100, 150, 255), 1),
+            "Free to Play Quests",
+            TitledBorder.DEFAULT_JUSTIFICATION,
+            TitledBorder.DEFAULT_POSITION,
+            new Font("Segoe UI", Font.BOLD, 10),
+            new Color(100, 150, 255)
+        ));
+        
+        f2pQuestDropdown = new JComboBox<>(F2P_QUESTS.toArray(new String[0]));
+        f2pQuestDropdown.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        f2pQuestDropdown.setPreferredSize(new Dimension(180, 28));
+        
+        f2pPanel.add(f2pQuestDropdown, BorderLayout.CENTER);
+        
+        // Members Quest Selection
+        JPanel membersPanel = new JPanel(new BorderLayout(5, 5));
+        membersPanel.setBackground(UIManager.getColor("Panel.background"));
+        membersPanel.setBorder(new TitledBorder(
+            BorderFactory.createLineBorder(new Color(255, 150, 100), 1),
+            "Members Quests",
+            TitledBorder.DEFAULT_JUSTIFICATION,
+            TitledBorder.DEFAULT_POSITION,
+            new Font("Segoe UI", Font.BOLD, 10),
+            new Color(255, 150, 100)
+        ));
+        
+        membersQuestDropdown = new JComboBox<>(MEMBERS_QUESTS.toArray(new String[0]));
+        membersQuestDropdown.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        membersQuestDropdown.setPreferredSize(new Dimension(180, 28));
+        
+        membersPanel.add(membersQuestDropdown, BorderLayout.CENTER);
+        
+        questSelectionContainer.add(f2pPanel);
+        questSelectionContainer.add(membersPanel);
+        
+        selectionPanel.add(questSelectionContainer, BorderLayout.CENTER);
         
         // Control Buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
@@ -408,9 +466,18 @@ public class QuestSelectionGUI extends JFrame {
     
     // Quest Automation Methods
     private void startSelectedQuest() {
-        String selectedQuest = (String) questDropdown.getSelectedItem();
-        if (selectedQuest == null || selectedQuest.equals("-- Select a Quest --")) {
-            updateQuestLog("Please select a quest first!");
+        String selectedF2PQuest = (String) f2pQuestDropdown.getSelectedItem();
+        String selectedMembersQuest = (String) membersQuestDropdown.getSelectedItem();
+        
+        String selectedQuest = null;
+        if (selectedF2PQuest != null && !selectedF2PQuest.equals("-- Select a Free to Play Quest --")) {
+            selectedQuest = selectedF2PQuest;
+        } else if (selectedMembersQuest != null && !selectedMembersQuest.equals("-- Select a Members Quest --")) {
+            selectedQuest = selectedMembersQuest;
+        }
+        
+        if (selectedQuest == null) {
+            updateQuestLog("Please select a quest from either dropdown first!");
             return;
         }
         
@@ -418,7 +485,8 @@ public class QuestSelectionGUI extends JFrame {
             questRunning = true;
             startQuestButton.setEnabled(false);
             stopQuestButton.setEnabled(true);
-            questDropdown.setEnabled(false);
+            f2pQuestDropdown.setEnabled(false);
+            membersQuestDropdown.setEnabled(false);
             
             questStatusLabel.setText("Starting quest: " + selectedQuest);
             questProgressBar.setValue(0);
@@ -459,7 +527,8 @@ public class QuestSelectionGUI extends JFrame {
         questRunning = false;
         startQuestButton.setEnabled(true);
         stopQuestButton.setEnabled(false);
-        questDropdown.setEnabled(true);
+        f2pQuestDropdown.setEnabled(true);
+        membersQuestDropdown.setEnabled(true);
         questStatusLabel.setText("Ready");
         questProgressBar.setValue(0);
         questProgressBar.setString("Select a quest to begin");
@@ -487,7 +556,8 @@ public class QuestSelectionGUI extends JFrame {
             questRunning = false;
             startQuestButton.setEnabled(true);
             stopQuestButton.setEnabled(false);
-            questDropdown.setEnabled(true);
+            f2pQuestDropdown.setEnabled(true);
+            membersQuestDropdown.setEnabled(true);
             questStatusLabel.setText("Quest stopped");
             questProgressBar.setValue(0);
             questProgressBar.setString("Ready");
@@ -505,7 +575,15 @@ public class QuestSelectionGUI extends JFrame {
     
     private void startQuest() {
         if (questStartListener != null && !questRunning) {
-            String selectedQuest = (String) questDropdown.getSelectedItem();
+            String selectedF2PQuest = (String) f2pQuestDropdown.getSelectedItem();
+            String selectedMembersQuest = (String) membersQuestDropdown.getSelectedItem();
+            
+            String selectedQuest = null;
+            if (selectedF2PQuest != null && !selectedF2PQuest.equals("-- Select a Free to Play Quest --")) {
+                selectedQuest = selectedF2PQuest;
+            } else if (selectedMembersQuest != null && !selectedMembersQuest.equals("-- Select a Members Quest --")) {
+                selectedQuest = selectedMembersQuest;
+            }
             
             // If we have a quest executor and it's a specific quest (not FREE DISCOVERY MODE)
             if (questExecutor != null && !selectedQuest.equals("FREE DISCOVERY MODE") && !selectedQuest.startsWith("-------")) {
@@ -573,14 +651,26 @@ public class QuestSelectionGUI extends JFrame {
             if (running) {
                 startQuestButton.setEnabled(false);
                 stopQuestButton.setEnabled(true);
-                questDropdown.setEnabled(false);
-                String questName = (String) questDropdown.getSelectedItem();
-                questStatusLabel.setText("RUNNING: " + questName);
+                f2pQuestDropdown.setEnabled(false);
+                membersQuestDropdown.setEnabled(false);
+                
+                // Get the selected quest name from either dropdown
+                String selectedF2PQuest = (String) f2pQuestDropdown.getSelectedItem();
+                String selectedMembersQuest = (String) membersQuestDropdown.getSelectedItem();
+                String questName = null;
+                if (selectedF2PQuest != null && !selectedF2PQuest.equals("-- Select a Free to Play Quest --")) {
+                    questName = selectedF2PQuest;
+                } else if (selectedMembersQuest != null && !selectedMembersQuest.equals("-- Select a Members Quest --")) {
+                    questName = selectedMembersQuest;
+                }
+                
+                questStatusLabel.setText("RUNNING: " + (questName != null ? questName : "Unknown Quest"));
                 questProgressBar.setString("Quest in progress...");
             } else {
                 startQuestButton.setEnabled(true);
                 stopQuestButton.setEnabled(false);
-                questDropdown.setEnabled(true);
+                f2pQuestDropdown.setEnabled(true);
+                membersQuestDropdown.setEnabled(true);
                 questStatusLabel.setText("Ready");
                 questProgressBar.setString("Ready");
             }
@@ -592,7 +682,8 @@ public class QuestSelectionGUI extends JFrame {
             questRunning = false;
             startQuestButton.setEnabled(true);
             stopQuestButton.setEnabled(false);
-            questDropdown.setEnabled(true);
+            f2pQuestDropdown.setEnabled(true);
+            membersQuestDropdown.setEnabled(true);
             questStatusLabel.setText(questName + " completed!");
             questStatusLabel.setForeground(new Color(100, 255, 100));
             questProgressBar.setValue(100);
@@ -606,7 +697,8 @@ public class QuestSelectionGUI extends JFrame {
             questRunning = false;
             startQuestButton.setEnabled(true);
             stopQuestButton.setEnabled(false);
-            questDropdown.setEnabled(true);
+            f2pQuestDropdown.setEnabled(true);
+            membersQuestDropdown.setEnabled(true);
             questStatusLabel.setText(questName + " failed");
             questStatusLabel.setForeground(new Color(255, 100, 100));
             questProgressBar.setValue(0);
