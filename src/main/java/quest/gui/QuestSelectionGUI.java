@@ -38,6 +38,7 @@ public class QuestSelectionGUI extends JFrame {
     // Quest Execution Components
     private JComboBox<String> f2pQuestDropdown;
     private JComboBox<String> membersQuestDropdown;
+    private JComboBox<String> miniQuestDropdown;
     private JButton startQuestButton;
     private JButton stopQuestButton;
     private JLabel questStatusLabel;
@@ -50,14 +51,18 @@ public class QuestSelectionGUI extends JFrame {
     // Available quests - populated from QuestDatabase
     private static final List<String> F2P_QUESTS = new ArrayList<>();
     private static final List<String> MEMBERS_QUESTS = new ArrayList<>();
+    private static final List<String> MINI_QUESTS = new ArrayList<>();
     static {
         F2P_QUESTS.add("-- Select a Free to Play Quest --");
         MEMBERS_QUESTS.add("-- Select a Members Quest --");
+        MINI_QUESTS.add("-- Select a Mini-Quest --");
         
         // Add quests from QuestDatabase
         for (QuestDatabase.QuestInfo quest : QuestDatabase.getAllQuests().values()) {
-            // Determine if quest is members or F2P based on quest name/content
-            if (isMembersQuest(quest.getDisplayName())) {
+            // Determine quest category based on quest name/content
+            if (isMiniQuest(quest.getDisplayName())) {
+                MINI_QUESTS.add(quest.getDisplayName());
+            } else if (isMembersQuest(quest.getDisplayName())) {
                 MEMBERS_QUESTS.add(quest.getDisplayName());
             } else {
                 F2P_QUESTS.add(quest.getDisplayName());
@@ -74,6 +79,21 @@ public class QuestSelectionGUI extends JFrame {
         
         for (String membersQuest : membersQuests) {
             if (questName.contains(membersQuest)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private static boolean isMiniQuest(String questName) {
+        // Define mini-quests - add more as needed
+        String[] miniQuests = {
+            "Mini-Quest", "Tutorial", "Tutorial Island", "Stronghold of Security",
+            "Stronghold of Player Safety", "Stronghold of Security", "Tutorial Island Quest"
+        };
+        
+        for (String miniQuest : miniQuests) {
+            if (questName.contains(miniQuest)) {
                 return true;
             }
         }
@@ -290,8 +310,8 @@ public class QuestSelectionGUI extends JFrame {
             UIManager.getColor("TitledBorder.titleColor")
         ));
         
-        // Create two quest selection panels side by side
-        JPanel questSelectionContainer = new JPanel(new GridLayout(1, 2, 15, 0));
+        // Create three quest selection panels side by side
+        JPanel questSelectionContainer = new JPanel(new GridLayout(1, 3, 10, 0));
         questSelectionContainer.setBackground(UIManager.getColor("Panel.background"));
         
         // Free to Play Quest Selection
@@ -307,8 +327,8 @@ public class QuestSelectionGUI extends JFrame {
         ));
         
         f2pQuestDropdown = new JComboBox<>(F2P_QUESTS.toArray(new String[0]));
-        f2pQuestDropdown.setFont(new Font("Segoe UI", Font.PLAIN, 11));
-        f2pQuestDropdown.setPreferredSize(new Dimension(180, 28));
+        f2pQuestDropdown.setFont(new Font("Segoe UI", Font.PLAIN, 10));
+        f2pQuestDropdown.setPreferredSize(new Dimension(150, 26));
         
         f2pPanel.add(f2pQuestDropdown, BorderLayout.CENTER);
         
@@ -325,13 +345,32 @@ public class QuestSelectionGUI extends JFrame {
         ));
         
         membersQuestDropdown = new JComboBox<>(MEMBERS_QUESTS.toArray(new String[0]));
-        membersQuestDropdown.setFont(new Font("Segoe UI", Font.PLAIN, 11));
-        membersQuestDropdown.setPreferredSize(new Dimension(180, 28));
+        membersQuestDropdown.setFont(new Font("Segoe UI", Font.PLAIN, 10));
+        membersQuestDropdown.setPreferredSize(new Dimension(150, 26));
         
         membersPanel.add(membersQuestDropdown, BorderLayout.CENTER);
         
+        // Mini-Quest Selection
+        JPanel miniPanel = new JPanel(new BorderLayout(5, 5));
+        miniPanel.setBackground(UIManager.getColor("Panel.background"));
+        miniPanel.setBorder(new TitledBorder(
+            BorderFactory.createLineBorder(new Color(150, 100, 255), 1),
+            "Mini-Quests",
+            TitledBorder.DEFAULT_JUSTIFICATION,
+            TitledBorder.DEFAULT_POSITION,
+            new Font("Segoe UI", Font.BOLD, 10),
+            new Color(150, 100, 255)
+        ));
+        
+        miniQuestDropdown = new JComboBox<>(MINI_QUESTS.toArray(new String[0]));
+        miniQuestDropdown.setFont(new Font("Segoe UI", Font.PLAIN, 10));
+        miniQuestDropdown.setPreferredSize(new Dimension(150, 26));
+        
+        miniPanel.add(miniQuestDropdown, BorderLayout.CENTER);
+        
         questSelectionContainer.add(f2pPanel);
         questSelectionContainer.add(membersPanel);
+        questSelectionContainer.add(miniPanel);
         
         selectionPanel.add(questSelectionContainer, BorderLayout.CENTER);
         
@@ -468,16 +507,19 @@ public class QuestSelectionGUI extends JFrame {
     private void startSelectedQuest() {
         String selectedF2PQuest = (String) f2pQuestDropdown.getSelectedItem();
         String selectedMembersQuest = (String) membersQuestDropdown.getSelectedItem();
+        String selectedMiniQuest = (String) miniQuestDropdown.getSelectedItem();
         
         String selectedQuest = null;
         if (selectedF2PQuest != null && !selectedF2PQuest.equals("-- Select a Free to Play Quest --")) {
             selectedQuest = selectedF2PQuest;
         } else if (selectedMembersQuest != null && !selectedMembersQuest.equals("-- Select a Members Quest --")) {
             selectedQuest = selectedMembersQuest;
+        } else if (selectedMiniQuest != null && !selectedMiniQuest.equals("-- Select a Mini-Quest --")) {
+            selectedQuest = selectedMiniQuest;
         }
         
         if (selectedQuest == null) {
-            updateQuestLog("Please select a quest from either dropdown first!");
+            updateQuestLog("Please select a quest from any dropdown first!");
             return;
         }
         
@@ -487,6 +529,7 @@ public class QuestSelectionGUI extends JFrame {
             stopQuestButton.setEnabled(true);
             f2pQuestDropdown.setEnabled(false);
             membersQuestDropdown.setEnabled(false);
+            miniQuestDropdown.setEnabled(false);
             
             questStatusLabel.setText("Starting quest: " + selectedQuest);
             questProgressBar.setValue(0);
@@ -529,6 +572,7 @@ public class QuestSelectionGUI extends JFrame {
         stopQuestButton.setEnabled(false);
         f2pQuestDropdown.setEnabled(true);
         membersQuestDropdown.setEnabled(true);
+        miniQuestDropdown.setEnabled(true);
         questStatusLabel.setText("Ready");
         questProgressBar.setValue(0);
         questProgressBar.setString("Select a quest to begin");
@@ -558,6 +602,7 @@ public class QuestSelectionGUI extends JFrame {
             stopQuestButton.setEnabled(false);
             f2pQuestDropdown.setEnabled(true);
             membersQuestDropdown.setEnabled(true);
+            miniQuestDropdown.setEnabled(true);
             questStatusLabel.setText("Quest stopped");
             questProgressBar.setValue(0);
             questProgressBar.setString("Ready");
@@ -577,12 +622,15 @@ public class QuestSelectionGUI extends JFrame {
         if (questStartListener != null && !questRunning) {
             String selectedF2PQuest = (String) f2pQuestDropdown.getSelectedItem();
             String selectedMembersQuest = (String) membersQuestDropdown.getSelectedItem();
+            String selectedMiniQuest = (String) miniQuestDropdown.getSelectedItem();
             
             String selectedQuest = null;
             if (selectedF2PQuest != null && !selectedF2PQuest.equals("-- Select a Free to Play Quest --")) {
                 selectedQuest = selectedF2PQuest;
             } else if (selectedMembersQuest != null && !selectedMembersQuest.equals("-- Select a Members Quest --")) {
                 selectedQuest = selectedMembersQuest;
+            } else if (selectedMiniQuest != null && !selectedMiniQuest.equals("-- Select a Mini-Quest --")) {
+                selectedQuest = selectedMiniQuest;
             }
             
             // If we have a quest executor and it's a specific quest (not FREE DISCOVERY MODE)
@@ -653,15 +701,19 @@ public class QuestSelectionGUI extends JFrame {
                 stopQuestButton.setEnabled(true);
                 f2pQuestDropdown.setEnabled(false);
                 membersQuestDropdown.setEnabled(false);
+                miniQuestDropdown.setEnabled(false);
                 
-                // Get the selected quest name from either dropdown
+                // Get the selected quest name from any dropdown
                 String selectedF2PQuest = (String) f2pQuestDropdown.getSelectedItem();
                 String selectedMembersQuest = (String) membersQuestDropdown.getSelectedItem();
+                String selectedMiniQuest = (String) miniQuestDropdown.getSelectedItem();
                 String questName = null;
                 if (selectedF2PQuest != null && !selectedF2PQuest.equals("-- Select a Free to Play Quest --")) {
                     questName = selectedF2PQuest;
                 } else if (selectedMembersQuest != null && !selectedMembersQuest.equals("-- Select a Members Quest --")) {
                     questName = selectedMembersQuest;
+                } else if (selectedMiniQuest != null && !selectedMiniQuest.equals("-- Select a Mini-Quest --")) {
+                    questName = selectedMiniQuest;
                 }
                 
                 questStatusLabel.setText("RUNNING: " + (questName != null ? questName : "Unknown Quest"));
@@ -671,6 +723,7 @@ public class QuestSelectionGUI extends JFrame {
                 stopQuestButton.setEnabled(false);
                 f2pQuestDropdown.setEnabled(true);
                 membersQuestDropdown.setEnabled(true);
+                miniQuestDropdown.setEnabled(true);
                 questStatusLabel.setText("Ready");
                 questProgressBar.setString("Ready");
             }
@@ -684,6 +737,7 @@ public class QuestSelectionGUI extends JFrame {
             stopQuestButton.setEnabled(false);
             f2pQuestDropdown.setEnabled(true);
             membersQuestDropdown.setEnabled(true);
+            miniQuestDropdown.setEnabled(true);
             questStatusLabel.setText(questName + " completed!");
             questStatusLabel.setForeground(new Color(100, 255, 100));
             questProgressBar.setValue(100);
@@ -699,6 +753,7 @@ public class QuestSelectionGUI extends JFrame {
             stopQuestButton.setEnabled(false);
             f2pQuestDropdown.setEnabled(true);
             membersQuestDropdown.setEnabled(true);
+            miniQuestDropdown.setEnabled(true);
             questStatusLabel.setText(questName + " failed");
             questStatusLabel.setForeground(new Color(255, 100, 100));
             questProgressBar.setValue(0);
