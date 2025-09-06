@@ -19,6 +19,7 @@ import quest.trees.KnightsSwordTree;
 import quest.trees.BelowIceMountainTree;
 import quest.trees.ErnestTheChickenTree;
 import quest.trees.DragonSlayerTree;
+// import quest.trees.MerlinsCrystalTree; // TODO: Implement Merlin's Crystal tree
 // import quest.trees.PrinceAliRescueTree; // REMOVED: Tree deleted from project
 
 import org.dreambot.api.methods.Calculations;
@@ -458,6 +459,9 @@ public class QuestExecutor {
             case "DRAGON_SLAYER_BOAT_DEBUG":
                 log("Starting Dragon Slayer - Boat Obtaining (debug) quest tree...");
                 return new TreeQuestWrapper(new DragonSlayerTree("boat"), questId, "Dragon Slayer - Boat Obtaining (debug)");
+            case "MERLINS_CRYSTAL":
+                log("Merlin's Crystal quest tree not yet implemented - waiting for manual logs");
+                return null; // TODO: Implement Merlin's Crystal tree
             case "RESTLESS_GHOST": 
                 // TODO: Implement Restless Ghost script
                 log("Restless Ghost script not yet implemented");

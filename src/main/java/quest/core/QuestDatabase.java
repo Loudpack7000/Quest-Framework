@@ -269,6 +269,23 @@ public class QuestDatabase {
             new ArrayList<>(),
             new ArrayList<>()
         ));
+
+        // Merlin's Crystal (Members Quest)
+        questInfo.put("MERLINS_CRYSTAL", new QuestInfo(
+            "MERLINS_CRYSTAL",
+            "Merlin's Crystal",
+            3, // difficulty
+            45, // estimated duration minutes
+            new ArrayList<>(), // no skill requirements
+            Arrays.asList(
+                "Bread",
+                "Tinderbox", 
+                "Bucket of Wax",
+                "Bat Bones",
+                "Black Candle",
+                "Excalibur"
+            )
+        ));
     }
     
     public static QuestInfo getQuestInfo(String questId) {
